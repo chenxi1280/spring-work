@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.MessageDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Message">
+    <id column="iid" jdbcType="VARCHAR" property="iid" />
+    <result column="iname" jdbcType="VARCHAR" property="iname" />
+    <result column="icontent" jdbcType="VARCHAR" property="icontent" />
+    <result column="xid" jdbcType="VARCHAR" property="xid" />
+    <result column="acid" jdbcType="VARCHAR" property="acid" />
+    <result column="auid" jdbcType="VARCHAR" property="auid" />
+    <result column="icreatedate" jdbcType="TIMESTAMP" property="icreatedate" />
+    <result column="iupdatedate" jdbcType="TIMESTAMP" property="iupdatedate" />
+    <result column="itype" jdbcType="VARCHAR" property="itype" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where iid = #{iid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from message
+    where iid = #{iid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="iid" keyProperty="iid" parameterType="com.work.boot.pojo.entity.Message" useGeneratedKeys="true">
+    insert into message (iname, icontent, xid, 
+      acid, auid, icreatedate, 
+      iupdatedate, itype)
+    values (#{iname,jdbcType=VARCHAR}, #{icontent,jdbcType=VARCHAR}, #{xid,jdbcType=VARCHAR}, 
+      #{acid,jdbcType=VARCHAR}, #{auid,jdbcType=VARCHAR}, #{icreatedate,jdbcType=TIMESTAMP}, 
+      #{iupdatedate,jdbcType=TIMESTAMP}, #{itype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="iid" keyProperty="iid" parameterType="com.work.boot.pojo.entity.Message" useGeneratedKeys="true">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="iname != null">
+        iname,
+      </if>
+      <if test="icontent != null">
+        icontent,
+      </if>
+      <if test="xid != null">
+        xid,
+      </if>
+      <if test="acid != null">
+        acid,
+      </if>
+      <if test="auid != null">
+        auid,
+      </if>
+      <if test="icreatedate != null">
+        icreatedate,
+      </if>
+      <if test="iupdatedate != null">
+        iupdatedate,
+      </if>
+      <if test="itype != null">
+        itype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="iname != null">
+        #{iname,jdbcType=VARCHAR},
+      </if>
+      <if test="icontent != null">
+        #{icontent,jdbcType=VARCHAR},
+      </if>
+      <if test="xid != null">
+        #{xid,jdbcType=VARCHAR},
+      </if>
+      <if test="acid != null">
+        #{acid,jdbcType=VARCHAR},
+      </if>
+      <if test="auid != null">
+        #{auid,jdbcType=VARCHAR},
+      </if>
+      <if test="icreatedate != null">
+        #{icreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="iupdatedate != null">
+        #{iupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itype != null">
+        #{itype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Message">
+    update message
+    set iname = #{iname,jdbcType=VARCHAR},
+      icontent = #{icontent,jdbcType=VARCHAR},
+      xid = #{xid,jdbcType=VARCHAR},
+      acid = #{acid,jdbcType=VARCHAR},
+      auid = #{auid,jdbcType=VARCHAR},
+      icreatedate = #{icreatedate,jdbcType=TIMESTAMP},
+      iupdatedate = #{iupdatedate,jdbcType=TIMESTAMP},
+      itype = #{itype,jdbcType=VARCHAR}
+    where iid = #{iid,jdbcType=VARCHAR}
+  </update>
+  <!--    sql-->
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype
+    from message
+  </select>
+
+  <select id="selectByLikemessages" resultType="com.work.boot.pojo.entity.Message">
+    select iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype
+    from message
+    <where>
+      1 = 1
+      <if test="username != null and username!= '' ">
+        and iname like concat('%',#{username},'%')
+      </if>
+
+      <if test="useruid != null and useruid!= '' ">
+        and iid like concat('%',#{useruid},'%')
+      </if>
+      <if test="itype != null">
+        and itype = #{itype}
+      </if>
+
+    </where>
+    limit #{page},#{limit}
+  </select>
+  <select id="selectById" resultType="com.work.boot.pojo.entity.Message">
+    select iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype
+    from message
+    where iid = #{iid}
+    </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Message">
+    update message
+    <set>
+      <if test="iname != null">
+        iname = #{iname,jdbcType=VARCHAR},
+      </if>
+      <if test="icontent != null">
+        icontent = #{icontent,jdbcType=VARCHAR},
+      </if>
+      <if test="xid != null">
+        xid = #{xid,jdbcType=VARCHAR},
+      </if>
+      <if test="acid != null">
+        acid = #{acid,jdbcType=VARCHAR},
+      </if>
+      <if test="auid != null">
+        auid = #{auid,jdbcType=VARCHAR},
+      </if>
+      <if test="icreatedate != null">
+        icreatedate = #{icreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="iupdatedate != null">
+        iupdatedate = #{iupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itype != null">
+        itype = #{itype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where iid = #{iid,jdbcType=VARCHAR}
+
+  </update>
+
+  <select id="selectAlllimet" resultType="com.work.boot.pojo.entity.Message">
+        select iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype
+        from message
+        limit #{start},#{limit}
+    </select>
+  <select id="getCount" resultType="java.lang.Integer">
+    select count(iid)
+    from message
+    </select>
+
+</mapper>

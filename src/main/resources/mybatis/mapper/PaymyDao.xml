@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.PaymyDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Paymy">
+    <id column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="pstypeid" jdbcType="INTEGER" property="pstypeid" />
+    <result column="pmoney" jdbcType="FLOAT" property="pmoney" />
+    <result column="pcompletiondate" jdbcType="DATE" property="pcompletiondate" />
+    <result column="pstate" jdbcType="INTEGER" property="pstate" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pid, pstypeid, pmoney, pcompletiondate, pstate, `uid`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from paymy
+    where pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from paymy
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="pid" keyProperty="pid" parameterType="com.work.boot.pojo.entity.Paymy" useGeneratedKeys="true">
+    insert into paymy (pstypeid, pmoney, pcompletiondate, 
+      pstate, `uid`)
+    values (#{pstypeid,jdbcType=INTEGER}, #{pmoney,jdbcType=FLOAT}, #{pcompletiondate,jdbcType=DATE}, 
+      #{pstate,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="pid" keyProperty="pid" parameterType="com.work.boot.pojo.entity.Paymy" useGeneratedKeys="true">
+    insert into paymy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pstypeid != null">
+        pstypeid,
+      </if>
+      <if test="pmoney != null">
+        pmoney,
+      </if>
+      <if test="pcompletiondate != null">
+        pcompletiondate,
+      </if>
+      <if test="pstate != null">
+        pstate,
+      </if>
+      <if test="uid != null">
+        `uid`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pstypeid != null">
+        #{pstypeid,jdbcType=INTEGER},
+      </if>
+      <if test="pmoney != null">
+        #{pmoney,jdbcType=FLOAT},
+      </if>
+      <if test="pcompletiondate != null">
+        #{pcompletiondate,jdbcType=DATE},
+      </if>
+      <if test="pstate != null">
+        #{pstate,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Paymy">
+    update paymy
+    <set>
+      <if test="pstypeid != null">
+        pstypeid = #{pstypeid,jdbcType=INTEGER},
+      </if>
+      <if test="pmoney != null">
+        pmoney = #{pmoney,jdbcType=FLOAT},
+      </if>
+      <if test="pcompletiondate != null">
+        pcompletiondate = #{pcompletiondate,jdbcType=DATE},
+      </if>
+      <if test="pstate != null">
+        pstate = #{pstate,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Paymy">
+    update paymy
+    set pstypeid = #{pstypeid,jdbcType=INTEGER},
+      pmoney = #{pmoney,jdbcType=FLOAT},
+      pcompletiondate = #{pcompletiondate,jdbcType=DATE},
+      pstate = #{pstate,jdbcType=INTEGER},
+      `uid` = #{uid,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

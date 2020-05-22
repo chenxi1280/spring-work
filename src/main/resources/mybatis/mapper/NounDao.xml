@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.NounDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Noun">
+    <id column="xid" jdbcType="VARCHAR" property="xid" />
+    <result column="xname" jdbcType="VARCHAR" property="xname" />
+    <result column="xaddres" jdbcType="VARCHAR" property="xaddres" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xid, xname, xaddres
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from noun
+    where xid = #{xid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from noun
+    where xid = #{xid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="xid" keyProperty="xid" parameterType="com.work.boot.pojo.entity.Noun" useGeneratedKeys="true">
+    insert into noun (xname, xaddres)
+    values (#{xname,jdbcType=VARCHAR}, #{xaddres,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="xid" keyProperty="xid" parameterType="com.work.boot.pojo.entity.Noun" useGeneratedKeys="true">
+    insert into noun
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="xname != null">
+        xname,
+      </if>
+      <if test="xaddres != null">
+        xaddres,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="xname != null">
+        #{xname,jdbcType=VARCHAR},
+      </if>
+      <if test="xaddres != null">
+        #{xaddres,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Noun">
+    update noun
+    <set>
+      <if test="xname != null">
+        xname = #{xname,jdbcType=VARCHAR},
+      </if>
+      <if test="xaddres != null">
+        xaddres = #{xaddres,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where xid = #{xid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Noun">
+    update noun
+    set xname = #{xname,jdbcType=VARCHAR},
+      xaddres = #{xaddres,jdbcType=VARCHAR}
+    where xid = #{xid,jdbcType=VARCHAR}
+  </update>
+</mapper>

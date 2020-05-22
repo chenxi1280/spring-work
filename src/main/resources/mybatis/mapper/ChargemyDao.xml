@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.ChargemyDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Chargemy">
+    <id column="sid" jdbcType="VARCHAR" property="sid" />
+    <result column="pstypeid" jdbcType="INTEGER" property="pstypeid" />
+    <result column="smoney" jdbcType="FLOAT" property="smoney" />
+    <result column="scompletiondate" jdbcType="DATE" property="scompletiondate" />
+    <result column="sstate" jdbcType="INTEGER" property="sstate" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="aid" jdbcType="VARCHAR" property="aid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sid, pstypeid, smoney, scompletiondate, sstate, `uid`, aid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from chargemy
+    where sid = #{sid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from chargemy
+    where sid = #{sid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="sid" keyProperty="sid" parameterType="com.work.boot.pojo.entity.Chargemy" useGeneratedKeys="true">
+    insert into chargemy (pstypeid, smoney, scompletiondate, 
+      sstate, `uid`, aid)
+    values (#{pstypeid,jdbcType=INTEGER}, #{smoney,jdbcType=FLOAT}, #{scompletiondate,jdbcType=DATE}, 
+      #{sstate,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{aid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="sid" keyProperty="sid" parameterType="com.work.boot.pojo.entity.Chargemy" useGeneratedKeys="true">
+    insert into chargemy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pstypeid != null">
+        pstypeid,
+      </if>
+      <if test="smoney != null">
+        smoney,
+      </if>
+      <if test="scompletiondate != null">
+        scompletiondate,
+      </if>
+      <if test="sstate != null">
+        sstate,
+      </if>
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="aid != null">
+        aid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pstypeid != null">
+        #{pstypeid,jdbcType=INTEGER},
+      </if>
+      <if test="smoney != null">
+        #{smoney,jdbcType=FLOAT},
+      </if>
+      <if test="scompletiondate != null">
+        #{scompletiondate,jdbcType=DATE},
+      </if>
+      <if test="sstate != null">
+        #{sstate,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null">
+        #{aid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Chargemy">
+    update chargemy
+    <set>
+      <if test="pstypeid != null">
+        pstypeid = #{pstypeid,jdbcType=INTEGER},
+      </if>
+      <if test="smoney != null">
+        smoney = #{smoney,jdbcType=FLOAT},
+      </if>
+      <if test="scompletiondate != null">
+        scompletiondate = #{scompletiondate,jdbcType=DATE},
+      </if>
+      <if test="sstate != null">
+        sstate = #{sstate,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null">
+        aid = #{aid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Chargemy">
+    update chargemy
+    set pstypeid = #{pstypeid,jdbcType=INTEGER},
+      smoney = #{smoney,jdbcType=FLOAT},
+      scompletiondate = #{scompletiondate,jdbcType=DATE},
+      sstate = #{sstate,jdbcType=INTEGER},
+      `uid` = #{uid,jdbcType=VARCHAR},
+      aid = #{aid,jdbcType=VARCHAR}
+    where sid = #{sid,jdbcType=VARCHAR}
+  </update>
+</mapper>

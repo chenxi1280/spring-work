@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.AdminDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Admin">
+    <id column="aid" jdbcType="VARCHAR" property="aid" />
+    <result column="adminname" jdbcType="VARCHAR" property="adminname" />
+    <result column="aname" jdbcType="VARCHAR" property="aname" />
+    <result column="apassword" jdbcType="VARCHAR" property="apassword" />
+    <result column="xid" jdbcType="VARCHAR" property="xid" />
+    <result column="aphoneid" jdbcType="VARCHAR" property="aphoneid" />
+    <result column="typeid" jdbcType="INTEGER" property="typeid" />
+    <result column="acreatedate" jdbcType="TIMESTAMP" property="acreatedate" />
+    <result column="aimg" jdbcType="VARCHAR" property="aimg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    aid, adminname, aname, apassword, xid, aphoneid, typeid, acreatedate, aimg
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where aid = #{aid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from admin
+    where aid = #{aid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="aid" keyProperty="aid" parameterType="com.work.boot.pojo.entity.Admin" useGeneratedKeys="true">
+    insert into admin (adminname, aname, apassword, 
+      xid, aphoneid, typeid, 
+      acreatedate, aimg)
+    values (#{adminname,jdbcType=VARCHAR}, #{aname,jdbcType=VARCHAR}, #{apassword,jdbcType=VARCHAR}, 
+      #{xid,jdbcType=VARCHAR}, #{aphoneid,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, 
+      #{acreatedate,jdbcType=TIMESTAMP}, #{aimg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="aid" keyProperty="aid" parameterType="com.work.boot.pojo.entity.Admin" useGeneratedKeys="true">
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminname != null">
+        adminname,
+      </if>
+      <if test="aname != null">
+        aname,
+      </if>
+      <if test="apassword != null">
+        apassword,
+      </if>
+      <if test="xid != null">
+        xid,
+      </if>
+      <if test="aphoneid != null">
+        aphoneid,
+      </if>
+      <if test="typeid != null">
+        typeid,
+      </if>
+      <if test="acreatedate != null">
+        acreatedate,
+      </if>
+      <if test="aimg != null">
+        aimg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminname != null">
+        #{adminname,jdbcType=VARCHAR},
+      </if>
+      <if test="aname != null">
+        #{aname,jdbcType=VARCHAR},
+      </if>
+      <if test="apassword != null">
+        #{apassword,jdbcType=VARCHAR},
+      </if>
+      <if test="xid != null">
+        #{xid,jdbcType=VARCHAR},
+      </if>
+      <if test="aphoneid != null">
+        #{aphoneid,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="acreatedate != null">
+        #{acreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aimg != null">
+        #{aimg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Admin">
+    update admin
+    <set>
+      <if test="adminname != null">
+        adminname = #{adminname,jdbcType=VARCHAR},
+      </if>
+      <if test="aname != null">
+        aname = #{aname,jdbcType=VARCHAR},
+      </if>
+      <if test="apassword != null">
+        apassword = #{apassword,jdbcType=VARCHAR},
+      </if>
+      <if test="xid != null">
+        xid = #{xid,jdbcType=VARCHAR},
+      </if>
+      <if test="aphoneid != null">
+        aphoneid = #{aphoneid,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        typeid = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="acreatedate != null">
+        acreatedate = #{acreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aimg != null">
+        aimg = #{aimg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Admin">
+    update admin
+    set adminname = #{adminname,jdbcType=VARCHAR},
+      aname = #{aname,jdbcType=VARCHAR},
+      apassword = #{apassword,jdbcType=VARCHAR},
+      xid = #{xid,jdbcType=VARCHAR},
+      aphoneid = #{aphoneid,jdbcType=VARCHAR},
+      typeid = #{typeid,jdbcType=INTEGER},
+      acreatedate = #{acreatedate,jdbcType=TIMESTAMP},
+      aimg = #{aimg,jdbcType=VARCHAR}
+    where aid = #{aid,jdbcType=VARCHAR}
+  </update>
+
+<!--  sql-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select aid, adminname, aname, apassword, xid, aphoneid, typeid, acreatedate, aimg
+    from admin
+  </select>
+
+
+  <select id="selectanameById" parameterType="string" resultType="string">
+    select adminname
+    from admin
+    where aid = #{aid}
+  </select>
+
+  <select id="selectByAdminName" parameterType="string" resultMap="BaseResultMap">
+
+    select aid, adminname, aname, apassword, xid, aphoneid, typeid, acreatedate
+    from admin
+    where aname = #{uname}
+
+  </select>
+
+  <select id="checkAdmin" resultMap="BaseResultMap">
+
+    select aid, adminname, aname, apassword, xid, aphoneid, typeid, acreatedate
+    from admin
+    where aname = #{aname} and  apassword =#{apassword}
+
+  </select>
+
+  <select id="getadmin" resultMap="BaseResultMap">
+    select  aid, adminname, aname, apassword, xid, aphoneid, typeid, acreatedate
+    from admin
+    limit #{start},#{limit}
+
+  </select>
+
+  <select id="getCount" resultType="integer">
+    select count(aid)
+    from admin
+  </select>
+
+  <select id="getLikeAdmin" resultMap="BaseResultMap">
+    select aid, adminname, aname, apassword, xid, aphoneid, typeid, acreatedate
+    from admin
+    <where>
+      1 = 1
+      <if test="username != null and username!= '' ">
+        and adminname like concat('%',#{username},'%')
+      </if>
+
+      <if test="useruid != null and useruid!= '' ">
+        and aid like concat('%',#{useruid},'%')
+      </if>
+      <if test="userphone != null and userphone!= '' ">
+        and aphoneid like concat('%',#{userphone},'%')
+      </if>
+
+    </where>
+
+    limit #{start},#{limits}
+
+  </select>
+
+  <select id="selectById" parameterType="string" resultMap="BaseResultMap">
+
+    select aid, adminname, aname, apassword, xid, aphoneid, typeid, acreatedate
+    from admin
+    where aid = #{aid}
+
+  </select>
+
+
+  <update id="updateByuid">
+        update admin
+        set ${field} = #{value}
+        where aid = #{aid}
+    </update>
+</mapper>

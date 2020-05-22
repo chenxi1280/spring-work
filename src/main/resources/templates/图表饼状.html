@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../js/ECharts.js"></script>
+<script src="../js/jquery-3.5.0.js"></script>
+<!--<script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>-->
+<!--&lt;!&ndash; 引入 echarts.js &ndash;&gt;-->
+<!--<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>-->
+<body>
+
+<div id="main" style="width: 600px;height:400px;"></div>
+</body>
+
+<script type="text/javascript">
+    // <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    // myChart.setOption({
+    //     title: {
+    //         text: '异步数据加载示例'
+    //     },
+    //     tooltip: {},
+    //     legend: {
+    //         data:['销量']
+    //     },
+    //     xAxis: {
+    //         data: []
+    //     },
+    //     yAxis: {},
+    //     series: [{
+    //         name: '销量',
+    //         type: 'bar',
+    //         data: []
+    //     }]
+    // });
+    $.get('http://localhost:8080/work/date/test', function (data) {
+        myChart.setOption({
+
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',    // 设置图表类型为饼图
+                    radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
+                    data:data.list
+                }
+            ]
+        })
+    }, 'json')
+</script>
+</html>

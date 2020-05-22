@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.GuaranteeDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Guarantee">
+    <id column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="rname" jdbcType="VARCHAR" property="rname" />
+    <result column="rcontent" jdbcType="VARCHAR" property="rcontent" />
+    <result column="rpublicdate" jdbcType="DATE" property="rpublicdate" />
+    <result column="raccpetdate" jdbcType="DATE" property="raccpetdate" />
+    <result column="rcompletiondate" jdbcType="DATE" property="rcompletiondate" />
+    <result column="rstate" jdbcType="INTEGER" property="rstate" />
+    <result column="revaluation" jdbcType="VARCHAR" property="revaluation" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="aid" jdbcType="VARCHAR" property="aid" />
+    <result column="raddress" jdbcType="VARCHAR" property="raddress" />
+    <result column="rimg" jdbcType="VARCHAR" property="rimg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rid, rname, rcontent, rpublicdate, raccpetdate, rcompletiondate, rstate, revaluation, 
+    `uid`, aid, raddress, rimg
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from guarantee
+    where rid = #{rid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from guarantee
+    where rid = #{rid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Guarantee" useGeneratedKeys="true">
+    insert into guarantee (rname, rcontent, rpublicdate, 
+      raccpetdate, rcompletiondate, rstate, 
+      revaluation, `uid`, aid, 
+      raddress, rimg)
+    values (#{rname,jdbcType=VARCHAR}, #{rcontent,jdbcType=VARCHAR}, #{rpublicdate,jdbcType=DATE}, 
+      #{raccpetdate,jdbcType=DATE}, #{rcompletiondate,jdbcType=DATE}, #{rstate,jdbcType=INTEGER}, 
+      #{revaluation,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{aid,jdbcType=VARCHAR}, 
+      #{raddress,jdbcType=VARCHAR}, #{rimg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Guarantee" useGeneratedKeys="true">
+    insert into guarantee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rname != null">
+        rname,
+      </if>
+      <if test="rcontent != null">
+        rcontent,
+      </if>
+      <if test="rpublicdate != null">
+        rpublicdate,
+      </if>
+      <if test="raccpetdate != null">
+        raccpetdate,
+      </if>
+      <if test="rcompletiondate != null">
+        rcompletiondate,
+      </if>
+      <if test="rstate != null">
+        rstate,
+      </if>
+      <if test="revaluation != null">
+        revaluation,
+      </if>
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="raddress != null">
+        raddress,
+      </if>
+      <if test="rimg != null">
+        rimg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rname != null">
+        #{rname,jdbcType=VARCHAR},
+      </if>
+      <if test="rcontent != null">
+        #{rcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="rpublicdate != null">
+        #{rpublicdate,jdbcType=DATE},
+      </if>
+      <if test="raccpetdate != null">
+        #{raccpetdate,jdbcType=DATE},
+      </if>
+      <if test="rcompletiondate != null">
+        #{rcompletiondate,jdbcType=DATE},
+      </if>
+      <if test="rstate != null">
+        #{rstate,jdbcType=INTEGER},
+      </if>
+      <if test="revaluation != null">
+        #{revaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null">
+        #{aid,jdbcType=VARCHAR},
+      </if>
+      <if test="raddress != null">
+        #{raddress,jdbcType=VARCHAR},
+      </if>
+      <if test="rimg != null">
+        #{rimg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Guarantee">
+    update guarantee
+    <set>
+      <if test="rname != null">
+        rname = #{rname,jdbcType=VARCHAR},
+      </if>
+      <if test="rcontent != null">
+        rcontent = #{rcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="rpublicdate != null">
+        rpublicdate = #{rpublicdate,jdbcType=DATE},
+      </if>
+      <if test="raccpetdate != null">
+        raccpetdate = #{raccpetdate,jdbcType=DATE},
+      </if>
+      <if test="rcompletiondate != null">
+        rcompletiondate = #{rcompletiondate,jdbcType=DATE},
+      </if>
+      <if test="rstate != null">
+        rstate = #{rstate,jdbcType=INTEGER},
+      </if>
+      <if test="revaluation != null">
+        revaluation = #{revaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null">
+        aid = #{aid,jdbcType=VARCHAR},
+      </if>
+      <if test="raddress != null">
+        raddress = #{raddress,jdbcType=VARCHAR},
+      </if>
+      <if test="rimg != null">
+        rimg = #{rimg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rid = #{rid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Guarantee">
+    update guarantee
+    set rname = #{rname,jdbcType=VARCHAR},
+      rcontent = #{rcontent,jdbcType=VARCHAR},
+      rpublicdate = #{rpublicdate,jdbcType=DATE},
+      raccpetdate = #{raccpetdate,jdbcType=DATE},
+      rcompletiondate = #{rcompletiondate,jdbcType=DATE},
+      rstate = #{rstate,jdbcType=INTEGER},
+      revaluation = #{revaluation,jdbcType=VARCHAR},
+      `uid` = #{uid,jdbcType=VARCHAR},
+      aid = #{aid,jdbcType=VARCHAR},
+      raddress = #{raddress,jdbcType=VARCHAR},
+      rimg = #{rimg,jdbcType=VARCHAR}
+    where rid = #{rid,jdbcType=VARCHAR}
+  </update>
+
+<!--  SQL-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select rid, rname, rcontent, rpublicdate, raccpetdate, rcompletiondate, rstate, revaluation,
+    uid, aid, raddress, rimg
+    from guarantee
+  </select>
+
+  <select id="selectAlllimet" resultType="com.work.boot.pojo.entity.Guarantee">
+        select rid, rname, rcontent, rpublicdate, raccpetdate, rcompletiondate, rstate, revaluation,
+            uid, aid, raddress, rimg
+        from guarantee
+        limit #{start},#{limit}
+    </select>
+  <select id="getCount" resultType="java.lang.Integer">
+        select count(rid)
+        from guarantee
+    </select>
+</mapper>

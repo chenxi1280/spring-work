@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新建消息</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+    <script src="/js/messages.js"></script>
+    <style>
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<!--需要一个表单form-->
+
+<form class="layui-form" id="form">
+
+    <!--    &lt;!&ndash;视频输入选项&ndash;&gt;-->
+    <!--    <div class="layui-form-item">-->
+    <!--        <label class="layui-form-label">视频信息</label>-->
+    <!--        <div class="layui-input-block">-->
+    <!--            <input type="text" name="videoPath" id="videoPath"   lay-verify="required" lay-reqtext="视频是必填选项,岂能为空?" placeholder="请输入" autocomplete="off" class="layui-input">-->
+    <!--            &lt;!&ndash;视频上传&ndash;&gt;-->
+    <!--            <div class="layui-upload">-->
+    <!--                <button type="button" class="layui-btn layui-btn-normal" id="choosevideo">选择视频</button>-->
+    <!--                <button type="button" class="layui-btn" id="uploadvideo">开始上传</button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--视频的描述信息-->
+
+    <!--    iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype-->
+    <input type="text" name="iid" style="display:none" th:value="${mesg.iid}">
+    <input type="text" name="xid" style="display:none" th:value="${mesg.xid}">
+    <input type="text" name="acid" style="display:none" th:value="${mesg.acid}">
+    <input type="text" name="auid" style="display:none" th:value="${mesg.auid}">
+    <input type="text" name="icreatedate" style="display:none" th:value="${mesg.icreatedate}">
+
+    <div style="margin: 20px ">
+        <div class="layui-form-item">
+            <label class="layui-form-label">公告名字</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 50%" name="iname" autocomplete="off" placeholder="填写公告标题"
+                       th:value="${mesg.iname}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item ">
+
+            <label class="layui-form-label">公告类型</label>
+            <div class="layui-input-inline">
+                <select name="itype" id="itype">
+                    <option value="0">全体人员</option>
+                    <option value="1">全体业主</option>
+                    <option value="2">全体管理人员</option>
+
+                </select>
+            </div>
+
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">公告内容</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="icontent"
+                          th:text="${mesg.icontent}"></textarea>
+            </div>
+        </div>
+
+
+        <!--submit的提交按钮-->
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" style="margin: 10px auto; width: 25%" lay-submit
+                        lay-filter="sub" id="subedit">
+                    立即提交
+                </button>
+            </div>
+        </div>
+    </div>
+
+</form>
+</body>
+
+
+</html>

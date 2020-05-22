@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>业主信息</title>
+    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+    <script type="text/javascript" src="/layui/layui.js"></script>
+    <script type="text/javascript" src="/js/messages.js"></script>
+    <script type="text/javascript" src="/js/date.js"></script>
+
+</head>
+<body>
+<!--模糊查询-->
+<div class="layui-row" style="margin: 10px auto; width: 50%">
+    ID：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="useruid" autocomplete="off">
+    </div>
+    名字：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="username" autocomplete="off">
+    </div>
+    类型：
+    <form class="layui-form">
+        <select name="itype" id="itype" style="width: 150px">
+            <option value="0">全体人员</option>
+            <option value="1">全体业主</option>
+            <option value="2">全体管理人员</option>
+
+        </select>
+    </form>
+    <button class="layui-btn" data-type="reload" id="find">
+        <i class="layui-icon ">&#xe615;</i>
+    </button>
+
+</div>
+
+
+<!--自定义表头工具栏-->
+<script type="text/html" id="bar">
+    <div class="layui-btn-group">
+        <!--        <button class="layui-btn" lay-event="add">增加</button>-->
+        <button class="layui-btn" lay-event="delete">删除</button>
+    </div>
+    <!--    <div class="layui-btn-group">-->
+    <!--        <button  class="layui-btn" lay-event="publish">发布</button>-->
+    <!--        <button  class="layui-btn" lay-event="down">下线</button>-->
+    <!--    </div>-->
+</script>
+
+<!--表示加载数据的表格标签-->
+<table class="layui-hide" id="userdemo" lay-filter="usertest"></table>
+<!--自定义按钮功能-->
+<script type="text/html" id="barDemo">
+
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+</script>
+
+
+</body>
+
+
+</html>

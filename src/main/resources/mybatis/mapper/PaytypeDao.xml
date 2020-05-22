@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.PaytypeDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Paytype">
+    <id column="pstypeid" jdbcType="INTEGER" property="pstypeid" />
+    <result column="pstypename" jdbcType="VARCHAR" property="pstypename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pstypeid, pstypename
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from paytype
+    where pstypeid = #{pstypeid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from paytype
+    where pstypeid = #{pstypeid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="pstypeid" keyProperty="pstypeid" parameterType="com.work.boot.pojo.entity.Paytype" useGeneratedKeys="true">
+    insert into paytype (pstypename)
+    values (#{pstypename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="pstypeid" keyProperty="pstypeid" parameterType="com.work.boot.pojo.entity.Paytype" useGeneratedKeys="true">
+    insert into paytype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pstypename != null">
+        pstypename,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pstypename != null">
+        #{pstypename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Paytype">
+    update paytype
+    <set>
+      <if test="pstypename != null">
+        pstypename = #{pstypename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pstypeid = #{pstypeid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Paytype">
+    update paytype
+    set pstypename = #{pstypename,jdbcType=VARCHAR}
+    where pstypeid = #{pstypeid,jdbcType=INTEGER}
+  </update>
+</mapper>

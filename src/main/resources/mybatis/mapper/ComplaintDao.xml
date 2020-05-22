@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.ComplaintDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Complaint">
+    <id column="cid" jdbcType="VARCHAR" property="cid" />
+    <result column="cname" jdbcType="VARCHAR" property="cname" />
+    <result column="ccontent" jdbcType="VARCHAR" property="ccontent" />
+    <result column="cpublicdate" jdbcType="DATE" property="cpublicdate" />
+    <result column="caccpetdate" jdbcType="DATE" property="caccpetdate" />
+    <result column="ccompletiondate" jdbcType="DATE" property="ccompletiondate" />
+    <result column="cstate" jdbcType="INTEGER" property="cstate" />
+    <result column="cevaluation" jdbcType="VARCHAR" property="cevaluation" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="aid" jdbcType="VARCHAR" property="aid" />
+    <result column="caddress" jdbcType="VARCHAR" property="caddress" />
+    <result column="cimg" jdbcType="VARCHAR" property="cimg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cid, cname, ccontent, cpublicdate, caccpetdate, ccompletiondate, cstate, cevaluation, 
+    `uid`, aid, caddress, cimg
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from complaint
+    where cid = #{cid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from complaint
+    where cid = #{cid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="cid" keyProperty="cid" parameterType="com.work.boot.pojo.entity.Complaint" useGeneratedKeys="true">
+    insert into complaint (cname, ccontent, cpublicdate, 
+      caccpetdate, ccompletiondate, cstate, 
+      cevaluation, `uid`, aid, 
+      caddress, cimg)
+    values (#{cname,jdbcType=VARCHAR}, #{ccontent,jdbcType=VARCHAR}, #{cpublicdate,jdbcType=DATE}, 
+      #{caccpetdate,jdbcType=DATE}, #{ccompletiondate,jdbcType=DATE}, #{cstate,jdbcType=INTEGER}, 
+      #{cevaluation,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{aid,jdbcType=VARCHAR}, 
+      #{caddress,jdbcType=VARCHAR}, #{cimg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="cid" keyProperty="cid" parameterType="com.work.boot.pojo.entity.Complaint" useGeneratedKeys="true">
+    insert into complaint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cname != null">
+        cname,
+      </if>
+      <if test="ccontent != null">
+        ccontent,
+      </if>
+      <if test="cpublicdate != null">
+        cpublicdate,
+      </if>
+      <if test="caccpetdate != null">
+        caccpetdate,
+      </if>
+      <if test="ccompletiondate != null">
+        ccompletiondate,
+      </if>
+      <if test="cstate != null">
+        cstate,
+      </if>
+      <if test="cevaluation != null">
+        cevaluation,
+      </if>
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="caddress != null">
+        caddress,
+      </if>
+      <if test="cimg != null">
+        cimg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="ccontent != null">
+        #{ccontent,jdbcType=VARCHAR},
+      </if>
+      <if test="cpublicdate != null">
+        #{cpublicdate,jdbcType=DATE},
+      </if>
+      <if test="caccpetdate != null">
+        #{caccpetdate,jdbcType=DATE},
+      </if>
+      <if test="ccompletiondate != null">
+        #{ccompletiondate,jdbcType=DATE},
+      </if>
+      <if test="cstate != null">
+        #{cstate,jdbcType=INTEGER},
+      </if>
+      <if test="cevaluation != null">
+        #{cevaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null">
+        #{aid,jdbcType=VARCHAR},
+      </if>
+      <if test="caddress != null">
+        #{caddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cimg != null">
+        #{cimg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Complaint">
+    update complaint
+    <set>
+      <if test="cname != null">
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="ccontent != null">
+        ccontent = #{ccontent,jdbcType=VARCHAR},
+      </if>
+      <if test="cpublicdate != null">
+        cpublicdate = #{cpublicdate,jdbcType=DATE},
+      </if>
+      <if test="caccpetdate != null">
+        caccpetdate = #{caccpetdate,jdbcType=DATE},
+      </if>
+      <if test="ccompletiondate != null">
+        ccompletiondate = #{ccompletiondate,jdbcType=DATE},
+      </if>
+      <if test="cstate != null">
+        cstate = #{cstate,jdbcType=INTEGER},
+      </if>
+      <if test="cevaluation != null">
+        cevaluation = #{cevaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null">
+        aid = #{aid,jdbcType=VARCHAR},
+      </if>
+      <if test="caddress != null">
+        caddress = #{caddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cimg != null">
+        cimg = #{cimg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Complaint">
+    update complaint
+    set cname = #{cname,jdbcType=VARCHAR},
+      ccontent = #{ccontent,jdbcType=VARCHAR},
+      cpublicdate = #{cpublicdate,jdbcType=DATE},
+      caccpetdate = #{caccpetdate,jdbcType=DATE},
+      ccompletiondate = #{ccompletiondate,jdbcType=DATE},
+      cstate = #{cstate,jdbcType=INTEGER},
+      cevaluation = #{cevaluation,jdbcType=VARCHAR},
+      `uid` = #{uid,jdbcType=VARCHAR},
+      aid = #{aid,jdbcType=VARCHAR},
+      caddress = #{caddress,jdbcType=VARCHAR},
+      cimg = #{cimg,jdbcType=VARCHAR}
+    where cid = #{cid,jdbcType=VARCHAR}
+  </update>
+</mapper>
