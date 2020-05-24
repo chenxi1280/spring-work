@@ -5,9 +5,10 @@
     <id column="rid" jdbcType="VARCHAR" property="rid" />
     <result column="rname" jdbcType="VARCHAR" property="rname" />
     <result column="rcontent" jdbcType="VARCHAR" property="rcontent" />
-    <result column="rpublicdate" jdbcType="DATE" property="rpublicdate" />
-    <result column="raccpetdate" jdbcType="DATE" property="raccpetdate" />
-    <result column="rcompletiondate" jdbcType="DATE" property="rcompletiondate" />
+    <result column="rpublicdate" jdbcType="TIMESTAMP" property="rpublicdate" />
+    <result column="raccpetdate" jdbcType="TIMESTAMP" property="raccpetdate" />
+    <result column="rcompletiondate" jdbcType="TIMESTAMP" property="rcompletiondate" />
+    <result column="maintenanceuserid" jdbcType="INTEGER" property="maintenanceuserid" />
     <result column="rstate" jdbcType="INTEGER" property="rstate" />
     <result column="revaluation" jdbcType="VARCHAR" property="revaluation" />
     <result column="uid" jdbcType="VARCHAR" property="uid" />
@@ -16,11 +17,11 @@
     <result column="rimg" jdbcType="VARCHAR" property="rimg" />
   </resultMap>
   <sql id="Base_Column_List">
-    rid, rname, rcontent, rpublicdate, raccpetdate, rcompletiondate, rstate, revaluation, 
-    `uid`, aid, raddress, rimg
+    rid, rname, rcontent, rpublicdate, raccpetdate, rcompletiondate, maintenanceuserid,
+    rstate, revaluation, `uid`, aid, raddress, rimg
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from guarantee
     where rid = #{rid,jdbcType=VARCHAR}
@@ -30,14 +31,16 @@
     where rid = #{rid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Guarantee" useGeneratedKeys="true">
-    insert into guarantee (rname, rcontent, rpublicdate, 
-      raccpetdate, rcompletiondate, rstate, 
-      revaluation, `uid`, aid, 
-      raddress, rimg)
-    values (#{rname,jdbcType=VARCHAR}, #{rcontent,jdbcType=VARCHAR}, #{rpublicdate,jdbcType=DATE}, 
-      #{raccpetdate,jdbcType=DATE}, #{rcompletiondate,jdbcType=DATE}, #{rstate,jdbcType=INTEGER}, 
-      #{revaluation,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{aid,jdbcType=VARCHAR}, 
-      #{raddress,jdbcType=VARCHAR}, #{rimg,jdbcType=VARCHAR})
+    insert into guarantee (rname, rcontent, rpublicdate,
+      raccpetdate, rcompletiondate, maintenanceuserid,
+      rstate, revaluation, `uid`,
+      aid, raddress, rimg
+      )
+    values (#{rname,jdbcType=VARCHAR}, #{rcontent,jdbcType=VARCHAR}, #{rpublicdate,jdbcType=TIMESTAMP},
+      #{raccpetdate,jdbcType=TIMESTAMP}, #{rcompletiondate,jdbcType=TIMESTAMP}, #{maintenanceuserid,jdbcType=INTEGER},
+      #{rstate,jdbcType=INTEGER}, #{revaluation,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR},
+      #{aid,jdbcType=VARCHAR}, #{raddress,jdbcType=VARCHAR}, #{rimg,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Guarantee" useGeneratedKeys="true">
     insert into guarantee
@@ -56,6 +59,9 @@
       </if>
       <if test="rcompletiondate != null">
         rcompletiondate,
+      </if>
+      <if test="maintenanceuserid != null">
+        maintenanceuserid,
       </if>
       <if test="rstate != null">
         rstate,
@@ -84,13 +90,16 @@
         #{rcontent,jdbcType=VARCHAR},
       </if>
       <if test="rpublicdate != null">
-        #{rpublicdate,jdbcType=DATE},
+        #{rpublicdate,jdbcType=TIMESTAMP},
       </if>
       <if test="raccpetdate != null">
-        #{raccpetdate,jdbcType=DATE},
+        #{raccpetdate,jdbcType=TIMESTAMP},
       </if>
       <if test="rcompletiondate != null">
-        #{rcompletiondate,jdbcType=DATE},
+        #{rcompletiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maintenanceuserid != null">
+        #{maintenanceuserid,jdbcType=INTEGER},
       </if>
       <if test="rstate != null">
         #{rstate,jdbcType=INTEGER},
@@ -122,13 +131,16 @@
         rcontent = #{rcontent,jdbcType=VARCHAR},
       </if>
       <if test="rpublicdate != null">
-        rpublicdate = #{rpublicdate,jdbcType=DATE},
+        rpublicdate = #{rpublicdate,jdbcType=TIMESTAMP},
       </if>
       <if test="raccpetdate != null">
-        raccpetdate = #{raccpetdate,jdbcType=DATE},
+        raccpetdate = #{raccpetdate,jdbcType=TIMESTAMP},
       </if>
       <if test="rcompletiondate != null">
-        rcompletiondate = #{rcompletiondate,jdbcType=DATE},
+        rcompletiondate = #{rcompletiondate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maintenanceuserid != null">
+        maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER},
       </if>
       <if test="rstate != null">
         rstate = #{rstate,jdbcType=INTEGER},
@@ -155,9 +167,10 @@
     update guarantee
     set rname = #{rname,jdbcType=VARCHAR},
       rcontent = #{rcontent,jdbcType=VARCHAR},
-      rpublicdate = #{rpublicdate,jdbcType=DATE},
-      raccpetdate = #{raccpetdate,jdbcType=DATE},
-      rcompletiondate = #{rcompletiondate,jdbcType=DATE},
+      rpublicdate = #{rpublicdate,jdbcType=TIMESTAMP},
+      raccpetdate = #{raccpetdate,jdbcType=TIMESTAMP},
+      rcompletiondate = #{rcompletiondate,jdbcType=TIMESTAMP},
+      maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER},
       rstate = #{rstate,jdbcType=INTEGER},
       revaluation = #{revaluation,jdbcType=VARCHAR},
       `uid` = #{uid,jdbcType=VARCHAR},
@@ -169,14 +182,12 @@
 
 <!--  SQL-->
   <select id="selectAll" resultMap="BaseResultMap">
-    select rid, rname, rcontent, rpublicdate, raccpetdate, rcompletiondate, rstate, revaluation,
-    uid, aid, raddress, rimg
+    select <include refid="Base_Column_List" />
     from guarantee
   </select>
 
-  <select id="selectAlllimet" resultType="com.work.boot.pojo.entity.Guarantee">
-        select rid, rname, rcontent, rpublicdate, raccpetdate, rcompletiondate, rstate, revaluation,
-            uid, aid, raddress, rimg
+  <select id="selectAlllimet" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
+        select <include refid="Base_Column_List" />
         from guarantee
         limit #{start},#{limit}
     </select>
@@ -184,4 +195,12 @@
         select count(rid)
         from guarantee
     </select>
+  <select id="selectByid" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
+    select
+    <include refid="Base_Column_List" />
+    from guarantee
+    where rid = #{rid}
+
+  </select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.work.boot.service;
 
 import com.work.boot.pojo.dto.Result;
+import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,5 +31,7 @@ public interface UserService {
     User selectById(String uid);
 
     Result toedituser(User user, HttpServletRequest request);
+
+    ResultData datatest();
 
 }

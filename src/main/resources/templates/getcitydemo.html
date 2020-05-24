@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery-3.5.0.js"></script>
+<!--    <script src="/js/getcity.js"></script>-->
+</head>
+<body>
+省份：<select id="province">
+    <option>请选择省份</option>
+</select>
+城市：<select id="city">
+    <option>请选择省份</option>
+</select>
+地区：<select id="district">
+    <option>请选择省份</option>
+    </select>
+
+</body>
+<script >
+    var province = $('#province')
+
+    $.ajax({
+
+        url: 'http://localhost:8080/date/getcity',  // 请求的地址
+        // async: true,
+        type: 'get',
+        // contentType : 'pplication/json',
+        dataType: "json",
+        success: function (_data) {
+            console.log(_data)
+            _data.list.forEach((v) => {
+                console.log(v.name)
+
+                let  a = $("<option value='"+ v.value+" '>" + v.name+" </option>")
+
+                province.append(a)
+
+            })
+
+        },
+    })
+
+
+</script>
+</html>

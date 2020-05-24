@@ -40,7 +40,7 @@
                 <li class="layui-nav-item layui-nav-itemed" th:if="${session.user.getTypeid() >= 2}">
                     <a class="" href="javascript:;">小区管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="../templates/2.html" th:href="@{/user/showuser}" target="main">我的小区</a></dd>
+                        <dd><a href="/date/showdate" th:href="@{/date/showdate}" target="main">我的小区</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -98,13 +98,14 @@
                 </li>
 
                 <li class="layui-nav-item">
-                    <a href="javascript:;">保修管理</a>
+                    <a href="javascript:;">报修管理</a>
                     <dl class="layui-nav-child">
-
+                        <dd><a href="/guarantee/addgtype" th:href="@{/guarantee/addgtype}" target="main">
+                            添加报修类型</a></dd>
                         <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/getguarantee}" target="main">
                             报修信息</a></dd>
                         <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/getguarantee}" target="main">
-                            保修单</a></dd>
+                            报修单</a></dd>
 
                     </dl>
                 </li>

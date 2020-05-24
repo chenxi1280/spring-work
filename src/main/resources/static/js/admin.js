@@ -170,7 +170,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                     type: 2,
                     title: '新建用户',
                     area: ['50%', '80%'],
-                    content: '../templates/addadmin.html'
+                    content: '/admin/addadminhtml'
                 })
 
                 break;

@@ -1,6 +1,7 @@
 package com.work.boot.dao;
 
 import com.work.boot.pojo.entity.Guarantee;
+import com.work.boot.pojo.vo.GuaranteeAllVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,8 +23,9 @@ public interface GuaranteeDao {
 
     List<Guarantee> selectAll();
 
-    List<Guarantee> selectAlllimet(@Param("start") Integer sta, @Param("limit") Integer limit);
+    List<GuaranteeAllVo> selectAlllimet(@Param("start") Integer sta, @Param("limit") Integer limit);
 
     Integer getCount();
 
+    GuaranteeAllVo selectByid(String rid);
 }

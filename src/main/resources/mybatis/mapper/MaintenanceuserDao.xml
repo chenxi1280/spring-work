@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.MaintenanceuserDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Maintenanceuser">
+    <id column="maintenanceuserid" jdbcType="INTEGER" property="maintenanceuserid" />
+    <result column="maintenanceusername" jdbcType="VARCHAR" property="maintenanceusername" />
+    <result column="maintenanceuseridstate" jdbcType="INTEGER" property="maintenanceuseridstate" />
+    <result column="maintenanceuserphone" jdbcType="VARCHAR" property="maintenanceuserphone" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    maintenanceuserid, maintenanceusername, maintenanceuseridstate, maintenanceuserphone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from maintenanceuser
+    where maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from maintenanceuser
+    where maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="maintenanceuserid" keyProperty="maintenanceuserid" parameterType="com.work.boot.pojo.entity.Maintenanceuser" useGeneratedKeys="true">
+    insert into maintenanceuser (maintenanceusername, maintenanceuseridstate, 
+      maintenanceuserphone)
+    values (#{maintenanceusername,jdbcType=VARCHAR}, #{maintenanceuseridstate,jdbcType=INTEGER}, 
+      #{maintenanceuserphone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="maintenanceuserid" keyProperty="maintenanceuserid" parameterType="com.work.boot.pojo.entity.Maintenanceuser" useGeneratedKeys="true">
+    insert into maintenanceuser
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="maintenanceusername != null">
+        maintenanceusername,
+      </if>
+      <if test="maintenanceuseridstate != null">
+        maintenanceuseridstate,
+      </if>
+      <if test="maintenanceuserphone != null">
+        maintenanceuserphone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="maintenanceusername != null">
+        #{maintenanceusername,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceuseridstate != null">
+        #{maintenanceuseridstate,jdbcType=INTEGER},
+      </if>
+      <if test="maintenanceuserphone != null">
+        #{maintenanceuserphone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Maintenanceuser">
+    update maintenanceuser
+    <set>
+      <if test="maintenanceusername != null">
+        maintenanceusername = #{maintenanceusername,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceuseridstate != null">
+        maintenanceuseridstate = #{maintenanceuseridstate,jdbcType=INTEGER},
+      </if>
+      <if test="maintenanceuserphone != null">
+        maintenanceuserphone = #{maintenanceuserphone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Maintenanceuser">
+    update maintenanceuser
+    set maintenanceusername = #{maintenanceusername,jdbcType=VARCHAR},
+      maintenanceuseridstate = #{maintenanceuseridstate,jdbcType=INTEGER},
+      maintenanceuserphone = #{maintenanceuserphone,jdbcType=VARCHAR}
+    where maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectNameByList" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
+
+    select maintenanceusername
+    from maintenanceuser
+    where maintenanceuserid in <foreach collection="list" close=")" index="" item="v" open="(" separator=",">
+    #{v.maintenanceuserid}
+
+  </foreach>
+
+  </select>
+  <select id="selectAll" resultType="com.work.boot.pojo.entity.Maintenanceuser">
+    select <include refid="Base_Column_List" />
+    from maintenanceuser
+  </select>
+
+</mapper>

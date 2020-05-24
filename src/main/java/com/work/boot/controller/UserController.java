@@ -151,5 +151,12 @@ public class UserController {
 
     }
 
+    @RequestMapping("/adduserhtml")
+
+    public String adduserhtml() {
+
+        return "adduser";
+
+    }
 
 }

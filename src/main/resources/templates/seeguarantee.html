@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+    <script src="/js/admin.js"></script>
+</head>
+<body>
+
+<!--需要一个表单form-->
+
+
+    <!--    &lt;!&ndash;视频输入选项&ndash;&gt;-->
+    <!--    <div class="layui-form-item">-->
+    <!--        <label class="layui-form-label">视频信息</label>-->
+    <!--        <div class="layui-input-block">-->
+    <!--            <input type="text" name="videoPath" id="videoPath"   lay-verify="required" lay-reqtext="视频是必填选项,岂能为空?" placeholder="请输入" autocomplete="off" class="layui-input">-->
+    <!--            &lt;!&ndash;视频上传&ndash;&gt;-->
+    <!--            <div class="layui-upload">-->
+    <!--                <button type="button" class="layui-btn layui-btn-normal" id="choosevideo">选择视频</button>-->
+    <!--                <button type="button" class="layui-btn" id="uploadvideo">开始上传</button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--视频的描述信息-->
+
+    <input type="text" name="aid" style="display:none" th:value="${guarantee.rid}">
+
+    <div style="margin: 20px ">
+        <div class="layui-form-item">
+            <label class="layui-form-label">保修名字</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 50%" name="maintenanceusername" th:value="${guarantee.maintenanceusername}"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">保修内容</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 50%" name="rcontent" th:value="${guarantee.rcontent}"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">保修状态</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 50%" name="rstate" th:value="${guarantee.rstate}"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 50%" name="rimg" th:value="${guarantee.rimg}"
+                       class="layui-input">
+<!--                <img th: th:src="${guarantee.rimg}">-->
+            </div>
+        </div>
+        <img  src="../img/work.png" width="100%" height="100%">
+    </div>
+
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">登录名</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="text" style="width: 50%" name="aname" lay-verify="required|username" autocomplete="off"-->
+<!--                       th:value="${admin.aname}" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">密码</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="password" name="apassword" style="width: 50%" lay-verify="required|pass"-->
+<!--                       th:value="${admin.apassword}" autocomplete="off" placeholder="请输入密码" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+<!--        &lt;!&ndash;        <div class="layui-form-item">&ndash;&gt;-->
+<!--        &lt;!&ndash;            <label class="layui-form-label" >确认密码</label>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <div class="layui-input-block">&ndash;&gt;-->
+<!--        &lt;!&ndash;                <input type="password" name="apassword" style="width: 50%" lay-verify="required|pass"    th:value="${admin.apassword}"  autocomplete="off" placeholder="请输入密码" class="layui-input">&ndash;&gt;-->
+<!--        &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
+
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">小区</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="text" style="width: 50%" name="xid" autocomplete="off" th:value="${admin.xid}"-->
+<!--                       class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">手机号码</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="tel" style="width: 50%" name="aphoneid" lay-verify="required|phone"-->
+<!--                       th:value="${admin.aphoneid}" autocomplete="off" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+        <!--submit的提交按钮-->
+
+
+
+</body>
+
+</html>

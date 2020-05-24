@@ -8,8 +8,9 @@ import java.util.List;
  */
 
 public class ResultData {
+    // list 属性 只放 RData 类的数据
     private List<RData> list;
-
+    // 状态
     private String msg;
 
     public List<RData> getList() {

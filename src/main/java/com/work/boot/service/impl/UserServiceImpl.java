@@ -2,7 +2,9 @@ package com.work.boot.service.impl;
 
 import com.work.boot.dao.AdminDao;
 import com.work.boot.dao.UserDao;
+import com.work.boot.pojo.dto.RData;
 import com.work.boot.pojo.dto.Result;
+import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.Admin;
 import com.work.boot.pojo.entity.User;
 import com.work.boot.service.UserService;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -277,6 +280,41 @@ public class UserServiceImpl implements UserService {
             return result;
         }
 
+
+    }
+
+    @Override
+    public ResultData datatest() {
+        ResultData resultData = new ResultData();
+        List<RData> list = new ArrayList<>();
+
+
+
+
+        Integer count = userDao.getCount();
+
+        List<User> users = userDao.selectAll();
+
+        int sum = 0;
+
+        for (User user : users) {
+            RData rData = new RData();
+            rData.setName(user.getUid());
+            rData.setValue(user.getCstate());
+            list.add(rData);
+        }
+
+        users.forEach( user -> {
+            RData rData = new RData();
+            rData.setName(user.getUid());
+            rData.setValue(user.getCstate());
+            list.add(rData);
+        });
+
+
+        resultData.setList(list);
+
+        return  resultData;
 
     }
 

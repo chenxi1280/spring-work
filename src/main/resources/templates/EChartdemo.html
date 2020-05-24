@@ -38,7 +38,11 @@
     //         data: []
     //     }]
     // });
-    $.get('http://localhost:8080/work/date/test', function (data) {
+
+
+    $.get('http://localhost:8080/date/test', function (data) {
+        console.log(data)
+
         myChart.setOption({
 
             series : [
@@ -46,10 +50,12 @@
                     name: '访问来源',
                     type: 'pie',    // 设置图表类型为饼图
                     radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
-                    data:data.list
+                    data:   data.list
                 }
             ]
         })
     }, 'json')
+
+
 </script>
 </html>

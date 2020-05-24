@@ -75,6 +75,17 @@ public class AdminCotroller {
 
 
     }
+    @RequestMapping("/addadminhtml")
+    String addadminh(){
+        return "addadmin";
+    }
+
+
+    @RequestMapping("/test")
+    String test(){
+        return "test";
+    }
+
 
     //  详细修改接口
     @RequestMapping("/toeditadmin")
