@@ -1,193 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.work.boot.dao.UserDao">
-  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.User">
-    <id column="uid" jdbcType="VARCHAR" property="uid" />
-    <result column="uname" jdbcType="VARCHAR" property="uname" />
-    <result column="uusername" jdbcType="VARCHAR" property="uusername" />
-    <result column="upassword" jdbcType="VARCHAR" property="upassword" />
-    <result column="cstate" jdbcType="INTEGER" property="cstate" />
-    <result column="aid" jdbcType="VARCHAR" property="aid" />
-    <result column="xid" jdbcType="VARCHAR" property="xid" />
-    <result column="ubroom" jdbcType="VARCHAR" property="ubroom" />
-    <result column="uphoneid" jdbcType="VARCHAR" property="uphoneid" />
-    <result column="uimg" jdbcType="VARCHAR" property="uimg" />
-    <result column="typeid" jdbcType="INTEGER" property="typeid" />
-    <result column="ucreatedate" jdbcType="TIMESTAMP" property="ucreatedate" />
-    <result column="uupdatedate" jdbcType="TIMESTAMP" property="uupdatedate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    `uid`, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg, typeid, 
-    ucreatedate, uupdatedate
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from user
-    where `uid` = #{uid,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from user
-    where `uid` = #{uid,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="com.work.boot.pojo.entity.User" useGeneratedKeys="true">
-    insert into user (uname, uusername, upassword, 
-      cstate, aid, xid, ubroom, 
-      uphoneid, uimg, typeid, 
-      ucreatedate, uupdatedate)
-    values (#{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR}, #{upassword,jdbcType=VARCHAR}, 
-      #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR}, #{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR}, 
-      #{uphoneid,jdbcType=VARCHAR}, #{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, 
-      #{ucreatedate,jdbcType=TIMESTAMP}, #{uupdatedate,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="com.work.boot.pojo.entity.User" useGeneratedKeys="true">
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uname != null">
-        uname,
-      </if>
-      <if test="uusername != null">
-        uusername,
-      </if>
-      <if test="upassword != null">
-        upassword,
-      </if>
-      <if test="cstate != null">
-        cstate,
-      </if>
-      <if test="aid != null">
-        aid,
-      </if>
-      <if test="xid != null">
-        xid,
-      </if>
-      <if test="ubroom != null">
-        ubroom,
-      </if>
-      <if test="uphoneid != null">
-        uphoneid,
-      </if>
-      <if test="uimg != null">
-        uimg,
-      </if>
-      <if test="typeid != null">
-        typeid,
-      </if>
-      <if test="ucreatedate != null">
-        ucreatedate,
-      </if>
-      <if test="uupdatedate != null">
-        uupdatedate,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uname != null">
-        #{uname,jdbcType=VARCHAR},
-      </if>
-      <if test="uusername != null">
-        #{uusername,jdbcType=VARCHAR},
-      </if>
-      <if test="upassword != null">
-        #{upassword,jdbcType=VARCHAR},
-      </if>
-      <if test="cstate != null">
-        #{cstate,jdbcType=INTEGER},
-      </if>
-      <if test="aid != null">
-        #{aid,jdbcType=VARCHAR},
-      </if>
-      <if test="xid != null">
-        #{xid,jdbcType=VARCHAR},
-      </if>
-      <if test="ubroom != null">
-        #{ubroom,jdbcType=VARCHAR},
-      </if>
-      <if test="uphoneid != null">
-        #{uphoneid,jdbcType=VARCHAR},
-      </if>
-      <if test="uimg != null">
-        #{uimg,jdbcType=VARCHAR},
-      </if>
-      <if test="typeid != null">
-        #{typeid,jdbcType=INTEGER},
-      </if>
-      <if test="ucreatedate != null">
-        #{ucreatedate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="uupdatedate != null">
-        #{uupdatedate,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.User">
-    update user
-    <set>
-      <if test="uname != null">
-        uname = #{uname,jdbcType=VARCHAR},
-      </if>
-      <if test="uusername != null">
-        uusername = #{uusername,jdbcType=VARCHAR},
-      </if>
-      <if test="upassword != null">
-        upassword = #{upassword,jdbcType=VARCHAR},
-      </if>
-      <if test="cstate != null">
-        cstate = #{cstate,jdbcType=INTEGER},
-      </if>
-      <if test="aid != null">
-        aid = #{aid,jdbcType=VARCHAR},
-      </if>
-      <if test="xid != null">
-        xid = #{xid,jdbcType=VARCHAR},
-      </if>
-      <if test="ubroom != null">
-        ubroom = #{ubroom,jdbcType=VARCHAR},
-      </if>
-      <if test="uphoneid != null">
-        uphoneid = #{uphoneid,jdbcType=VARCHAR},
-      </if>
-      <if test="uimg != null">
-        uimg = #{uimg,jdbcType=VARCHAR},
-      </if>
-      <if test="typeid != null">
-        typeid = #{typeid,jdbcType=INTEGER},
-      </if>
-      <if test="ucreatedate != null">
-        ucreatedate = #{ucreatedate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="uupdatedate != null">
-        uupdatedate = #{uupdatedate,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where `uid` = #{uid,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.User">
-    update user
-    set uname = #{uname,jdbcType=VARCHAR},
-      uusername = #{uusername,jdbcType=VARCHAR},
-      upassword = #{upassword,jdbcType=VARCHAR},
-      cstate = #{cstate,jdbcType=INTEGER},
-      aid = #{aid,jdbcType=VARCHAR},
-      xid = #{xid,jdbcType=VARCHAR},
-      ubroom = #{ubroom,jdbcType=VARCHAR},
-      uphoneid = #{uphoneid,jdbcType=VARCHAR},
-      uimg = #{uimg,jdbcType=VARCHAR},
-      typeid = #{typeid,jdbcType=INTEGER},
-      ucreatedate = #{ucreatedate,jdbcType=TIMESTAMP},
-      uupdatedate = #{uupdatedate,jdbcType=TIMESTAMP}
-    where `uid` = #{uid,jdbcType=VARCHAR}
-  </update>
+    <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.User">
+        <id column="uid" jdbcType="VARCHAR" property="uid"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname"/>
+        <result column="uusername" jdbcType="VARCHAR" property="uusername"/>
+        <result column="upassword" jdbcType="VARCHAR" property="upassword"/>
+        <result column="cstate" jdbcType="INTEGER" property="cstate"/>
+        <result column="aid" jdbcType="VARCHAR" property="aid"/>
+        <result column="xid" jdbcType="VARCHAR" property="xid"/>
+        <result column="ubroom" jdbcType="VARCHAR" property="ubroom"/>
+        <result column="uphoneid" jdbcType="VARCHAR" property="uphoneid"/>
+        <result column="uimg" jdbcType="VARCHAR" property="uimg"/>
+        <result column="typeid" jdbcType="INTEGER" property="typeid"/>
+        <result column="ucreatedate" jdbcType="TIMESTAMP" property="ucreatedate"/>
+        <result column="uupdatedate" jdbcType="TIMESTAMP" property="uupdatedate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+`uid`, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg, typeid,
+ucreatedate, uupdatedate
+</sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+delete from user
+where `uid` = #{uid,jdbcType=VARCHAR}
+</delete>
+    <insert id="insert" parameterType="com.work.boot.pojo.entity.User">
+insert into user (`uid`, uname, uusername,
+upassword, cstate, aid,
+xid, ubroom, uphoneid,
+uimg, typeid, ucreatedate,
+uupdatedate)
+values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR},
+#{upassword,jdbcType=VARCHAR}, #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR},
+#{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR}, #{uphoneid,jdbcType=VARCHAR},
+#{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, #{ucreatedate,jdbcType=TIMESTAMP},
+#{uupdatedate,jdbcType=TIMESTAMP})
+</insert>
+    <insert id="insertSelective" parameterType="com.work.boot.pojo.entity.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                `uid`,
+            </if>
+            <if test="uname != null">
+                uname,
+            </if>
+            <if test="uusername != null">
+                uusername,
+            </if>
+            <if test="upassword != null">
+                upassword,
+            </if>
+            <if test="cstate != null">
+                cstate,
+            </if>
+            <if test="aid != null">
+                aid,
+            </if>
+            <if test="xid != null">
+                xid,
+            </if>
+            <if test="ubroom != null">
+                ubroom,
+            </if>
+            <if test="uphoneid != null">
+                uphoneid,
+            </if>
+            <if test="uimg != null">
+                uimg,
+            </if>
+            <if test="typeid != null">
+                typeid,
+            </if>
+            <if test="ucreatedate != null">
+                ucreatedate,
+            </if>
+            <if test="uupdatedate != null">
+                uupdatedate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=VARCHAR},
+            </if>
+            <if test="uname != null">
+                #{uname,jdbcType=VARCHAR},
+            </if>
+            <if test="uusername != null">
+                #{uusername,jdbcType=VARCHAR},
+            </if>
+            <if test="upassword != null">
+                #{upassword,jdbcType=VARCHAR},
+            </if>
+            <if test="cstate != null">
+                #{cstate,jdbcType=INTEGER},
+            </if>
+            <if test="aid != null">
+                #{aid,jdbcType=VARCHAR},
+            </if>
+            <if test="xid != null">
+                #{xid,jdbcType=VARCHAR},
+            </if>
+            <if test="ubroom != null">
+                #{ubroom,jdbcType=VARCHAR},
+            </if>
+            <if test="uphoneid != null">
+                #{uphoneid,jdbcType=VARCHAR},
+            </if>
+            <if test="uimg != null">
+                #{uimg,jdbcType=VARCHAR},
+            </if>
+            <if test="typeid != null">
+                #{typeid,jdbcType=INTEGER},
+            </if>
+            <if test="ucreatedate != null">
+                #{ucreatedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="uupdatedate != null">
+                #{uupdatedate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.User">
+        update user
+        <set>
+            <if test="uname != null">
+                uname = #{uname,jdbcType=VARCHAR},
+            </if>
+            <if test="uusername != null">
+                uusername = #{uusername,jdbcType=VARCHAR},
+            </if>
+            <if test="upassword != null">
+                upassword = #{upassword,jdbcType=VARCHAR},
+            </if>
+            <if test="cstate != null">
+                cstate = #{cstate,jdbcType=INTEGER},
+            </if>
+            <if test="aid != null">
+                aid = #{aid,jdbcType=VARCHAR},
+            </if>
+            <if test="xid != null">
+                xid = #{xid,jdbcType=VARCHAR},
+            </if>
+            <if test="ubroom != null">
+                ubroom = #{ubroom,jdbcType=VARCHAR},
+            </if>
+            <if test="uphoneid != null">
+                uphoneid = #{uphoneid,jdbcType=VARCHAR},
+            </if>
+            <if test="uimg != null">
+                uimg = #{uimg,jdbcType=VARCHAR},
+            </if>
+            <if test="typeid != null">
+                typeid = #{typeid,jdbcType=INTEGER},
+            </if>
+            <if test="ucreatedate != null">
+                ucreatedate = #{ucreatedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="uupdatedate != null">
+                uupdatedate = #{uupdatedate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where `uid` = #{uid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.User">
+update user
+set uname = #{uname,jdbcType=VARCHAR},
+uusername = #{uusername,jdbcType=VARCHAR},
+upassword = #{upassword,jdbcType=VARCHAR},
+cstate = #{cstate,jdbcType=INTEGER},
+aid = #{aid,jdbcType=VARCHAR},
+xid = #{xid,jdbcType=VARCHAR},
+ubroom = #{ubroom,jdbcType=VARCHAR},
+uphoneid = #{uphoneid,jdbcType=VARCHAR},
+uimg = #{uimg,jdbcType=VARCHAR},
+typeid = #{typeid,jdbcType=INTEGER},
+ucreatedate = #{ucreatedate,jdbcType=TIMESTAMP},
+uupdatedate = #{uupdatedate,jdbcType=TIMESTAMP}
+where `uid` = #{uid,jdbcType=VARCHAR}
+</update>
 
-<!--  sql-->
-  <select id="selectAll" resultMap="BaseResultMap">
+    <!--  sql-->
+    <select id="selectAll" resultMap="BaseResultMap">
     select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
     typeid, ucreatedate, uupdatedate
     from user
   </select>
 
 
-  <!--  自己的sql-->
-  <update id="updateByuid">
+    <!--  自己的sql-->
+    <update id="updateByuid">
 
         update user
         set ${field} = #{value}
@@ -195,41 +203,41 @@
 
     </update>
 
-  <select id="getLikeUsername" resultMap="BaseResultMap">
-    select uid, uusername, cstate, ubroom, uphoneid, typeid, ucreatedate,aid,uimg
-    from user
-    <where>
-      1 = 1
-      <if test="username != null and username!= '' ">
-        and uusername like concat('%',#{username},'%')
-      </if>
+    <select id="getLikeUsername" resultMap="BaseResultMap">
+        select uid, uusername, cstate, ubroom, uphoneid, typeid, ucreatedate,aid,uimg
+        from user
+        <where>
+            1 = 1
+            <if test="username != null and username!= '' ">
+                and uusername like concat('%',#{username},'%')
+            </if>
 
-      <if test="useruid != null and useruid!= '' ">
-        and uid like concat('%',#{useruid},'%')
-      </if>
-      <if test="userphone != null and userphone!= '' ">
-        and uphoneid like concat('%',#{userphone},'%')
-      </if>
+            <if test="useruid != null and useruid!= '' ">
+                and uid like concat('%',#{useruid},'%')
+            </if>
+            <if test="userphone != null and userphone!= '' ">
+                and uphoneid like concat('%',#{userphone},'%')
+            </if>
 
-    </where>
+        </where>
 
-    limit #{start},#{limits}
+        limit #{start},#{limits}
 
-  </select>
+    </select>
 
-  <select id="getusers" resultMap="BaseResultMap">
+    <select id="getusers" resultMap="BaseResultMap">
     select uid,  uusername,  cstate,  ubroom, uphoneid, typeid, ucreatedate,aid,uimg
     from user
     limit #{start},#{limits}
 
   </select>
 
-  <select id="getCount" resultType="integer">
+    <select id="getCount" resultType="integer">
     select count(uid)
     from user
   </select>
 
-  <select id="selectByUserName" parameterType="string" resultMap="BaseResultMap">
+    <select id="selectByUserName" parameterType="string" resultMap="BaseResultMap">
 
     select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
     typeid, ucreatedate
@@ -238,7 +246,7 @@
 
   </select>
 
-  <select id="selectcheckUser" resultMap="BaseResultMap">
+    <select id="selectcheckUser" resultMap="BaseResultMap">
 
     select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
     typeid, ucreatedate
@@ -247,7 +255,7 @@
 
   </select>
 
-  <select id="selectById" parameterType="string" resultMap="BaseResultMap">
+    <select id="selectById" parameterType="string" resultMap="BaseResultMap">
 
     select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
     typeid, ucreatedate

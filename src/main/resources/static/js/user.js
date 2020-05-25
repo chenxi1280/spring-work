@@ -359,7 +359,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
             //上传了文件以后 ,需要文件的一些基本信息
             if (res.status == 200) {
                 //需要将上传成功以后的文件名称放在我们的input输入框中
-                console.log($("#uimg"))
+
 
                 $("#uimg").val(res.message)
             } else {
@@ -464,7 +464,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
 
         $.ajax({
             type: 'post',
-            url: 'http://localhost:8080/work/user/toedituser',
+            url: 'http://localhost:8080/user/toedituser',
             dataType: 'json',
             data: $("#form").serialize(),
 

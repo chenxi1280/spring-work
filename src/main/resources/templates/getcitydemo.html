@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="/js/jquery-3.5.0.js"></script>
-<!--    <script src="/js/getcity.js"></script>-->
+
+    <script src="/layui/layui.js"></script>
+    <script src="/js/admin.js"></script>
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+
+    <link th:href="@{/layui/css/layui.css}" type="text/css" rel="stylesheet">
+    <script src="/layui/layui.js"></script>
+    <!--    <script src="/js/getcity.js"></script>-->
 </head>
+<style>
+    .word{
+        width: 100px;
+        height: 30px;
+        background: #E5E5E5;
+        text-align: center;
+        line-height: 30px;
+        font-size: 14px;
+    }
+</style>
+
 <body>
 省份：<select id="province">
     <option>请选择省份</option>
@@ -15,11 +33,77 @@
 </select>
 地区：<select id="district">
     <option>请选择省份</option>
-    </select>
+</select>
+<br>
+
+
+<div class="layui-carousel" id="carouselView">
+    <div carousel-item="" id="preview">
+
+    </div>
+</div>
+
+<!-- 条目中可以是任意内容，如：<img src=""> -->
+<script>
+
+    function initCarousel(){
+        layui.use(['carousel', 'form'], function(){
+            var carousel = layui.carousel;
+            $.ajax({
+                url: 'http://localhost:8080/messages/getmessagesimg',
+                type:'post',
+                data:{
+                    isDisplay:1
+                },
+                dataType:'json',
+                success:function (data) {
+
+                    data.item.forEach(value => {
+                        var str = ' <div class="word" style="width: 600px;height: 320px;"> <p >'+value.name+ '</p> <p>'+value.value+'</p></div> ';
+                        $('#preview').append(str);
+
+                    })
+
+                    //改变下时间间隔、动画类型、高度
+                    var ins = carousel.render({
+                        elem: '#carouselView'
+                        ,interval: 2000
+                        ,arrow: 'always'
+                        ,anim: 'default'
+                        ,width:'600px'
+                        ,height:'320px'
+                    });
+                    ins.reload({
+                        elem: '#carouselView'
+                        ,interval: 2000
+                        ,arrow: 'always'
+                        ,anim: 'default'
+                        ,width:'600px'
+                        ,height:'320px'
+                    });
+                },
+                error:function () {
+                    alert("数据库查询失败，请联系管理员！")
+                }
+            });
+        });
+    }
+
+    initCarousel();
+
+
+
+
+</script>
+
 
 </body>
-<script >
+
+<script>
+
+
     var province = $('#province')
+
 
     $.ajax({
 
@@ -29,11 +113,11 @@
         // contentType : 'pplication/json',
         dataType: "json",
         success: function (_data) {
-            console.log(_data)
+            // console.log(_data)
             _data.list.forEach((v) => {
-                console.log(v.name)
+                // console.log(v.name)
 
-                let  a = $("<option value='"+ v.value+" '>" + v.name+" </option>")
+                let a = $("<option value='" + v.value + " '>" + v.name + " </option>")
 
                 province.append(a)
 

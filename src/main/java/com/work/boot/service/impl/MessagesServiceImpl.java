@@ -3,6 +3,8 @@ package com.work.boot.service.impl;
 
 import com.work.boot.dao.AdminDao;
 import com.work.boot.dao.MessageDao;
+import com.work.boot.pojo.dto.RData;
+import com.work.boot.pojo.dto.RMessage;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Message;
 import com.work.boot.pojo.entity.User;
@@ -17,6 +19,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -110,7 +113,7 @@ public class MessagesServiceImpl implements MessagesService {
 
         Date date = new Date();
         nMessage.setIid(id);
-
+        nMessage.setIcreatedate(date);
 
         nMessage.setAcid(u.getUid());
         nMessage.setXid(u.getXid());
@@ -174,6 +177,34 @@ public class MessagesServiceImpl implements MessagesService {
 
         }
 
+        return result;
+    }
+
+    @Override
+    public Result getmessagesimg() {
+
+        List<Message> list = messageDao.getmessagesimg();
+
+        List<RMessage> rDataList = new ArrayList<>();
+
+        list.forEach( v ->{
+            RMessage rData = new RMessage();
+
+            rData.setValue(v.getIcontent());
+
+            rData.setName(v.getIname());
+
+            rDataList.add(rData);
+
+        });
+
+
+
+        Result result = new Result();
+
+        result.setStatus(0);
+        result.setItem(rDataList);
+        result.setTotal(messageDao.getCount());
         return result;
     }
 

@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
 
 
         user.setUimg("img/" + user.getUimg().substring(4));
-
+        user.setUupdatedate(new Date());
         User userp = userDao.selectByPrimaryKey(user.getUid());
 
 
@@ -262,8 +262,10 @@ public class UserServiceImpl implements UserService {
 
         }
         try {
-            userDao.deleteByPrimaryKey(user.getUid());
-            int i = userDao.insert(user);
+            int i = userDao.updateByPrimaryKeySelective(user);
+
+//            userDao.deleteByPrimaryKey(user.getUid());
+//            int i = userDao.insert(user);
             if (i > 0) {
                 result.setMessage("成功!");
                 result.setStatus(200);

@@ -88,6 +88,48 @@
       </if>
     </trim>
   </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Message">
+    update message
+    set iname = #{iname,jdbcType=VARCHAR},
+      icontent = #{icontent,jdbcType=VARCHAR},
+      xid = #{xid,jdbcType=VARCHAR},
+      acid = #{acid,jdbcType=VARCHAR},
+      auid = #{auid,jdbcType=VARCHAR},
+      icreatedate = #{icreatedate,jdbcType=TIMESTAMP},
+      iupdatedate = #{iupdatedate,jdbcType=TIMESTAMP},
+      itype = #{itype,jdbcType=VARCHAR}
+    where iid = #{iid,jdbcType=VARCHAR}
+  </update>
+
+  <!--  SQL-->
+
+  <!--    sql-->
+  <select id="selectByLikemessages" resultType="com.work.boot.pojo.entity.Message">
+    select iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype
+    from message
+    <where>
+      1 = 1
+      <if test="username != null and username!= '' ">
+        and iname like concat('%',#{username},'%')
+      </if>
+
+      <if test="useruid != null and useruid!= '' ">
+        and iid like concat('%',#{useruid},'%')
+      </if>
+      <if test="itype != null">
+        and itype = #{itype}
+      </if>
+
+    </where>
+    limit #{page},#{limit}
+  </select>
+  <select id="selectById" resultType="com.work.boot.pojo.entity.Message">
+    select iid, iname, icontent, xid, acid, auid, icreatedate, iupdatedate, itype
+    from message
+    where iid = #{iid}
+    </select>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Message">
     update message
     <set>
@@ -117,34 +159,30 @@
       </if>
     </set>
     where iid = #{iid,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Message">
-    update message
-    set iname = #{iname,jdbcType=VARCHAR},
-      icontent = #{icontent,jdbcType=VARCHAR},
-      xid = #{xid,jdbcType=VARCHAR},
-      acid = #{acid,jdbcType=VARCHAR},
-      auid = #{auid,jdbcType=VARCHAR},
-      icreatedate = #{icreatedate,jdbcType=TIMESTAMP},
-      iupdatedate = #{iupdatedate,jdbcType=TIMESTAMP},
-      itype = #{itype,jdbcType=VARCHAR}
-    where iid = #{iid,jdbcType=VARCHAR}
+
   </update>
 
-  <!--  SQL-->
-  <select id="selectAll" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from guarantee
-  </select>
-
-  <select id="selectAlllimet" resultType="com.work.boot.pojo.entity.Guarantee">
-        select<include refid="Base_Column_List"/>
-        from guarantee
+  <select id="selectAlllimet" resultType="com.work.boot.pojo.entity.Message">
+        select <include refid="Base_Column_List" />
+        from message
         limit #{start},#{limit}
     </select>
   <select id="getCount" resultType="java.lang.Integer">
-        select count(rid)
-        from guarantee
+    select count(iid)
+    from message
     </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from message
+  </select>
+  <select id="getmessagesimg" resultType="com.work.boot.pojo.entity.Message">
+    select  <include refid="Base_Column_List" />
+    from   message
+    order by icreatedate   desc
+    limit 0,5 ;
+
+
+  </select>
 
 </mapper>

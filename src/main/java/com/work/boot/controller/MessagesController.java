@@ -17,6 +17,15 @@ public class MessagesController {
     @Autowired
     private MessagesService messagesService;
 
+    @RequestMapping("/getmessagesimg")
+    @ResponseBody
+    public Result getmessagesimg() {
+
+        Result result = messagesService.getmessagesimg();
+
+        return result;
+    }
+
     @RequestMapping("/getmessages")
     @ResponseBody
     public Result getmessagesAll(Integer page, Integer limit) {

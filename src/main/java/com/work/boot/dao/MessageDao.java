@@ -26,9 +26,10 @@ public interface MessageDao {
     Message selectById(String iid);
 
 
-
     List<Message> selectAlllimet(@Param("start") Integer sta, @Param("limit") Integer limit);
 
     Integer getCount();
+
+    List<Message> getmessagesimg();
 
 }
