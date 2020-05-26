@@ -88,5 +88,10 @@
     select <include refid="Base_Column_List" />
     from maintenanceuser
   </select>
+    <select id="selectOnin" resultType="com.work.boot.pojo.entity.Maintenanceuser">
+      select <include refid="Base_Column_List" />
+      from maintenanceuser
+      where maintenanceuseridstate = 1
+    </select>
 
 </mapper>

@@ -61,5 +61,14 @@ public class GuaranteeController {
 
     }
 
+    @RequestMapping("/completeguarantee")
+    @ResponseBody
+    public Result completeguarantee(String rid) {
+
+        Result result = guaranteeService.completeguarantee(rid);
+
+        return result;
+
+    }
 
 }

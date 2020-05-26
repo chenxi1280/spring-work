@@ -26,4 +26,7 @@ public interface MaintenanceuserDao {
     List<GuaranteeAllVo> selectNameByList(@Param("list") Collection list);
 
     List<Maintenanceuser> selectAll();
+
+    List<Maintenanceuser> selectOnin();
+
 }

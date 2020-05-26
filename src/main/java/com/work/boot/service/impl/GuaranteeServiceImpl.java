@@ -12,6 +12,7 @@ import com.work.boot.pojo.vo.GuaranteeAllVo;
 import com.work.boot.service.GuaranteeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -92,33 +93,62 @@ public class GuaranteeServiceImpl implements GuaranteeService {
     }
 
     @Override
+    @Transactional
     public Result chengeguarantee(String rid) {
         Result result = new Result();
 
         result.setStatus(500);
         result.setMessage("操作失败");
-        List<Maintenanceuser> list = maintenanceuserDao.selectAll();
-        ArrayList arrayList = new ArrayList();
+        try {
+            List<Maintenanceuser> list = maintenanceuserDao.selectOnin();
+            ArrayList arrayList = new ArrayList();
 
-        list.forEach( v -> {
-            Integer maintenanceuseridstate = v.getMaintenanceuseridstate();
-            if (maintenanceuseridstate>1){
-                arrayList.add(maintenanceuseridstate);
+            list.forEach(v -> {
+                Integer maintenanceuseridstate = v.getMaintenanceuseridstate();
+                if (maintenanceuseridstate > 1) {
+                    arrayList.add(maintenanceuseridstate);
+                }
+            });
+            int i = new Random().nextInt(list.size()) + 1;
+
+            Guarantee guarantee = new Guarantee();
+            guarantee.setMaintenanceuserid(i);
+            guarantee.setRid(rid);
+            int me = guaranteeDao.updateByPrimaryKeySelective(guarantee);
+            int sta = guaranteeDao.updataState(rid);
+
+            if (me == 1 && sta == 1) {
+                result.setStatus(200);
+                result.setMessage("操作成功");
+
             }
-        });
-        int i = new Random().nextInt(arrayList.size() + 1);
-
-        Guarantee guarantee = new Guarantee();
-        guarantee.setMaintenanceuserid(i);
-        guarantee.setRid(rid);
-        int me = guaranteeDao.updateByPrimaryKeySelective(guarantee);
-
-        if (me == 1 ){
-            result.setStatus(200);
-            result.setMessage("操作成功");
+        }catch (Exception e){
+            e.printStackTrace();
 
         }
+        return result ;
+    }
 
+    @Override
+    @Transactional
+    public Result completeguarantee(String rid) {
+        Result result = new Result();
+
+        result.setStatus(500);
+        result.setMessage("操作失败");
+        try {
+
+            int sta = guaranteeDao.updataStateComplete(rid);
+
+            if (sta == 1) {
+                result.setStatus(200);
+                result.setMessage("操作成功");
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
         return result ;
     }
 

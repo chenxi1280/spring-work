@@ -59,7 +59,7 @@
                 success:function (data) {
 
                     data.item.forEach(value => {
-                        var str = ' <div class="word" style="width: 600px;height: 320px;"> <p >'+value.name+ '</p> <p>'+value.value+'</p></div> ';
+                        var str = ' <div class="word" style="width: 600px;height: 320px; color: #e3e3e3"> <p >'+value.name+ '</p> <p>'+value.value+'</p></div> ';
                         $('#preview').append(str);
 
                     })

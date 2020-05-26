@@ -180,7 +180,7 @@
     where rid = #{rid,jdbcType=VARCHAR}
   </update>
 
-<!--  SQL-->
+    <!--  SQL-->
   <select id="selectAll" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
     from guarantee
@@ -202,5 +202,20 @@
     where rid = #{rid}
 
   </select>
+
+  <update id="updataState">
+    update guarantee
+    set rstate = 2
+    where rid = #{rid}
+
+
+  </update>
+  <update id="updataStateComplete">
+    update guarantee
+    set rstate = 3
+    where rid = #{rid}
+
+  </update>
+
 
 </mapper>

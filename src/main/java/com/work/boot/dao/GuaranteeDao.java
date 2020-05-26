@@ -28,4 +28,8 @@ public interface GuaranteeDao {
     Integer getCount();
 
     GuaranteeAllVo selectByid(String rid);
+
+    int updataState(String rid);
+
+    int updataStateComplete(String rid);
 }

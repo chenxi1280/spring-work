@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
     <title>业主信息</title>
@@ -27,10 +27,10 @@
     类型：
     <form class="layui-form">
         <select name="itype" id="itype" style="width: 150px">
+            <option >全部</option>
             <option value="0">未处理</option>
             <option value="1">正常进行</option>
             <option value="2">已完成</option>
-
         </select>
     </form>
     <button class="layui-btn" data-type="reload" id="find">
@@ -62,7 +62,70 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">完成</a>
 
 </script>
+<script type="text/html" id="editguatan">
+<form>
 
+    <div style="margin: 20px ">
+        <div class="layui-form-item">
+            <label class="layui-form-label">报修名字</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 50%" name="rname" id="rname"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">保报修内容</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 50%" name="rcontent" id="rcontent"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+
+                <select name="rtype" id="rtype" style="width: 150px">
+                    <option value="1">未处理</option>
+                    <option value="2">等待维修</option>
+                    <option value="3">维修完成</option>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+
+                <select name="maintenanceuserid" id="maintenance" style="width: 150px">
+
+                </select>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">照片</label>
+            <div class="layui-input-block">
+                <input type="file" id="imgFile" name="imgFile" style="display: none">
+
+                <div style="display: flex">
+                    <div>
+                        <img id="editUploadImg"
+                             style="width: 80px;height: 80px;border-radius: 10px;border: lightgray 1px dashed;"/>
+                        <i class="layui-icon layui-icon-addition"
+                           style="position: absolute;left: 35px;top: 35px;z-index: -1"></i>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+</script>
 
 </body>
 </html>

@@ -167,7 +167,14 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                         console.log(d)
                         if (d.rstate == 1) {
                             return '未处理';
+                        }else if (d.rstate == 2) {
+                            return '等待维修';
+                        }else if (d.rstate == 3) {
+                            return '维修完成';
+                        }else if (d.rstate == 4) {
+                            return '已完成';
                         }
+
                             // case '2':
                             //     return '等待维修';
                             // case '3':
@@ -193,7 +200,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
         var data = obj.data //获得当前行数据
             , layEvent = obj.event; //获得 lay-event 对应的值
 
-
+        console.log(layEvent)
         //查看
         if (layEvent === 'detail') {
             layer.open({
@@ -205,7 +212,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
             })
 
 
-        } else if (layEvent === 'del') {
+        } else if (layEvent === 'edit') {
             $.ajax({
                 type: "post",
                 url: "/guarantee/chengeguarantee",
@@ -224,6 +231,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                             icon: 1
                         }, function (index) {
                             layer.close(index)
+                            window.location.reload()
 
                         })
                     } else {
@@ -236,10 +244,34 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
 
                 }
             })
+        } else if (layEvent === 'del') {
+            layer.open({
+                type:1,
+                title: '修改',
+                area: ['50%', '80%'],
+                content: $("#editguatan").html(),
+            })
+
+            form.render();
+
+            $("#rname").val(data.rname)
+            $("#rcontent").val(data.rcontent)
 
 
-        } else if (layEvent === 'edit') {
-            layer.msg('编辑操作');
+
+                // $.ajax({
+                //         async: true,                    //默认为true，默认为异步请求
+                //         type: "POST",                   //类型post
+                //         url: "/guarantee/completeguarantee",                 //url
+                //         contentType: "application/json",//请求内容编码类型
+                //         data: {"rid": data.rid},       //发送到服务器的数据
+                //         dataType: "json",               //返回数据格式
+                //         success: function(msg){         //成功的方法
+                //             layer.msg('完成');
+                //         }
+                //     });
+
+            // layer.msg('完成');
         }
     });
     // //

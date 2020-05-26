@@ -10,4 +10,6 @@ public interface GuaranteeService {
     GuaranteeAllVo getguarantee(String rid);
 
     Result chengeguarantee(String rid);
+
+    Result completeguarantee(String rid);
 }
