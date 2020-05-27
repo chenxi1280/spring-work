@@ -1,6 +1,7 @@
 package com.work.boot.pojo.query;
 
 import com.work.boot.pojo.entity.User;
+import lombok.Data;
 
 /**
  * @Classname UserQuery
@@ -9,6 +10,7 @@ import com.work.boot.pojo.entity.User;
  * @CreateComputer by PC
  * @Created by cxd
  */
+@Data
 public class UserQuery extends User {
 
 

@@ -24,6 +24,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
         toolbar: '#bar',
         //异步请求时 解析数据的方式
         parseData: function (res) { //res 即为原始返回的数据
+            console.log(res)
             return {
                 "code": res.status, //解析接口状态
                 "msg": res.message, //解析提示文本
@@ -82,7 +83,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
             //     // edit: 'text',
             // },
                 {
-                field: 'uid',
+                field: 'uusername',
                 title: '报修用户',
 
                 align: 'center',
@@ -154,7 +155,9 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                         }else if (d.rstate == 3) {
                             return '维修完成';
                         }else if (d.rstate == 4) {
-                            return '已完成';
+                            return '完成维修';
+                        }else if (d.rstate == 5) {
+                            return '完成';
                         }
 
                             // case '2':
@@ -289,19 +292,19 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
         } else if (layEvent === 'del') {
 
 
-                // $.ajax({
-                //         async: true,                    //默认为true，默认为异步请求
-                //         type: "POST",                   //类型post
-                //         url: "/guarantee/completeguarantee",                 //url
-                //         contentType: "application/json",//请求内容编码类型
-                //         data: {"rid": data.rid},       //发送到服务器的数据
-                //         dataType: "json",               //返回数据格式
-                //         success: function(msg){         //成功的方法
-                //             layer.msg('完成');
-                //         }
-                //     });
+                $.ajax({
+                        async: true,                    //默认为true，默认为异步请求
+                        type: "POST",                   //类型post
+                        url: "/guarantee/completeguarantee",                 //url
+                        contentType: "application/json",//请求内容编码类型
+                        data: {"rid": data.rid},       //发送到服务器的数据
+                        dataType: "json",               //返回数据格式
+                        success: function(msg){         //成功的方法
+                            layer.msg('完成');
+                        }
+                    });
 
-            // layer.msg('完成');
+            layer.msg('完成');
         }
     });
 
@@ -441,9 +444,9 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
 
     //监听图片
     $("#uploadImg").on("click",function () {
-        $("#rimg").click();
+        $("#rupimg").click();
     })
-    $("#rimg").change(function () {
+    $("#rupimg").change(function () {
         imgPreview(this.files[0],$("#uploadImg")[0])
     })
 

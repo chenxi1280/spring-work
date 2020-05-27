@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/date.js"></script>
+
+<style>
+    /*修改layui表格的高度*/
+    .layui-table-cell {
+        height: auto;
+    }
+</style>
+<body>
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">处理</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">完成</a>
+
+</script>
+<script th:inline="javascript" type="text/javascript">
+    layui.use(['layer', 'table', 'form'], function () {
+        let layer = layui.layer;// 弹出层
+        let table = layui.table;// 分页组件
+        let form = layui.form;// 分页组件
+        let $ = layui.$;// 使用jquery
+
+
+        //执行一个 table 实例
+        table.render({
+            //绑定body里面的table标签-->id
+            elem: '#demo',
+            //table表格的高度
+            height: 600,
+            //请求后台的地址(获取video的视频信息)
+            url: '/guarantee/getmyguarateelist',
+            //表格的名称
+            title: '个人报修管理',
+            //开启分页
+            page: true,
+            //表头工具栏
+            //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            // toolbar: '#bar',
+            //异步请求时 解析数据的方式
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.status, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.total, //解析数据长度
+                    "data": res.item //解析数据列表
+                };
+            },
+
+            //生成table表头(手动编写)-->解析后台的数据
+            cols: [
+                [ //表头
+                    {
+                        type: 'checkbox',
+                        fixed: 'left'
+                    }, {
+                    field: 'rid',
+                    title: 'ID',
+                    sort: true,
+                    fixed: 'left'
+                }, {
+                    field: 'rname',
+                    title: '报修名字',
+                    align: 'center',
+                    edit: 'text',
+
+                },
+                    {
+                        field: 'rcontent',
+                        title: '报修内容',
+                        align: 'center',
+                        // edit: 'text',
+                    },
+                    {
+                        field: 'raddress',
+                        title: '地址',
+                        align: 'center',
+
+                    },
+                    {
+                        field: 'uphone',
+                        title: '用户手机号码',
+                        align: 'center',
+
+                    },
+                    {
+                        field: 'maintenanceusername',
+                        title: '维修人员名字',
+                        align: 'center',
+
+                    },
+                    //     {
+                    //     field: 'aid',
+                    //     title: '管理员id',
+                    //
+                    //     align: 'center',
+                    //     // edit: 'text',
+                    // },
+                    {
+                        field: 'uid',
+                        title: '报修用户',
+
+                        align: 'center',
+                        // edit: 'text',
+                    }, {
+                    field: 'revaluation',
+                    title: '维修费用',
+                    width: 150,
+                    align: 'center',
+
+                }, {
+                    field: 'rpublicdate',
+                    title: '创建时间',
+                    sort: true,
+                    align: 'center',
+                    templet: function (d) {
+
+                        // date.setTime(d.ucreatedate);
+
+                        // return date.Format("yyyy-MM-dd hh:mm:ss");
+
+
+                        return showTime(d.rpublicdate);
+                    }
+                },
+                    {
+                        field: 'raccpetdate',
+                        title: '修改时间',
+                        sort: true,
+                        align: 'center',
+                        templet: function (d) {
+
+                            // date.setTime(d.ucreatedate);
+
+                            // return date.Format("yyyy-MM-dd hh:mm:ss");
+
+                            return showTime(d.raccpetdate);
+                        }
+                    },
+                    {
+                        field: 'rcompletiondate',
+                        title: '完成时间',
+                        sort: true,
+                        align: 'center',
+                        templet: function (d) {
+
+                            // date.setTime(d.ucreatedate);
+
+                            // return date.Format("yyyy-MM-dd hh:mm:ss");
+
+                            return showTime(d.rcompletiondate);
+                        }
+                    },
+                    // {
+                    //     field: 'likeCounts',
+                    //     title: '点赞次数',
+                    //
+                    //     align:'center'
+                    // },
+                    {
+                        field: 'rstate',
+                        title: '状态',
+                        align: 'center',
+                        templet:function (d) {
+                            if (d.rstate == 1) {
+                                return '未处理';
+                            }else if (d.rstate == 2) {
+                                return '等待维修';
+                            }else if (d.rstate == 3) {
+                                return '维修完成';
+                            }else if (d.rstate == 4) {
+                                return '已完成';
+                            }
+
+                            // case '2':
+                            //     return '等待维修';
+                            // case '3':
+                            //     return '维修完成';
+                            // case '4':
+                            //     return '已完成';
+                            // }
+
+                        }
+                    },
+                    {
+                        field: 'rimg',
+                        title: '图片',
+                        templet: function (d) {
+                            // 这个d指的是本行的数据 js对象
+                            return '<div><img style="width: 100px;height: 100px" src=' + d.rimg + '/></div>'
+                        }
+                    },
+                    {
+                        fixed: 'right',
+                        width: 165,
+                        align: 'center',
+                        toolbar: '#barDemo'
+                    }
+                ]
+            ]
+        });
+
+        // // //监听行工具事件
+        table.on('tool(usertest)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+
+            //查看
+            if (layEvent === 'detail') {
+                form.render();
+                layer.open({
+                    type:1,
+                    title: '修改',
+                    area: ['50%', '80%'],
+                    content: $("#editguatan").html(),
+
+                })
+                form.render();
+                form.render('select');
+
+                $("#rname").val(data.rname)
+                $("#rcontent").val(data.rcontent)
+                // select 框回显数据
+                $("#rtype").each(function() {
+                    // this代表的是<option></option>，对option再进行遍历
+                    $(this).children("option").each(function () {
+                        // 判断需要对那个选项进行回显
+                        if (this.value == data.rstate) {
+                            // 进行回显
+                            $(this).attr("selected", "selected");
+                            //重新渲染select框 重要
+                            form.render('select');
+                        }
+                    });
+                })
+                let skey = $("#rtype").val(data.rstate)
+                if (data.rstate < 3){
+                    $.ajax({
+                        async: false,                    //默认为true，默认为异步请求
+                        type: "POST",                   //类型post
+                        url: "/maintenanceuser/getmaintenanceuser",                 //url
+                        contentType: "application/json",//请求内容编码类型
+                        data: {},       //发送到服务器的数据
+                        dataType: "json",               //返回数据格式
+                        success: function(data){         //成功的方法
+                            let list = data.item;
+                            list.forEach( v =>{
+                                if (v.maintenanceuseridstate == 1 ){
+                                    let maintenanceusername = $("<option value='"+v.maintenanceuserid+"'>"+v.maintenanceusername+"" +
+                                        "</option>")
+                                    $("#maintenance").append(maintenanceusername)
+                                }
+
+                            })
+
+                        }
+                    });
+                }else {
+
+                    let maintenanceusername = $("<option value='"+data.maintenanceuserid+"' selected>"+data.maintenanceusername+"" +
+                        "</option>")
+                    $("#maintenance").append(maintenanceusername)
+
+                }
+
+                form.render('select');
+                $("#sureEdit")[0].rid = data.rid;
+                $("#editUploadImg").attr("src", data.rimg);
+
+
+            } else if (layEvent === 'del') {
+
+
+                $.ajax({
+                    async: true,                    //默认为true，默认为异步请求
+                    type: "POST",                   //类型post
+                    url: "/guarantee/evaluationguarantee",                 //url
+                    contentType: "application/json",//请求内容编码类型
+                    data: {"rid": data.rid},       //发送到服务器的数据
+                    dataType: "json",               //返回数据格式
+                    success: function(msg){         //成功的方法
+                        layer.msg('完成');
+                    }
+                });
+
+                layer.msg('完成');
+            }
+        });
+
+
+
+    })
+</script>
+</body>
+
+
+
+</html>

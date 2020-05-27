@@ -10,11 +10,15 @@ import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.vo.GuaranteeAllVo;
 import com.work.boot.service.GuaranteeService;
+import com.work.boot.util.GetUUID32;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +38,8 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         List<GuaranteeAllVo> list = guaranteeDao.selectAlllimet(sta, limit);
 
 
+
+        //循环 设置名字
         list.forEach( g -> {
             User user = userDao.selectByPrimaryKey(g.getUid());
             g.setUphone(user.getUphoneid());
@@ -111,6 +117,8 @@ public class GuaranteeServiceImpl implements GuaranteeService {
             Guarantee guarantee = new Guarantee();
             guarantee.setMaintenanceuserid(i);
             guarantee.setRid(rid);
+            guarantee.setRaccpetdate(new Date());
+
             int me = guaranteeDao.updateByPrimaryKeySelective(guarantee);
             int sta = guaranteeDao.updataState(rid);
 
@@ -128,6 +136,7 @@ public class GuaranteeServiceImpl implements GuaranteeService {
 
     @Override
     @Transactional
+    //完成
     public Result completeguarantee(String rid) {
         Result result = new Result();
 
@@ -135,7 +144,10 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         result.setMessage("操作失败");
         try {
 
-            int sta = guaranteeDao.updataStateComplete(rid);
+            GuaranteeAllVo guaranteeAllVo = guaranteeDao.selectByid(rid);
+            guaranteeAllVo.setRcompletiondate(new Date());
+
+            int sta = guaranteeDao.updateByPrimaryKeySelective(guaranteeAllVo);
 
             if (sta == 1) {
                 result.setStatus(200);
@@ -159,7 +171,7 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         result.setStatus(500);
         result.setMessage("操作失败");
         try {
-
+            guarantee.setRcompletiondate(new Date());
             int sta = guaranteeDao.updateByPrimaryKeySelective(guarantee);
 
             if (sta == 1) {
@@ -175,46 +187,26 @@ public class GuaranteeServiceImpl implements GuaranteeService {
     }
 
     @Override
+    //模糊查询
     public Result selectByLikeguarantee(String uphone, String username, Integer rstate, String maintenanceusername, Integer page, Integer limit) {
 
 
         Integer sta = (page - 1) * limit;
         List<UserQuery> list =  userDao.selectLikeUsername(username,uphone);
 
-        List<Guarantee> lists = guaranteeDao.selectByUid(list,rstate,sta,limit);
-
-//        if (rstate != 0 ){
-//            lists.forEach((v)->{
-//                if (v.getRstate() != rstate){
-////                    v=null;
-//                    lists.remove(v);
-//                }
-//            });
-//
-//        }
+        List<GuaranteeAllVo> lists = guaranteeDao.selectByUid(list,rstate,sta,limit);
 
 
-//
-//        List<Guarantee> lists = new ArrayList<>();
-//        for (UserQuery u: list) {
-//
-//            lists = guaranteeDao.selectLikeUserAll(u.getUid(),rstate,sta,limit);
-//
-//
-//        }
+        //循环 设置名字
+        lists.forEach( g -> {
+            User user = userDao.selectByPrimaryKey(g.getUid());
+            g.setUphone(user.getUphoneid());
+            g.setUUsername(user.getUusername());
+            if (g.getMaintenanceuserid()!=null) {
+                g.setMaintenanceusername(maintenanceuserDao.selectByPrimaryKey(g.getMaintenanceuserid()).getMaintenanceusername());
+            }
 
-
-//        List<GuaranteeAllVo> list = maintenanceuserDao.selectByLikeguarantee(uphone,username,maintenanceusername,sta,limit);
-//        list.forEach( g -> {
-//            User user = userDao.selectByPrimaryKey(g.getUid());
-//            g.setUphone(user.getUphoneid());
-//            g.setUUsername(user.getUusername());
-//            if (g.getMaintenanceuserid()!=null) {
-//                g.setMaintenanceusername(maintenanceuserDao.selectByPrimaryKey(g.getMaintenanceuserid()).getMaintenanceusername());
-//            }
-//
-//        } );
-
+        } );
 
 
         Result result = new Result();
@@ -223,6 +215,75 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         result.setItem(lists);
         result.setTotal(guaranteeDao.getCount());
         return result;
+
+    }
+
+    @Override
+    public Result ajaxaddguarantee(GuaranteeAllVo guaranteeAllVo, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        guaranteeAllVo.setRid(GetUUID32.getuuid32());
+        guaranteeAllVo.setUid(user.getUid());
+        guaranteeAllVo.setUphone(user.getUphoneid());
+        guaranteeAllVo.setRaddress(user.getUbroom());
+        guaranteeAllVo.setRstate(1);
+        guaranteeAllVo.setRpublicdate(new Date());
+
+
+
+
+
+        Result result = new Result();
+
+        result.setStatus(500);
+        result.setMessage("操作失败");
+        try {
+
+            int sta  = guaranteeDao.insertSelective(guaranteeAllVo);
+
+            if (sta == 1) {
+                result.setStatus(200);
+                result.setMessage("操作成功");
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return result ;
+    }
+
+    @Override
+    public Result getmyguarateelist(HttpServletRequest request, Integer page, Integer limit) {
+
+        Integer sta = (page - 1) * limit;
+
+        HttpSession session = request.getSession();
+        User users = (User) session.getAttribute("user");
+
+        List<GuaranteeAllVo> lists = guaranteeDao.selectLikeUserAll(users.getUid(),sta,limit);
+
+        //循环 设置名字
+        lists.forEach( g -> {
+            User user = userDao.selectByPrimaryKey(g.getUid());
+            g.setUphone(user.getUphoneid());
+            g.setUUsername(user.getUusername());
+            if (g.getMaintenanceuserid()!=null) {
+                g.setMaintenanceusername(maintenanceuserDao.selectByPrimaryKey(g.getMaintenanceuserid()).getMaintenanceusername());
+            }
+
+        } );
+
+
+        Result result = new Result();
+
+        result.setStatus(0);
+        result.setItem(lists);
+        result.setTotal(guaranteeDao.getCount());
+        return result;
+
     }
 
 }

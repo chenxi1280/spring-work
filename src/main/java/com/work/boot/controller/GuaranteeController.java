@@ -5,16 +5,19 @@ import com.work.boot.pojo.entity.Guarantee;
 import com.work.boot.pojo.vo.GuaranteeAllVo;
 import com.work.boot.service.GuaranteeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/guarantee")
 @Controller
-public class GuaranteeController {
+public class GuaranteeController extends FileController{
 
     @Resource
     private GuaranteeService guaranteeService;
@@ -23,6 +26,12 @@ public class GuaranteeController {
     public String addguarantee() {
 
         return "addguarantee";
+    }
+
+    @RequestMapping("/showmyguaratee")
+    public String showmyguaratee() {
+
+        return "showmyguaratee";
     }
 
     @RequestMapping("/getguarantee")
@@ -92,7 +101,21 @@ public class GuaranteeController {
 
     @RequestMapping("/ajaxaddguarantee")
     @ResponseBody
-    public Result ajaxaddguarantee(){
-        return null;
+    public Result ajaxaddguarantee(GuaranteeAllVo guaranteeAllVo, MultipartFile rupimg, HttpServletRequest httpRequest){
+
+        String imgname = saveFile(rupimg, "/upload/goods/");
+
+        guaranteeAllVo.setRimg(imgname);
+
+        return  guaranteeService.ajaxaddguarantee(guaranteeAllVo,httpRequest);
+
     }
+    @RequestMapping("/getmyguarateelist")
+    @ResponseBody
+    public Result getmyguarateelist(HttpServletRequest httpRequest,Integer page, Integer limit){
+
+        return  guaranteeService.getmyguarateelist(httpRequest,page,limit);
+
+    }
+
 }

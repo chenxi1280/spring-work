@@ -30,21 +30,24 @@
     delete from guarantee
     where rid = #{rid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Guarantee" useGeneratedKeys="true">
-    insert into guarantee (rname, rcontent, rpublicdate,
-      raccpetdate, rcompletiondate, maintenanceuserid,
-      rstate, revaluation, `uid`,
-      aid, raddress, rimg
-      )
-    values (#{rname,jdbcType=VARCHAR}, #{rcontent,jdbcType=VARCHAR}, #{rpublicdate,jdbcType=TIMESTAMP},
-      #{raccpetdate,jdbcType=TIMESTAMP}, #{rcompletiondate,jdbcType=TIMESTAMP}, #{maintenanceuserid,jdbcType=INTEGER},
-      #{rstate,jdbcType=INTEGER}, #{revaluation,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR},
-      #{aid,jdbcType=VARCHAR}, #{raddress,jdbcType=VARCHAR}, #{rimg,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.work.boot.pojo.entity.Guarantee">
+    insert into guarantee (rid, rname, rcontent,
+      rpublicdate, raccpetdate, rcompletiondate,
+      maintenanceuserid, rstate, revaluation,
+      `uid`, aid, raddress,
+      rimg)
+    values (#{rid,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR}, #{rcontent,jdbcType=VARCHAR},
+      #{rpublicdate,jdbcType=TIMESTAMP}, #{raccpetdate,jdbcType=TIMESTAMP}, #{rcompletiondate,jdbcType=TIMESTAMP},
+      #{maintenanceuserid,jdbcType=INTEGER}, #{rstate,jdbcType=INTEGER}, #{revaluation,jdbcType=VARCHAR},
+      #{uid,jdbcType=VARCHAR}, #{aid,jdbcType=VARCHAR}, #{raddress,jdbcType=VARCHAR},
+      #{rimg,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Guarantee" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.work.boot.pojo.entity.Guarantee">
     insert into guarantee
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
       <if test="rname != null">
         rname,
       </if>
@@ -83,6 +86,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=VARCHAR},
+      </if>
       <if test="rname != null">
         #{rname,jdbcType=VARCHAR},
       </if>
@@ -180,17 +186,17 @@
     where rid = #{rid,jdbcType=VARCHAR}
   </update>
 
-    <!--  SQL-->
+  <!--  SQL-->
   <select id="selectAll" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
     from guarantee
   </select>
 
   <select id="selectAlllimet" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
-        select <include refid="Base_Column_List" />
-        from guarantee
-        limit #{start},#{limit}
-    </select>
+    select <include refid="Base_Column_List" />
+    from guarantee
+    limit #{start},#{limit}
+  </select>
   <select id="getCount" resultType="java.lang.Integer">
         select count(rid)
         from guarantee
@@ -202,30 +208,27 @@
 
   </select>
 
-  <select id="selectLikeUserAll" resultType="com.work.boot.pojo.entity.Guarantee">
+  <select id="selectLikeUserAll" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
     select <include refid="Base_Column_List" />
     from guarantee
     <where>
       <if test=" uid!= null and uid!= '' ">
         and uid = #{uid}
       </if>
-      <if test="rstate != null and rstate != 0">
-            and rstate  = #{rstate}
-      </if>
     </where>
     limit #{start},#{limit}
   </select>
-  <select id="selectByUid" resultType="com.work.boot.pojo.entity.Guarantee">
+  <select id="selectByUid" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
 
     select <include refid="Base_Column_List" />
     from guarantee
     <where>
-     `uid` in <foreach collection="list" close=")" index="" item="v" open="(" separator=",">
-    #{v.uid}
+      `uid` in <foreach collection="list" close=")" index="" item="v" open="(" separator=",">
+      #{v.uid}
     </foreach>
-    <if test="rstate !=0  ">
-       and rstate = #{rstate}
-    </if>
+      <if test="rstate !=0  ">
+        and rstate = #{rstate}
+      </if>
     </where>
     limit #{start},#{limit}
   </select>
