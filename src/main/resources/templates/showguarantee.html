@@ -6,31 +6,38 @@
     <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
     <script type="text/javascript" src="/layui/layui.js"></script>
     <script type="text/javascript" src="/js/guarantee.js"></script>
-    <script type="text/javascript" src="/js/date.js"></script>
+    <script type="text/javascript" th:inline="javascript"  src="/js/date.js"></script>
 
 </head>
+
+<!--<style>-->
+<!--    /*修改layui表格的高度*/-->
+<!--    .layui-table-cell {-->
+<!--        height: auto;-->
+<!--    }-->
+<!--</style>-->
 <body>
 <!--模糊查询-->
 <div class="layui-row" style="margin: 10px auto; width: 50%">
     用户电话号码：
     <div class="layui-inline">
-        <input class="layui-input" name="id" id="uphone" autocomplete="off">
+        <input class="layui-input" name="uphone" id="uphone" autocomplete="off">
     </div>
     用户名字：
     <div class="layui-inline">
-        <input class="layui-input" name="id" id="username" autocomplete="off">
+        <input class="layui-input" name="uname" id="uname" autocomplete="off">
     </div>
-    维修员名字：
-    <div class="layui-inline">
-        <input class="layui-input" name="id" id="maintenanceusername" autocomplete="off">
-    </div>
+<!--    维修员名字：-->
+<!--    <div class="layui-inline">-->
+<!--        <input class="layui-input" name="maintenanceusername" id="maintenanceusername" autocomplete="off">-->
+<!--    </div>-->
     类型：
     <form class="layui-form">
-        <select name="itype" id="itype" style="width: 150px">
-            <option >全部</option>
-            <option value="0">未处理</option>
-            <option value="1">正常进行</option>
-            <option value="2">已完成</option>
+        <select name="rstate" id="itype" style="width: 150px">
+            <option value="0">全部</option>
+            <option value="1">未处理</option>
+            <option value="2">正常进行</option>
+            <option value="3">已完成</option>
         </select>
     </form>
     <button class="layui-btn" data-type="reload" id="find">
@@ -62,8 +69,8 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">完成</a>
 
 </script>
-<script type="text/html" id="editguatan">
-<form>
+<script type="text/html" id="editguatan" th:inline="javascript" >
+<form class="layui-form" style="padding: 20px ">
 
     <div style="margin: 20px ">
         <div class="layui-form-item">
@@ -83,10 +90,9 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"></label>
+                <label class="layui-form-label">状态：</label>
             <div class="layui-input-block">
-
-                <select name="rtype" id="rtype" style="width: 150px">
+                <select name="rstate" id="rtype" style="width: 150px">
                     <option value="1">未处理</option>
                     <option value="2">等待维修</option>
                     <option value="3">维修完成</option>
@@ -96,7 +102,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"></label>
+            <label class="layui-form-label">选择维修人员</label>
             <div class="layui-input-block">
 
                 <select name="maintenanceuserid" id="maintenance" style="width: 150px">
@@ -115,11 +121,15 @@
                     <div>
                         <img id="editUploadImg"
                              style="width: 80px;height: 80px;border-radius: 10px;border: lightgray 1px dashed;"/>
-                        <i class="layui-icon layui-icon-addition"
-                           style="position: absolute;left: 35px;top: 35px;z-index: -1"></i>
 
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" type="submit" id="sureEdit" lay-submit lay-filter="sureEdit">确定修改</button>
             </div>
         </div>
 

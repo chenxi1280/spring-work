@@ -1,8 +1,6 @@
 //时间转换函数
 function showTime(tempDate) {
 
-    console.log(tempDate)
-
     var d = new Date(tempDate);
     var year = d.getFullYear();
     var month = d.getMonth();

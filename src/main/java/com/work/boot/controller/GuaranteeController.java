@@ -19,6 +19,12 @@ public class GuaranteeController {
     @Resource
     private GuaranteeService guaranteeService;
 
+    @RequestMapping("/addguarantee")
+    public String addguarantee() {
+
+        return "addguarantee";
+    }
+
     @RequestMapping("/getguarantee")
     public String getguarantee() {
 
@@ -71,4 +77,22 @@ public class GuaranteeController {
 
     }
 
+    @RequestMapping("/toeditguarantee")
+    @ResponseBody
+    public Result toeditguarantee(Guarantee guarantee){
+        return guaranteeService.toeditguarantee(guarantee);
+    }
+
+    @RequestMapping("/selectByLikeguarantee")
+    @ResponseBody
+    public Result selectByLikeguarantee(String uphone,String uname,String maintenanceusername,Integer rstate, Integer page, Integer limit ){
+
+        return guaranteeService.selectByLikeguarantee(uphone,uname,rstate,maintenanceusername,page,limit);
+    }
+
+    @RequestMapping("/ajaxaddguarantee")
+    @ResponseBody
+    public Result ajaxaddguarantee(){
+        return null;
+    }
 }

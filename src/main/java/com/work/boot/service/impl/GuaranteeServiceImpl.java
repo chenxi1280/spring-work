@@ -7,19 +7,16 @@ import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Guarantee;
 import com.work.boot.pojo.entity.Maintenanceuser;
 import com.work.boot.pojo.entity.User;
-import com.work.boot.pojo.query.GuaranteeAllQury;
+import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.vo.GuaranteeAllVo;
 import com.work.boot.service.GuaranteeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 public class GuaranteeServiceImpl implements GuaranteeService {
@@ -150,6 +147,82 @@ public class GuaranteeServiceImpl implements GuaranteeService {
 
         }
         return result ;
+    }
+
+
+
+    @Override
+    public Result toeditguarantee(Guarantee guarantee) {
+
+        Result result = new Result();
+
+        result.setStatus(500);
+        result.setMessage("操作失败");
+        try {
+
+            int sta = guaranteeDao.updateByPrimaryKeySelective(guarantee);
+
+            if (sta == 1) {
+                result.setStatus(200);
+                result.setMessage("操作成功");
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return result ;
+    }
+
+    @Override
+    public Result selectByLikeguarantee(String uphone, String username, Integer rstate, String maintenanceusername, Integer page, Integer limit) {
+
+
+        Integer sta = (page - 1) * limit;
+        List<UserQuery> list =  userDao.selectLikeUsername(username,uphone);
+
+        List<Guarantee> lists = guaranteeDao.selectByUid(list,rstate,sta,limit);
+
+//        if (rstate != 0 ){
+//            lists.forEach((v)->{
+//                if (v.getRstate() != rstate){
+////                    v=null;
+//                    lists.remove(v);
+//                }
+//            });
+//
+//        }
+
+
+//
+//        List<Guarantee> lists = new ArrayList<>();
+//        for (UserQuery u: list) {
+//
+//            lists = guaranteeDao.selectLikeUserAll(u.getUid(),rstate,sta,limit);
+//
+//
+//        }
+
+
+//        List<GuaranteeAllVo> list = maintenanceuserDao.selectByLikeguarantee(uphone,username,maintenanceusername,sta,limit);
+//        list.forEach( g -> {
+//            User user = userDao.selectByPrimaryKey(g.getUid());
+//            g.setUphone(user.getUphoneid());
+//            g.setUUsername(user.getUusername());
+//            if (g.getMaintenanceuserid()!=null) {
+//                g.setMaintenanceusername(maintenanceuserDao.selectByPrimaryKey(g.getMaintenanceuserid()).getMaintenanceusername());
+//            }
+//
+//        } );
+
+
+
+        Result result = new Result();
+
+        result.setStatus(0);
+        result.setItem(lists);
+        result.setTotal(guaranteeDao.getCount());
+        return result;
     }
 
 }

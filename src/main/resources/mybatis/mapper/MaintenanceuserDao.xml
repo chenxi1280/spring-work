@@ -80,8 +80,7 @@
     from maintenanceuser
     where maintenanceuserid in <foreach collection="list" close=")" index="" item="v" open="(" separator=",">
     #{v.maintenanceuserid}
-
-  </foreach>
+    </foreach>
 
   </select>
   <select id="selectAll" resultType="com.work.boot.pojo.entity.Maintenanceuser">

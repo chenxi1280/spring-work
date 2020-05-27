@@ -196,11 +196,38 @@
         from guarantee
     </select>
   <select id="selectByid" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
-    select
-    <include refid="Base_Column_List" />
+    select <include refid="Base_Column_List" />
     from guarantee
     where rid = #{rid}
 
+  </select>
+
+  <select id="selectLikeUserAll" resultType="com.work.boot.pojo.entity.Guarantee">
+    select <include refid="Base_Column_List" />
+    from guarantee
+    <where>
+      <if test=" uid!= null and uid!= '' ">
+        and uid = #{uid}
+      </if>
+      <if test="rstate != null and rstate != 0">
+            and rstate  = #{rstate}
+      </if>
+    </where>
+    limit #{start},#{limit}
+  </select>
+  <select id="selectByUid" resultType="com.work.boot.pojo.entity.Guarantee">
+
+    select <include refid="Base_Column_List" />
+    from guarantee
+    <where>
+     `uid` in <foreach collection="list" close=")" index="" item="v" open="(" separator=",">
+    #{v.uid}
+    </foreach>
+    <if test="rstate !=0  ">
+       and rstate = #{rstate}
+    </if>
+    </where>
+    limit #{start},#{limit}
   </select>
 
   <update id="updataState">

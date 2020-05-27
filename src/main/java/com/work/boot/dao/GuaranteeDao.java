@@ -1,6 +1,7 @@
 package com.work.boot.dao;
 
 import com.work.boot.pojo.entity.Guarantee;
+import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.vo.GuaranteeAllVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,4 +33,11 @@ public interface GuaranteeDao {
     int updataState(String rid);
 
     int updataStateComplete(String rid);
+
+
+
+    List<Guarantee> selectLikeUserAll(@Param("uid")String uid, @Param("rstate") Integer rstate,
+                                           @Param("start") Integer page, @Param("limit")Integer limit);
+
+    List<Guarantee> selectByUid(@Param("list") List<UserQuery> list, @Param("rstate")  Integer rstate, @Param("start") Integer page, @Param("limit") Integer limit);
 }

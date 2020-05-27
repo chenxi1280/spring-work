@@ -12,4 +12,8 @@ public interface GuaranteeService {
     Result chengeguarantee(String rid);
 
     Result completeguarantee(String rid);
+
+    Result toeditguarantee(Guarantee guarantee);
+
+    Result selectByLikeguarantee(String uphone, String username, Integer rstate, String maintenanceusername, Integer page, Integer limit);
 }

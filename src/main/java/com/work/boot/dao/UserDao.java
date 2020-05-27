@@ -1,6 +1,7 @@
 package com.work.boot.dao;
 
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.UserQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -38,4 +39,6 @@ public interface UserDao {
     User selectcheckUser(@Param("uname") String uname, @Param("upassword") String upassword);
 
     User selectById(String uid);
+
+    List<UserQuery> selectLikeUsername(@Param("username")String username, @Param("userphone")String uphone);
 }

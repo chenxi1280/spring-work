@@ -263,4 +263,17 @@ where `uid` = #{uid,jdbcType=VARCHAR}
     where uid = #{uid}
 
   </select>
+    <select id="selectLikeUsername" resultType="com.work.boot.pojo.query.UserQuery">
+    select <include refid="Base_Column_List" />
+    from user
+    <where>
+        <if test="username != null and username!= '' ">
+            and uusername like concat('%',#{username},'%')
+        </if>
+        <if test="userphone != null and userphone!= '' ">
+            and uphoneid like concat('%',#{userphone},'%')
+        </if>
+    </where>
+
+    </select>
 </mapper>
