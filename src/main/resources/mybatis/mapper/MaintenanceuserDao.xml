@@ -11,7 +11,7 @@
     maintenanceuserid, maintenanceusername, maintenanceuseridstate, maintenanceuserphone
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from maintenanceuser
     where maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER}
@@ -20,15 +20,20 @@
     delete from maintenanceuser
     where maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="maintenanceuserid" keyProperty="maintenanceuserid" parameterType="com.work.boot.pojo.entity.Maintenanceuser" useGeneratedKeys="true">
-    insert into maintenanceuser (maintenanceusername, maintenanceuseridstate, 
-      maintenanceuserphone)
-    values (#{maintenanceusername,jdbcType=VARCHAR}, #{maintenanceuseridstate,jdbcType=INTEGER}, 
-      #{maintenanceuserphone,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.work.boot.pojo.entity.Maintenanceuser">
+    insert into maintenanceuser (maintenanceuserid, maintenanceusername,
+      maintenanceuseridstate, maintenanceuserphone
+      )
+    values (#{maintenanceuserid,jdbcType=INTEGER}, #{maintenanceusername,jdbcType=VARCHAR},
+      #{maintenanceuseridstate,jdbcType=INTEGER}, #{maintenanceuserphone,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" keyColumn="maintenanceuserid" keyProperty="maintenanceuserid" parameterType="com.work.boot.pojo.entity.Maintenanceuser" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.work.boot.pojo.entity.Maintenanceuser">
     insert into maintenanceuser
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="maintenanceuserid != null">
+        maintenanceuserid,
+      </if>
       <if test="maintenanceusername != null">
         maintenanceusername,
       </if>
@@ -40,6 +45,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="maintenanceuserid != null">
+        #{maintenanceuserid,jdbcType=INTEGER},
+      </if>
       <if test="maintenanceusername != null">
         #{maintenanceusername,jdbcType=VARCHAR},
       </if>
@@ -73,6 +81,7 @@
       maintenanceuserphone = #{maintenanceuserphone,jdbcType=VARCHAR}
     where maintenanceuserid = #{maintenanceuserid,jdbcType=INTEGER}
   </update>
+<!--  sql-->
 
   <select id="selectNameByList" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
 

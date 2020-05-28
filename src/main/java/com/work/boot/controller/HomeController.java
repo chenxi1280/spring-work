@@ -144,7 +144,7 @@ public class HomeController {
 
                         // 根据cookie新又重新登录了一次，需要重新设置session
                         session.setAttribute("user", u);
-                        session.setMaxInactiveInterval(60 * 60 * 24);
+                        session.setMaxInactiveInterval(60 * 60 * 24 * 2);
 
                         return "index";
                     }

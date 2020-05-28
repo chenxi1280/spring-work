@@ -45,6 +45,7 @@ public class GuaranteeServiceImpl implements GuaranteeService {
             g.setUphone(user.getUphoneid());
             g.setUUsername(user.getUusername());
             if (g.getMaintenanceuserid()!=null) {
+                // 查询 维修人员表中的 维修人员名字 并 传给 返回前端的 对象
                 g.setMaintenanceusername(maintenanceuserDao.selectByPrimaryKey(g.getMaintenanceuserid()).getMaintenanceusername());
             }
 
@@ -146,7 +147,7 @@ public class GuaranteeServiceImpl implements GuaranteeService {
 
             GuaranteeAllVo guaranteeAllVo = guaranteeDao.selectByid(rid);
             guaranteeAllVo.setRcompletiondate(new Date());
-
+            guaranteeAllVo.setRstate(3);
             int sta = guaranteeDao.updateByPrimaryKeySelective(guaranteeAllVo);
 
             if (sta == 1) {
@@ -227,13 +228,8 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         guaranteeAllVo.setRid(GetUUID32.getuuid32());
         guaranteeAllVo.setUid(user.getUid());
         guaranteeAllVo.setUphone(user.getUphoneid());
-        guaranteeAllVo.setRaddress(user.getUbroom());
         guaranteeAllVo.setRstate(1);
         guaranteeAllVo.setRpublicdate(new Date());
-
-
-
-
 
         Result result = new Result();
 
@@ -262,28 +258,56 @@ public class GuaranteeServiceImpl implements GuaranteeService {
 
         HttpSession session = request.getSession();
         User users = (User) session.getAttribute("user");
+        Result result = new Result();
+        result.setTotal(0);
 
-        List<GuaranteeAllVo> lists = guaranteeDao.selectLikeUserAll(users.getUid(),sta,limit);
+        try{
+            List<GuaranteeAllVo> lists = guaranteeDao.selectLikeUserAll(users.getUid(),sta,limit);
+            //循环 设置名字
+            lists.forEach(g -> {
+                User user = userDao.selectByPrimaryKey(g.getUid());
+                g.setUphone(user.getUphoneid());
+                g.setUUsername(user.getUusername());
+                if (g.getMaintenanceuserid() != null) {
+                    g.setMaintenanceusername(maintenanceuserDao.selectByPrimaryKey(g.getMaintenanceuserid()).getMaintenanceusername());
+                }
+                result.setTotal(guaranteeDao.getCount());
+                result.setItem(lists);
+            });
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            result.setTotal(0);
+        }
 
-        //循环 设置名字
-        lists.forEach( g -> {
-            User user = userDao.selectByPrimaryKey(g.getUid());
-            g.setUphone(user.getUphoneid());
-            g.setUUsername(user.getUusername());
-            if (g.getMaintenanceuserid()!=null) {
-                g.setMaintenanceusername(maintenanceuserDao.selectByPrimaryKey(g.getMaintenanceuserid()).getMaintenanceusername());
-            }
 
-        } );
 
+        result.setStatus(0);
+
+
+        return result;
+
+    }
+
+    @Override
+    public Result delguarantee(String rid) {
 
         Result result = new Result();
 
-        result.setStatus(0);
-        result.setItem(lists);
-        result.setTotal(guaranteeDao.getCount());
-        return result;
+        result.setStatus(500);
+        result.setMessage("操作失败");
+        try {
+            int sta = guaranteeDao.deleteByPrimaryKey(rid);
 
+            if (sta == 1) {
+                result.setStatus(200);
+                result.setMessage("操作成功");
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return result ;
     }
 
 }

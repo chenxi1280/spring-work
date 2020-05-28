@@ -46,6 +46,11 @@ public class MessagesController {
         return "addmessages";
     }
 
+    @RequestMapping("/seemessages")
+    public String seemessages() {
+        return "seemessages";
+    }
+
 
     //删除user ajax接口
     @RequestMapping("/delmessages")

@@ -191,7 +191,8 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
     // // //监听行工具事件
     table.on('tool(usertest)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
-            , layEvent = obj.event; //获得 lay-event 对应的值
+            , layEvent = obj.event; //获得 lay-event 对应的
+        // 值
 
         //查看
         if (layEvent === 'detail') {
@@ -253,11 +254,12 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
 
             form.render('select');
             $("#sureEdit")[0].rid = data.rid;
-            console.log( data)
             $("#editUploadImg").attr("src", data.rimg);
 
 
         } else if (layEvent === 'edit') {
+
+            console.log(data.rid)
             $.ajax({
                 type: "post",
                 url: "/guarantee/chengeguarantee",
@@ -291,21 +293,42 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
             })
         } else if (layEvent === 'del') {
 
+                console.log(data)
+                console.log(data.rid)
 
                 $.ajax({
                         async: true,                    //默认为true，默认为异步请求
                         type: "POST",                   //类型post
                         url: "/guarantee/completeguarantee",                 //url
-                        contentType: "application/json",//请求内容编码类型
-                        data: {"rid": data.rid},       //发送到服务器的数据
+                        // contentType: "application/json",//请求内容编码类型
+                        // data: {"rid": data.rid},       //发送到服务器的数据
+                        data: {
+                        //key     value
+                        "rid": data.rid },
                         dataType: "json",               //返回数据格式
-                        success: function(msg){         //成功的方法
-                            layer.msg('完成');
+                        success: function(re){         //成功的方法
+                            if (re.status == 200) {
+                                layer.alert(re.message, {
+                                    icon: 1
+                                }, function (index) {
+                                    layer.close(index)
+                                    window.location.reload()
+
+                                })
+                            } else {
+                                layer.alert(re.message, {
+                                    icon: 2
+                                }, function (index) {
+                                    layer.close(index)
+                                })
+                            }
                         }
                     });
 
-            layer.msg('完成');
+
+
         }
+        table.render()
     });
 
     // // //模糊查询操作
@@ -380,7 +403,6 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
             processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
             success: function (res) {
                 //在前端的控制台进行输出
-                console.log(res)
 
                 if (res.status == 200) {
 
@@ -402,42 +424,6 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
         })
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     })
-
-    //提交表单内容
-    $("#submit").on("click", function () {
-
-        $.ajax({
-            type: 'POSt',
-            url: '/messages/addmessages',
-            dataType: 'json',
-            data: $("#form").serialize(),
-            success: function (res) {
-                //在前端的控制台进行输出
-
-
-                if (res.status == 200) {
-                    layer.alert(res.message, {
-                        icon: 1
-                    }, function () {
-                        //重新刷新我们的table表格数据
-                        window.location.reload()
-                    })
-                } else {
-                    layer.alert(res.message, {
-                        icon: 2
-                    }, function () {
-                        //重新刷新我们的table表格数据
-                        window.location.reload()
-                    })
-                }
-
-            }
-
-
-        })
-    })
-
-
 
 
 

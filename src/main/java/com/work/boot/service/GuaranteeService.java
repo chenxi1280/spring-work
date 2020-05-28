@@ -22,4 +22,6 @@ public interface GuaranteeService {
     Result ajaxaddguarantee(GuaranteeAllVo guaranteeAllVo, HttpServletRequest request);
 
     Result getmyguarateelist(HttpServletRequest httpRequest, Integer page, Integer limit);
+
+    Result delguarantee(String rid);
 }

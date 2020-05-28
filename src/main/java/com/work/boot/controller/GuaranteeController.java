@@ -88,7 +88,10 @@ public class GuaranteeController extends FileController{
 
     @RequestMapping("/toeditguarantee")
     @ResponseBody
-    public Result toeditguarantee(Guarantee guarantee){
+    public Result toeditguarantee(Guarantee guarantee, MultipartFile rupimg){
+        String imgname = saveFile(rupimg, "/upload/goods/");
+
+        guarantee.setRimg(imgname);
         return guaranteeService.toeditguarantee(guarantee);
     }
 
@@ -117,5 +120,22 @@ public class GuaranteeController extends FileController{
         return  guaranteeService.getmyguarateelist(httpRequest,page,limit);
 
     }
+    @RequestMapping("/delguarantee")
+    @ResponseBody
+    public Result delguarantee(String rid){
+
+        return  guaranteeService.delguarantee(rid);
+
+    }
+
+    //用户完成评价的方法
+//    @RequestMapping("/evaluationguarantee")
+//    @ResponseBody
+//    public Result evaluationguarantee(String rid , String rcontent){
+//
+//        return  guaranteeService.evaluationguarantee(httpRequest,page,limit);
+//
+//    }
+
 
 }

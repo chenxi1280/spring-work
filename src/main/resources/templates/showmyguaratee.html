@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
 <script type="text/javascript" src="/layui/layui.js"></script>
 <script type="text/javascript" src="/js/date.js"></script>
+<script type="text/javascript" src="/js/imglocal.js"></script>
 
 <style>
     /*修改layui表格的高度*/
@@ -16,13 +17,116 @@
 </style>
 <body>
 <table class="layui-hide" id="demo" lay-filter="test"></table>
-<script type="text/html" id="barDemo">
-
+<script type="text/html" id="barDemo" >
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">处理</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">完成</a>
+
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">取消</a>
+
+    <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="over">完成</a>
 
 </script>
+
+<script type="text/html" id="addeva" th:inline="javascript" >
+    <form class="layui-form" style="padding: 20px ">
+
+        <input name="uid" id="uid" type="hidden">
+        <input name="rid" id="rid" type="hidden">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">评分：</label>
+            <div class="layui-input-block">
+                <select name="evaluation" id="evaluation" style="width: 150px">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+
+            </div>
+        </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">评价：</label>
+                <div class="layui-input-block">
+                    <input type="text" style="width: 50%" name="context" id="context"
+                           class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" type="submit" id="sureva" lay-submit lay-filter="sureva">确定</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</script>
+
+<script type="text/html" id="editguatan" th:inline="javascript" >
+    <form class="layui-form" style="padding: 20px ">
+
+        <div style="margin: 20px ">
+            <div class="layui-form-item">
+                <label class="layui-form-label">报修名字</label>
+                <div class="layui-input-block">
+                    <input type="text" style="width: 50%" name="rname" id="rname"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">保报修内容</label>
+                <div class="layui-input-block">
+                    <input type="text" style="width: 50%" name="rcontent" id="rcontent"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">地址</label>
+                <div class="layui-input-block">
+                    <input type="text" style="width: 50%" name="raddress" id="raddress"
+                           class="layui-input">
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">照片</label>
+                <div class="layui-input-block">
+                    <input type="file" id="editPic" name="rupimg" style="display: none">
+
+                    <div style="display: flex">
+                        <div>
+                            <img id="editUploadImg"
+                                 style="width: 80px;height: 80px;border-radius: 10px;border: lightgray 1px dashed;"/>
+                            <i class="layui-icon layui-icon-addition"
+                               style="position: absolute;left: 35px;top: 35px;z-index: -1"></i>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" type="submit" id="sureEdit" lay-submit lay-filter="sureEdit">确定修改</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</script>
+
 <script th:inline="javascript" type="text/javascript">
     layui.use(['layer', 'table', 'form'], function () {
         let layer = layui.layer;// 弹出层
@@ -210,12 +314,14 @@
         });
 
         // // //监听行工具事件
-        table.on('tool(usertest)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
 
+
             //查看
             if (layEvent === 'detail') {
+
                 form.render();
                 layer.open({
                     type:1,
@@ -229,6 +335,7 @@
 
                 $("#rname").val(data.rname)
                 $("#rcontent").val(data.rcontent)
+                $("#raddress").val(data.raddress)
                 // select 框回显数据
                 $("#rtype").each(function() {
                     // this代表的是<option></option>，对option再进行遍历
@@ -242,60 +349,140 @@
                         }
                     });
                 })
-                let skey = $("#rtype").val(data.rstate)
-                if (data.rstate < 3){
-                    $.ajax({
-                        async: false,                    //默认为true，默认为异步请求
-                        type: "POST",                   //类型post
-                        url: "/maintenanceuser/getmaintenanceuser",                 //url
-                        contentType: "application/json",//请求内容编码类型
-                        data: {},       //发送到服务器的数据
-                        dataType: "json",               //返回数据格式
-                        success: function(data){         //成功的方法
-                            let list = data.item;
-                            list.forEach( v =>{
-                                if (v.maintenanceuseridstate == 1 ){
-                                    let maintenanceusername = $("<option value='"+v.maintenanceuserid+"'>"+v.maintenanceusername+"" +
-                                        "</option>")
-                                    $("#maintenance").append(maintenanceusername)
-                                }
-
-                            })
-
-                        }
-                    });
-                }else {
-
-                    let maintenanceusername = $("<option value='"+data.maintenanceuserid+"' selected>"+data.maintenanceusername+"" +
-                        "</option>")
-                    $("#maintenance").append(maintenanceusername)
-
-                }
-
-                form.render('select');
-                $("#sureEdit")[0].rid = data.rid;
                 $("#editUploadImg").attr("src", data.rimg);
+
+                $("#editUploadImg").click(function () {// 点击图片就触发这个file
+                    $("#editPic").click();
+                });
+
+                $("#editPic").change(function () {
+                    imgPreview(this.files[0], $("#editUploadImg")[0]);
+                });
+
+                $("#sureEdit")[0].rid = data.rid;
+
 
 
             } else if (layEvent === 'del') {
 
+                if(data.rstate < 3){
 
-                $.ajax({
-                    async: true,                    //默认为true，默认为异步请求
-                    type: "POST",                   //类型post
-                    url: "/guarantee/evaluationguarantee",                 //url
-                    contentType: "application/json",//请求内容编码类型
-                    data: {"rid": data.rid},       //发送到服务器的数据
-                    dataType: "json",               //返回数据格式
-                    success: function(msg){         //成功的方法
-                        layer.msg('完成');
-                    }
-                });
+                    $.ajax({
+                        async: true,                    //默认为true，默认为异步请求
+                        type: "POST",                   //类型post
+                        url: "/guarantee/delguarantee",                 //url
+                        // contentType: "application/json",//请求内容编码类型
+                        data: {"rid": data.rid},       //发送到服务器的数据
+                        dataType: "json",               //返回数据格式
+                        success: function (msg) {         //成功的方法
+                            layer.msg('完成');
+                        }
+                    });
+                }else {
+                    layer.msg("已维修完成，无法取消")
+                }
 
-                layer.msg('完成');
+            }else if (layEvent === 'over') {
+
+                if(data.rstate >= 3){
+
+
+                    form.render();
+                    layer.open({
+                        type:1,
+                        title: '修改',
+                        area: ['50%', '80%'],
+                        content: $("#addeva").html(),
+
+                    })
+
+                    $("#uid").val(data.uid)
+                    $("#rid").val(data.rid)
+
+
+                    form.render();
+                    form.render('select');
+                }else {
+                    layer.msg("已完成")
+                }
+
             }
         });
 
+
+        form.on("submit(sureEdit)",function (data) {
+
+            let formData = new FormData(data.form)
+
+            formData.append("rid", $("#sureEdit")[0].rid);
+
+            $.ajax({
+                async: true,                    //默认为true，默认为异步请求
+                type: "POST",                   //类型post
+                url: "/guarantee/toeditguarantee",                 //url
+                contentType: false,              //请求内容编码类型
+                data: formData,       //发送到服务器的数据
+                dataType: "json",               //返回数据格式
+                processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
+                success: function(msg){         //成功的方法
+
+                    console.log(msg)
+
+                    if (msg.status == 200) {
+                        layer.alert(msg.message, {
+                            icon: 1
+                        }, function () {
+                            //重新刷新我们的table表格数据
+                            window.location.reload()
+                        })
+                    } else {
+                        layer.alert(msg.message, {
+                            icon: 2
+                        }, function () {
+                            //重新刷新我们的table表格数据
+                            window.location.reload()
+                        })
+                    }
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        })
+
+        form.on("submit(sureva)",function (data) {
+
+            let formData = new FormData(data.form)
+
+            $.ajax({
+                async: true,                    //默认为true，默认为异步请求
+                type: "POST",                   //类型post
+                url: "/evaluation/addeva",                 //url
+                contentType: false,              //请求内容编码类型
+                data: formData,       //发送到服务器的数据
+                dataType: "json",               //返回数据格式
+                processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
+                success: function(msg){         //成功的方法
+
+                    console.log(msg)
+
+                    if (msg.status == 200) {
+                        layer.alert(msg.message, {
+                            icon: 1
+                        }, function () {
+                            //重新刷新我们的table表格数据
+                            window.location.reload()
+                        })
+                    } else {
+                        layer.alert(msg.message, {
+                            icon: 2
+                        }, function () {
+                            //重新刷新我们的table表格数据
+                            window.location.reload()
+                        })
+                    }
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        })
 
 
     })
