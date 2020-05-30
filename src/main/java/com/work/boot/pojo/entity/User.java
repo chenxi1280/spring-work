@@ -77,5 +77,30 @@ public class User implements Serializable {
      */
     private Date uupdatedate;
 
+    /**
+     * 角色id
+     */
+    private String role;
+
+    /**
+     * 账户余额
+     */
+    private Long mymoney;
+
+    /**
+     * 车位数
+     */
+    private Integer carnumber;
+
+    /**
+     * 房屋面积 
+     */
+    private Long roomarea;
+
+    /**
+     * 缴费id
+     */
+    private String paymentid;
+
     private static final long serialVersionUID = 1L;
 }

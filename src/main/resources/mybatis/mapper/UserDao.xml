@@ -15,11 +15,16 @@
         <result column="typeid" jdbcType="INTEGER" property="typeid"/>
         <result column="ucreatedate" jdbcType="TIMESTAMP" property="ucreatedate"/>
         <result column="uupdatedate" jdbcType="TIMESTAMP" property="uupdatedate"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="mymoney" jdbcType="DECIMAL" property="mymoney"/>
+        <result column="carnumber" jdbcType="INTEGER" property="carnumber"/>
+        <result column="roomarea" jdbcType="DECIMAL" property="roomarea"/>
+        <result column="paymentid" jdbcType="VARCHAR" property="paymentid"/>
     </resultMap>
     <sql id="Base_Column_List">
-`uid`, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg, typeid,
-ucreatedate, uupdatedate
-</sql>
+    `uid`, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg, typeid,
+    ucreatedate, uupdatedate, `role`, mymoney, carnumber, roomarea, paymentid
+  </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -27,21 +32,25 @@ ucreatedate, uupdatedate
         where `uid` = #{uid,jdbcType=VARCHAR}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-delete from user
-where `uid` = #{uid,jdbcType=VARCHAR}
-</delete>
+    delete from user
+    where `uid` = #{uid,jdbcType=VARCHAR}
+  </delete>
     <insert id="insert" parameterType="com.work.boot.pojo.entity.User">
-insert into user (`uid`, uname, uusername,
-upassword, cstate, aid,
-xid, ubroom, uphoneid,
-uimg, typeid, ucreatedate,
-uupdatedate)
-values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR},
-#{upassword,jdbcType=VARCHAR}, #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR},
-#{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR}, #{uphoneid,jdbcType=VARCHAR},
-#{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, #{ucreatedate,jdbcType=TIMESTAMP},
-#{uupdatedate,jdbcType=TIMESTAMP})
-</insert>
+    insert into user (`uid`, uname, uusername,
+      upassword, cstate, aid,
+      xid, ubroom, uphoneid,
+      uimg, typeid, ucreatedate,
+      uupdatedate, `role`, mymoney,
+      carnumber, roomarea, paymentid
+      )
+    values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR},
+      #{upassword,jdbcType=VARCHAR}, #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR},
+      #{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR}, #{uphoneid,jdbcType=VARCHAR},
+      #{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, #{ucreatedate,jdbcType=TIMESTAMP},
+      #{uupdatedate,jdbcType=TIMESTAMP}, #{role,jdbcType=VARCHAR}, #{mymoney,jdbcType=DECIMAL},
+      #{carnumber,jdbcType=INTEGER}, #{roomarea,jdbcType=DECIMAL}, #{paymentid,jdbcType=VARCHAR}
+      )
+  </insert>
     <insert id="insertSelective" parameterType="com.work.boot.pojo.entity.User">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -84,6 +93,21 @@ values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType
             <if test="uupdatedate != null">
                 uupdatedate,
             </if>
+            <if test="role != null">
+                `role`,
+            </if>
+            <if test="mymoney != null">
+                mymoney,
+            </if>
+            <if test="carnumber != null">
+                carnumber,
+            </if>
+            <if test="roomarea != null">
+                roomarea,
+            </if>
+            <if test="paymentid != null">
+                paymentid,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="uid != null">
@@ -124,6 +148,21 @@ values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType
             </if>
             <if test="uupdatedate != null">
                 #{uupdatedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="mymoney != null">
+                #{mymoney,jdbcType=DECIMAL},
+            </if>
+            <if test="carnumber != null">
+                #{carnumber,jdbcType=INTEGER},
+            </if>
+            <if test="roomarea != null">
+                #{roomarea,jdbcType=DECIMAL},
+            </if>
+            <if test="paymentid != null">
+                #{paymentid,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -166,26 +205,45 @@ values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType
             <if test="uupdatedate != null">
                 uupdatedate = #{uupdatedate,jdbcType=TIMESTAMP},
             </if>
+            <if test="role != null">
+                `role` = #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="mymoney != null">
+                mymoney = #{mymoney,jdbcType=DECIMAL},
+            </if>
+            <if test="carnumber != null">
+                carnumber = #{carnumber,jdbcType=INTEGER},
+            </if>
+            <if test="roomarea != null">
+                roomarea = #{roomarea,jdbcType=DECIMAL},
+            </if>
+            <if test="paymentid != null">
+                paymentid = #{paymentid,jdbcType=VARCHAR},
+            </if>
         </set>
         where `uid` = #{uid,jdbcType=VARCHAR}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.User">
-update user
-set uname = #{uname,jdbcType=VARCHAR},
-uusername = #{uusername,jdbcType=VARCHAR},
-upassword = #{upassword,jdbcType=VARCHAR},
-cstate = #{cstate,jdbcType=INTEGER},
-aid = #{aid,jdbcType=VARCHAR},
-xid = #{xid,jdbcType=VARCHAR},
-ubroom = #{ubroom,jdbcType=VARCHAR},
-uphoneid = #{uphoneid,jdbcType=VARCHAR},
-uimg = #{uimg,jdbcType=VARCHAR},
-typeid = #{typeid,jdbcType=INTEGER},
-ucreatedate = #{ucreatedate,jdbcType=TIMESTAMP},
-uupdatedate = #{uupdatedate,jdbcType=TIMESTAMP}
-where `uid` = #{uid,jdbcType=VARCHAR}
-</update>
-
+    update user
+    set uname = #{uname,jdbcType=VARCHAR},
+      uusername = #{uusername,jdbcType=VARCHAR},
+      upassword = #{upassword,jdbcType=VARCHAR},
+      cstate = #{cstate,jdbcType=INTEGER},
+      aid = #{aid,jdbcType=VARCHAR},
+      xid = #{xid,jdbcType=VARCHAR},
+      ubroom = #{ubroom,jdbcType=VARCHAR},
+      uphoneid = #{uphoneid,jdbcType=VARCHAR},
+      uimg = #{uimg,jdbcType=VARCHAR},
+      typeid = #{typeid,jdbcType=INTEGER},
+      ucreatedate = #{ucreatedate,jdbcType=TIMESTAMP},
+      uupdatedate = #{uupdatedate,jdbcType=TIMESTAMP},
+      `role` = #{role,jdbcType=VARCHAR},
+      mymoney = #{mymoney,jdbcType=DECIMAL},
+      carnumber = #{carnumber,jdbcType=INTEGER},
+      roomarea = #{roomarea,jdbcType=DECIMAL},
+      paymentid = #{paymentid,jdbcType=VARCHAR}
+    where `uid` = #{uid,jdbcType=VARCHAR}
+  </update>
     <!--  sql-->
     <select id="selectAll" resultMap="BaseResultMap">
     select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
@@ -264,16 +322,17 @@ where `uid` = #{uid,jdbcType=VARCHAR}
 
   </select>
     <select id="selectLikeUsername" resultType="com.work.boot.pojo.query.UserQuery">
-    select <include refid="Base_Column_List" />
-    from user
-    <where>
-        <if test="username != null and username!= '' ">
-            and uusername like concat('%',#{username},'%')
-        </if>
-        <if test="userphone != null and userphone!= '' ">
-            and uphoneid like concat('%',#{userphone},'%')
-        </if>
-    </where>
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <where>
+            <if test="username != null and username!= '' ">
+                and uusername like concat('%',#{username},'%')
+            </if>
+            <if test="userphone != null and userphone!= '' ">
+                and uphoneid like concat('%',#{userphone},'%')
+            </if>
+        </where>
 
     </select>
 </mapper>

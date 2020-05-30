@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.PayuserDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Payuser">
+    <id column="userpayid" jdbcType="INTEGER" property="userpayid" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="paymentid" jdbcType="INTEGER" property="paymentid" />
+    <result column="paymoney" jdbcType="DECIMAL" property="paymoney" />
+    <result column="patstate" jdbcType="INTEGER" property="patstate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userpayid, `uid`, paymentid, paymoney, patstate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from payuser
+    where userpayid = #{userpayid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from payuser
+    where userpayid = #{userpayid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="userpayid" keyProperty="userpayid" parameterType="com.work.boot.pojo.entity.Payuser" useGeneratedKeys="true">
+    insert into payuser (`uid`, paymentid, paymoney, 
+      patstate)
+    values (#{uid,jdbcType=VARCHAR}, #{paymentid,jdbcType=INTEGER}, #{paymoney,jdbcType=DECIMAL}, 
+      #{patstate,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="userpayid" keyProperty="userpayid" parameterType="com.work.boot.pojo.entity.Payuser" useGeneratedKeys="true">
+    insert into payuser
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="paymentid != null">
+        paymentid,
+      </if>
+      <if test="paymoney != null">
+        paymoney,
+      </if>
+      <if test="patstate != null">
+        patstate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentid != null">
+        #{paymentid,jdbcType=INTEGER},
+      </if>
+      <if test="paymoney != null">
+        #{paymoney,jdbcType=DECIMAL},
+      </if>
+      <if test="patstate != null">
+        #{patstate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Payuser">
+    update payuser
+    <set>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentid != null">
+        paymentid = #{paymentid,jdbcType=INTEGER},
+      </if>
+      <if test="paymoney != null">
+        paymoney = #{paymoney,jdbcType=DECIMAL},
+      </if>
+      <if test="patstate != null">
+        patstate = #{patstate,jdbcType=INTEGER},
+      </if>
+    </set>
+    where userpayid = #{userpayid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Payuser">
+    update payuser
+    set `uid` = #{uid,jdbcType=VARCHAR},
+      paymentid = #{paymentid,jdbcType=INTEGER},
+      paymoney = #{paymoney,jdbcType=DECIMAL},
+      patstate = #{patstate,jdbcType=INTEGER}
+    where userpayid = #{userpayid,jdbcType=INTEGER}
+  </update>
+</mapper>

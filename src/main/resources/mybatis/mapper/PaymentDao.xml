@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.boot.dao.PaymentDao">
+  <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.Payment">
+    <id column="paymentid" jdbcType="INTEGER" property="paymentid" />
+    <result column="paymentname" jdbcType="VARCHAR" property="paymentname" />
+    <result column="paymentmoney" jdbcType="DECIMAL" property="paymentmoney" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    paymentid, paymentname, paymentmoney
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from payment
+    where paymentid = #{paymentid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from payment
+    where paymentid = #{paymentid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="paymentid" keyProperty="paymentid" parameterType="com.work.boot.pojo.entity.Payment" useGeneratedKeys="true">
+    insert into payment (paymentname, paymentmoney)
+    values (#{paymentname,jdbcType=VARCHAR}, #{paymentmoney,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="paymentid" keyProperty="paymentid" parameterType="com.work.boot.pojo.entity.Payment" useGeneratedKeys="true">
+    insert into payment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paymentname != null">
+        paymentname,
+      </if>
+      <if test="paymentmoney != null">
+        paymentmoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paymentname != null">
+        #{paymentname,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentmoney != null">
+        #{paymentmoney,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.work.boot.pojo.entity.Payment">
+    update payment
+    <set>
+      <if test="paymentname != null">
+        paymentname = #{paymentname,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentmoney != null">
+        paymentmoney = #{paymentmoney,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where paymentid = #{paymentid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.work.boot.pojo.entity.Payment">
+    update payment
+    set paymentname = #{paymentname,jdbcType=VARCHAR},
+      paymentmoney = #{paymentmoney,jdbcType=DECIMAL}
+    where paymentid = #{paymentid,jdbcType=INTEGER}
+  </update>
+</mapper>
