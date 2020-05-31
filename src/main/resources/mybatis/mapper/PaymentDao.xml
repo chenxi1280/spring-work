@@ -15,7 +15,7 @@
     from payment
     where paymentid = #{paymentid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from payment
     where paymentid = #{paymentid,jdbcType=INTEGER}
   </delete>
@@ -60,4 +60,22 @@
       paymentmoney = #{paymentmoney,jdbcType=DECIMAL}
     where paymentid = #{paymentid,jdbcType=INTEGER}
   </update>
+
+<!--  sql-->
+  <select id="selectByListPay" resultType="com.work.boot.pojo.entity.Payment">
+    select <include refid="Base_Column_List" />
+    from payment
+    where paymentid in <foreach collection="list" item="paymentid" close=")" open="(" separator=",">
+    #{paymentid.paymentid}
+
+  </foreach>
+
+  </select>
+    <select id="selectAll" resultType="com.work.boot.pojo.entity.Payment">
+      select <include refid="Base_Column_List" />
+      from payment
+
+    </select>
+
+
 </mapper>

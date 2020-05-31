@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * payuser
@@ -35,6 +36,11 @@ public class Payuser implements Serializable {
      * 收费状态
      */
     private Integer patstate;
+
+    /**
+     * 缴费时间
+     */
+    private Date payuserdate;
 
     private static final long serialVersionUID = 1L;
 }

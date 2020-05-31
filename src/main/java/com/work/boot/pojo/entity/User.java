@@ -3,6 +3,7 @@ package com.work.boot.pojo.entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -85,7 +86,7 @@ public class User implements Serializable {
     /**
      * 账户余额
      */
-    private Long mymoney;
+    private BigDecimal mymoney;
 
     /**
      * 车位数

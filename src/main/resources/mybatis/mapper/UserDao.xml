@@ -2,24 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.work.boot.dao.UserDao">
     <resultMap id="BaseResultMap" type="com.work.boot.pojo.entity.User">
-        <id column="uid" jdbcType="VARCHAR" property="uid"/>
-        <result column="uname" jdbcType="VARCHAR" property="uname"/>
-        <result column="uusername" jdbcType="VARCHAR" property="uusername"/>
-        <result column="upassword" jdbcType="VARCHAR" property="upassword"/>
-        <result column="cstate" jdbcType="INTEGER" property="cstate"/>
-        <result column="aid" jdbcType="VARCHAR" property="aid"/>
-        <result column="xid" jdbcType="VARCHAR" property="xid"/>
-        <result column="ubroom" jdbcType="VARCHAR" property="ubroom"/>
-        <result column="uphoneid" jdbcType="VARCHAR" property="uphoneid"/>
-        <result column="uimg" jdbcType="VARCHAR" property="uimg"/>
-        <result column="typeid" jdbcType="INTEGER" property="typeid"/>
-        <result column="ucreatedate" jdbcType="TIMESTAMP" property="ucreatedate"/>
-        <result column="uupdatedate" jdbcType="TIMESTAMP" property="uupdatedate"/>
-        <result column="role" jdbcType="VARCHAR" property="role"/>
-        <result column="mymoney" jdbcType="DECIMAL" property="mymoney"/>
-        <result column="carnumber" jdbcType="INTEGER" property="carnumber"/>
-        <result column="roomarea" jdbcType="DECIMAL" property="roomarea"/>
-        <result column="paymentid" jdbcType="VARCHAR" property="paymentid"/>
+        <id column="uid" jdbcType="VARCHAR" property="uid" />
+        <result column="uname" jdbcType="VARCHAR" property="uname" />
+        <result column="uusername" jdbcType="VARCHAR" property="uusername" />
+        <result column="upassword" jdbcType="VARCHAR" property="upassword" />
+        <result column="cstate" jdbcType="INTEGER" property="cstate" />
+        <result column="aid" jdbcType="VARCHAR" property="aid" />
+        <result column="xid" jdbcType="VARCHAR" property="xid" />
+        <result column="ubroom" jdbcType="VARCHAR" property="ubroom" />
+        <result column="uphoneid" jdbcType="VARCHAR" property="uphoneid" />
+        <result column="uimg" jdbcType="VARCHAR" property="uimg" />
+        <result column="typeid" jdbcType="INTEGER" property="typeid" />
+        <result column="ucreatedate" jdbcType="TIMESTAMP" property="ucreatedate" />
+        <result column="uupdatedate" jdbcType="TIMESTAMP" property="uupdatedate" />
+        <result column="role" jdbcType="VARCHAR" property="role" />
+        <result column="mymoney" jdbcType="DECIMAL" property="mymoney" />
+        <result column="carnumber" jdbcType="INTEGER" property="carnumber" />
+        <result column="roomarea" jdbcType="DECIMAL" property="roomarea" />
+        <result column="paymentid" jdbcType="VARCHAR" property="paymentid" />
     </resultMap>
     <sql id="Base_Column_List">
     `uid`, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg, typeid,
@@ -27,7 +27,7 @@
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from user
         where `uid` = #{uid,jdbcType=VARCHAR}
     </select>
@@ -35,28 +35,23 @@
     delete from user
     where `uid` = #{uid,jdbcType=VARCHAR}
   </delete>
-    <insert id="insert" parameterType="com.work.boot.pojo.entity.User">
-    insert into user (`uid`, uname, uusername,
-      upassword, cstate, aid,
-      xid, ubroom, uphoneid,
-      uimg, typeid, ucreatedate,
-      uupdatedate, `role`, mymoney,
-      carnumber, roomarea, paymentid
-      )
-    values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR},
-      #{upassword,jdbcType=VARCHAR}, #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR},
-      #{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR}, #{uphoneid,jdbcType=VARCHAR},
-      #{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, #{ucreatedate,jdbcType=TIMESTAMP},
-      #{uupdatedate,jdbcType=TIMESTAMP}, #{role,jdbcType=VARCHAR}, #{mymoney,jdbcType=DECIMAL},
-      #{carnumber,jdbcType=INTEGER}, #{roomarea,jdbcType=DECIMAL}, #{paymentid,jdbcType=VARCHAR}
-      )
+    <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="com.work.boot.pojo.entity.User" useGeneratedKeys="true">
+    insert into user (uname, uusername, upassword,
+      cstate, aid, xid, ubroom,
+      uphoneid, uimg, typeid,
+      ucreatedate, uupdatedate, `role`,
+      mymoney, carnumber, roomarea,
+      paymentid)
+    values (#{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR}, #{upassword,jdbcType=VARCHAR},
+      #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR}, #{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR},
+      #{uphoneid,jdbcType=VARCHAR}, #{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER},
+      #{ucreatedate,jdbcType=TIMESTAMP}, #{uupdatedate,jdbcType=TIMESTAMP}, #{role,jdbcType=VARCHAR},
+      #{mymoney,jdbcType=DECIMAL}, #{carnumber,jdbcType=INTEGER}, #{roomarea,jdbcType=DECIMAL},
+      #{paymentid,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.work.boot.pojo.entity.User">
+    <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="com.work.boot.pojo.entity.User" useGeneratedKeys="true">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="uid != null">
-                `uid`,
-            </if>
             <if test="uname != null">
                 uname,
             </if>
@@ -110,9 +105,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="uid != null">
-                #{uid,jdbcType=VARCHAR},
-            </if>
             <if test="uname != null">
                 #{uname,jdbcType=VARCHAR},
             </if>
@@ -246,8 +238,7 @@
   </update>
     <!--  sql-->
     <select id="selectAll" resultMap="BaseResultMap">
-    select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
-    typeid, ucreatedate, uupdatedate
+    select <include refid="Base_Column_List" />
     from user
   </select>
 
@@ -262,7 +253,7 @@
     </update>
 
     <select id="getLikeUsername" resultMap="BaseResultMap">
-        select uid, uusername, cstate, ubroom, uphoneid, typeid, ucreatedate,aid,uimg
+        select <include refid="Base_Column_List" />
         from user
         <where>
             1 = 1
@@ -335,4 +326,21 @@
         </where>
 
     </select>
+    <select id="selectByListPay" resultType="com.work.boot.pojo.entity.User">
+        select <include refid="Base_Column_List" />
+        from user
+        where uid in <foreach collection="list" separator="," open="(" close=")" item="uid">
+
+        #{uid.uid}
+
+    </foreach>
+    </select>
+
+    <update id="updatemoneyByid">
+        update user
+        set  mymoney = #{money}
+        where uid = #{uid}
+
+    </update>
+
 </mapper>

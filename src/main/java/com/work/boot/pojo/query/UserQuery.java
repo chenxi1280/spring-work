@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 public class UserQuery extends User {
-
+    private  String name;
 
 
 }

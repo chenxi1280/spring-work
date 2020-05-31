@@ -59,11 +59,11 @@
                     <dl class="layui-nav-child">
 
                         <dd><a href="javascript:;" th:if="${session.user.getTypeid() >= 2}">添加收费</a></dd>
-                        <dd><a href="javascript:;" th:if="${session.user.getTypeid() >= 2}">房屋收费</a></dd>
+                        <dd><a href="/payment/setpay" th:href="@{/payment/setpay}" target="main">物业收费</a></dd>
                         <dd><a href="javascript:;">缴费清单</a></dd>
                         <dd><a href="javascript:;">车位收费</a></dd>
                         <dd><a href="javascript:;">临时车位缴费清单</a></dd>
-                        <dd><a href="javascript:;">费用总汇</a></dd>
+                        <dd><a href="/payuser/payuserhtml" th:href="@{/payuser/payuserhtml}" target="main">费用总汇</a></dd>
 
                     </dl>
                 </li>

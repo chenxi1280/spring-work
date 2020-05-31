@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/date.js"></script>
+<style>
+    /*修改layui表格的高度*/
+    .layui-table-cell {
+        height: auto;
+    }
+</style>
+<body>
+<table id="payTable" lay-filter="payTable"></table>
+
+
+<script th:inline="javascript" type="text/javascript">
+    layui.use(['layer', 'table', 'form'], function () {
+
+        // 我再js代码里边如何获取控制器传递过来的参数呢？
+        let layer = layui.layer;// 弹出层
+        let table = layui.table;// 分页组件
+        let form = layui.form;// 分页组件
+        let $ = layui.$;// 使用jquery
+
+        //第一个实例
+        let tb = table.render({// 渲染表格
+            elem: '#payTable'
+            , url: '/payuser/ajaxlist' //服务后台的数据接口
+            , page: true //开启分页
+            , cols: [[ //表头，这里是两个[[开头，两个]]结尾
+                {field: '', type: 'checkbox', title: '多选'}
+                , {field: 'uusername', title: '用户名', width: 160 }
+                , {field: 'paymentname', title: '缴费名', width: 80}
+                , {field: 'paymoney', title: '缴费金额', width: 200}
+                , {field: 'patstate', title: '缴费情况', width: 160,templet: function (d) {
+                        switch (d.patstate) {
+                                case 1 :
+                                    return "已缴费";
+                                case 0 :
+                                    return "未交费";
+                        }
+                    }}
+                // , {field: 'note', title: '备注', width: 160, edit: 'text'}
+                // , {field: 'system', title: '系统级别', width: 160,templet: function (d) {// 这个d指的是本行的数据 js对象
+                //         // console.log(d)
+                //         let color=d.system?'red':'';
+                //         return '<div style="color: '+color+';font-weight: bold">'+d.system+'</div>'
+                //
+                //     }}
+                , {
+                    field: '', title: '操作', templet: function (d) {// 这个d指的是本行的数据 js对象
+                        // console.log(d)
+                        return '<div>\n' +
+                            '            <button class="layui-btn layui-btn-xs " lay-event="updateData">查看</button>\n' +
+                            '            <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="editData">编辑</button>\n' +
+                            '            <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="deleteData">删除</button>\n' +
+                            ' </div>'
+
+                    }
+                }
+            ]]
+            , toolbar: 'default'
+        });
+
+
+    });
+
+</script>
+</body>
+</html>

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 
 /**
-*@Description
+*@Description Spring boot 配置类
 *@Param
 *@Return
 *@Author Mr.Ren

@@ -7,12 +7,13 @@
     <result column="paymentid" jdbcType="INTEGER" property="paymentid" />
     <result column="paymoney" jdbcType="DECIMAL" property="paymoney" />
     <result column="patstate" jdbcType="INTEGER" property="patstate" />
+    <result column="payuserdate" jdbcType="TIMESTAMP" property="payuserdate" />
   </resultMap>
   <sql id="Base_Column_List">
-    userpayid, `uid`, paymentid, paymoney, patstate
+    userpayid, `uid`, paymentid, paymoney, patstate, payuserdate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from payuser
     where userpayid = #{userpayid,jdbcType=INTEGER}
@@ -22,10 +23,10 @@
     where userpayid = #{userpayid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="userpayid" keyProperty="userpayid" parameterType="com.work.boot.pojo.entity.Payuser" useGeneratedKeys="true">
-    insert into payuser (`uid`, paymentid, paymoney, 
-      patstate)
-    values (#{uid,jdbcType=VARCHAR}, #{paymentid,jdbcType=INTEGER}, #{paymoney,jdbcType=DECIMAL}, 
-      #{patstate,jdbcType=INTEGER})
+    insert into payuser (`uid`, paymentid, paymoney,
+      patstate, payuserdate)
+    values (#{uid,jdbcType=VARCHAR}, #{paymentid,jdbcType=INTEGER}, #{paymoney,jdbcType=DECIMAL},
+      #{patstate,jdbcType=INTEGER}, #{payuserdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="userpayid" keyProperty="userpayid" parameterType="com.work.boot.pojo.entity.Payuser" useGeneratedKeys="true">
     insert into payuser
@@ -42,6 +43,9 @@
       <if test="patstate != null">
         patstate,
       </if>
+      <if test="payuserdate != null">
+        payuserdate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uid != null">
@@ -55,6 +59,9 @@
       </if>
       <if test="patstate != null">
         #{patstate,jdbcType=INTEGER},
+      </if>
+      <if test="payuserdate != null">
+        #{payuserdate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -73,6 +80,9 @@
       <if test="patstate != null">
         patstate = #{patstate,jdbcType=INTEGER},
       </if>
+      <if test="payuserdate != null">
+        payuserdate = #{payuserdate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where userpayid = #{userpayid,jdbcType=INTEGER}
   </update>
@@ -81,7 +91,59 @@
     set `uid` = #{uid,jdbcType=VARCHAR},
       paymentid = #{paymentid,jdbcType=INTEGER},
       paymoney = #{paymoney,jdbcType=DECIMAL},
-      patstate = #{patstate,jdbcType=INTEGER}
+      patstate = #{patstate,jdbcType=INTEGER},
+      payuserdate = #{payuserdate,jdbcType=TIMESTAMP}
     where userpayid = #{userpayid,jdbcType=INTEGER}
   </update>
+
+<!--  sal-->
+
+  <select id="selectAllByQuery" resultType="com.work.boot.pojo.vo.PayuserVo">
+    select <include refid="Base_Column_List" />
+    from payuser
+    <where>
+<!--      <if test="name != null and name!=''">-->
+<!--        and name like CONCAT('%',#{name},'%')-->
+<!--      </if>-->
+<!--      <if test="flag != null and flag!=''">-->
+<!--        and flag like CONCAT('%',#{flag},'%')-->
+<!--      </if>-->
+<!--      <if test="note != null and note!=''">-->
+<!--        and note like CONCAT('%',#{note},'%')-->
+<!--      </if>-->
+<!--      <if test="system != null">-->
+<!--        and system=#{system}-->
+<!--      </if>-->
+    </where>
+    limit #{start},#{limit}
+
+
+
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">
+    select     count(userpayid)
+    from payuser
+    <where>
+      <!--      <if test="name != null and name!=''">-->
+      <!--        and name like CONCAT('%',#{name},'%')-->
+      <!--      </if>-->
+      <!--      <if test="flag != null and flag!=''">-->
+      <!--        and flag like CONCAT('%',#{flag},'%')-->
+      <!--      </if>-->
+      <!--      <if test="note != null and note!=''">-->
+      <!--        and note like CONCAT('%',#{note},'%')-->
+      <!--      </if>-->
+      <!--      <if test="system != null">-->
+      <!--        and system=#{system}-->
+      <!--      </if>-->
+    </where>
+    limit #{start},#{limit}
+
+  </select>
+    <select id="selectAll" resultType="com.work.boot.pojo.entity.Payuser">
+      select <include refid="Base_Column_List" />
+      from payuser
+    </select>
+
+
 </mapper>
