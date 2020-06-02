@@ -24,8 +24,8 @@ public class SpringTaskTest {
     @Resource
     private PayuserService payuserService;
 
-//    @Scheduled(cron = "0/2 * * * * ?")
-    @Scheduled(cron = "0 15 10 L * ?")
+    @Scheduled(cron = "0/60 * * * * ?")
+//    @Scheduled(cron = "0 15 10 L * ?")
     public void addUser() {// 单线程
         try {
             System.err.println("定时扣钱了哦" + System.currentTimeMillis() / 1000);

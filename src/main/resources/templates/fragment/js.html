@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="js">
+    <!--  layui自带jquery-->
+
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.5.0.js}"></script>
+    <link th:href="@{/layui/css/layui.css}" type="text/css" rel="stylesheet">
+    <script th:inline="javascript" type="text/javascript">
+
+
+        //图片上传预览功能,file:指的是文件,img指的JS dom对象q("#carPhoto")[0]
+        function imgPreview(file, imgDom) {
+            //判断是否支持FileReader
+            if (window.FileReader) {
+                var reader = new FileReader();
+            } else {
+                alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+            }
+            var imageType = /^image\//;
+            //是否是图片
+            if (!imageType.test(file.type)) {
+                alert("请选择图片！");
+                return;
+            }
+            //读取完成
+            reader.onload = function (e) {
+                //获取图片dom
+                //图片路径设置为读取的图片
+                imgDom.src = e.target.result;
+
+            };
+            reader.readAsDataURL(file);
+        }
+
+
+        var windowH = window.innerHeight;// 获取窗口的高度
+        var windowW = window.innerWidth;// 获取窗口的宽度
+
+        //是微信内置浏览器返回true。判断是否是微信内置浏览器的
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // 设置cookie的
+        function setCookie(name, value, days) {
+            if (days == null || days == undefined) {
+                days = 7;
+            }
+            var exp = new Date();
+            exp.setTime(exp.getTime() + days * 24 * 60 * 60 * 1000);
+            document.cookie = name + "=" + value + ";expires=" + exp.toGMTString() + ";path=/";
+        }
+
+        // 获取Cookie
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                return unescape(arr[2]);
+            else
+                return null;
+        }
+
+
+        // 删除Cookie，把过期时间设置为-1
+        function delCookie(name) {
+            var exp = new Date();
+            exp.setTime(exp.getTime() - 1);
+            var cval = getCookie(name);
+            if (cval != null)
+                document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+        }
+
+        //是手机返回true
+        function isMobile() {
+            var userAgentInfo = navigator.userAgent;
+            var mobileAgents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+            var mobile_flag = false;
+            //根据userAgent判断是否是手机
+            for (var v = 0; v < mobileAgents.length; v++) {
+                if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                    mobile_flag = true;
+                    break;
+                }
+            }
+            var screen_width = window.screen.width;
+            var screen_height = window.screen.height;
+            //根据屏幕分辨率判断是否是手机
+            if (screen_width < 500 && screen_height < 800) {
+                mobile_flag = true;
+            }
+            if (screen_width < 800 && screen_height < 500) {
+                mobile_flag = true;
+            }
+            return mobile_flag;
+        }
+
+    </script>
+</div>
+</html>

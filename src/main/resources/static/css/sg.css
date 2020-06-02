@@ -1,0 +1,19 @@
+@media screen and (min-width: 768px) {
+    .sg-container {
+        width: 750px
+    }
+}
+
+
+@media screen and (min-width: 992px) {
+    .sg-container {
+        width: 970px
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .sg-container {
+        width: 970px
+    }
+}
+

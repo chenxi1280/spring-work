@@ -2,6 +2,7 @@ package com.work.boot.controller;
 
 
 
+import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.User;
 import com.work.boot.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/user")
@@ -156,6 +158,25 @@ public class UserController {
     public String adduserhtml() {
 
         return "adduser";
+
+    }
+
+    @RequestMapping("/addmoneyhtml")
+
+    public String addmoneyhtml() {
+
+        return "addmoney";
+
+    }
+
+
+    @RequestMapping("/addusermoney")
+    @ResponseBody
+    public ResponseDTO addusermoney(String uid, BigDecimal money) {
+
+
+        return userService.addusermoney(uid,money);
+
 
     }
 

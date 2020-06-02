@@ -1,11 +1,13 @@
 package com.work.boot.service;
 
+import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 public interface UserService {
 
@@ -34,4 +36,5 @@ public interface UserService {
 
     ResultData datatest();
 
+    ResponseDTO addusermoney(String uid, BigDecimal money);
 }

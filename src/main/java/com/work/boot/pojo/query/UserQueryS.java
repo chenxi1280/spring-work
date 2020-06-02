@@ -4,15 +4,14 @@ import com.work.boot.pojo.entity.User;
 import lombok.Data;
 
 /**
- * @Classname UserQuery
+ * @Classname UserQueryS
  * @Description TODO
- * @Date 2020/5/27 19:10
+ * @Date 2020/6/3 0:04
  * @CreateComputer by PC
  * @Created by cxd
  */
 @Data
-public class UserQuery extends User {
-    private String name;
-
+public class UserQueryS extends User {
+    private String code;
 
 }

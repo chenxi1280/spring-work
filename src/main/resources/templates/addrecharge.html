@@ -6,74 +6,56 @@
 </head>
 <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
 <script type="text/javascript" src="/layui/layui.js"></script>
+
 <script type="text/javascript" src="/js/date.js"></script>
 <body>
-<div  style="width: 600px ; margin: 50px auto" >
-    <form class="layui-form" >
-        <DIV style="height: 100px"></DIV>
+<div class="layui-row" style="margin: 10px auto; width: 50%">
+    ID：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="useruid" autocomplete="off">
+    </div>
+    名字：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="username" autocomplete="off">
+    </div>
+    电话号码：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="userphone" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload" id="find">
+        <i class="layui-icon ">&#xe615;</i>
+    </button>
 
 
-        <!--        <input type="text" id="pid" name="paymentid" style="display: none">-->
-        <div class="layui-form-item" style="width: 200px">
-            <label class="layui-form-label">充值用户用户名</label>
-            <div class="layui-input-block">
-                    <input type="text" id="uname"   name="uname"
-                           placeholder="输入登录名即可"
-                           style="width: 200px" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item" style="width: 200px">
-            <label class="layui-form-label">充值用户电话号码</label>
-            <div class="layui-input-block">
-                <input type="text" id="uphone"  lay-verify="required|number" name="uphone"
-                       placeholder="输入登录名即可"
-                       style="width: 200px" class="layui-input">
-            </div>
-        </div>
-
-
-
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="comedit">立即提交</button>
-            </div>
-        </div>
-
-    </form>
 </div>
-<script type="text/html" id="addeva" th:inline="javascript" >
-    <form class="layui-form" style="padding: 20px ">
-        <div class="layui-form-item" style="width: 200px">
-            <label class="layui-form-label">选择用户</label>
-            <div class="layui-input-block">
-                <select name="uid" id="paymentname" lay-filter="paymentname" >
+<table class="layui-hide" id="userdemo" lay-filter="usertest"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 
+</script>
 
-
-                </select>
-            </div>
-        </div>
-
-
+<script type="text/html" id="editForm">
+    <form class="layui-form" style="padding: 20px">
+        <input type="text" name="uid" id="uid"
+               style="display: none" >
 
         <div class="layui-form-item">
-            <label class="layui-form-label">缴费金额</label>
+            <label class="layui-form-label">商品原价</label>
             <div class="layui-input-block">
-                <input type="text" id="paymentmoney"  lay-verify="required|number" name="addmoney"
-                       placeholder="金额单位为每月收取"
+                <input type="text" name="money" id="money" placeholder="请输入充值金额" lay-verify="number"
                        style="width: 200px" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="commitadd">立即提交</button>
+                <button class="layui-btn" id="sureEdit" lay-submit lay-filter="sureEdit">确定充值</button>
             </div>
         </div>
-
-
     </form>
 </script>
+
+
 <script th:inline="javascript" type="text/javascript">
     layui.use(['layer', 'table', 'form'], function () {
 
@@ -85,17 +67,156 @@
         let data;
 
 
+        //执行一个 table 实例
+        table.render({
+            //绑定body里面的table标签-->id
+            elem: '#userdemo',
+            //table表格的高度
+            height: 600,
+            //请求后台的地址(获取video的视频信息)
+            url: '/user/getusers',
+            //表格的名称
+            title: '用户表',
+            //开启分页
+            page: true,
+            //表头工具栏
+            //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            toolbar: '#bar',
+            //异步请求时 解析数据的方式
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.status, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.total, //解析数据长度
+                    "data": res.item //解析数据列表
+                };
+            },
+
+            //生成table表头(手动编写)-->解析后台的数据
+            cols: [
+                [ //表头
+                    {
+                        type: 'checkbox',
+                        fixed: 'left'
+                    }, {
+                    field: 'uid',
+                    title: 'ID',
+                    sort: true,
+                    width: 100,
+                    fixed: 'left'
+                }, {
+                    field: 'uusername',
+                    title: '业主名字',
+                    align: 'center',
+                    edit: 'text',
+
+                }, {
+                    field: 'uimg',
+                    title: '照片',
+                    align: 'center',
+                    templet: function (d) {
+                        var path = d.uimg;
+                        console.log(path)
+                        //需要一个图片标签进行图片展示
+                        return "<img src='../" + path + "' style='width: 150px; height: 150px;'/>"
+                    }
+                }, {
+                    field: 'ubroom',
+                    title: '地址',
+                    align: 'center',
+                    edit: 'text',
+                }, {
+                    field: 'uphoneid',
+                    title: '联系方式',
+
+                    align: 'center',
+                    edit: 'text',
+                }, {
+                    field: 'cstate',
+                    title: '是否为本小区的用户',
+                    width: 150,
+                    align: 'center',
+                    templet: function (v) {
+
+
+                        if (v.cstate == 1) {
+                            return '是'
+                        } else {
+                            return '否';
+                        }
+                    }
+
+                }, {
+                    field: 'aid',
+                    title: '创建员工',
+                    width: 150,
+                    align: 'center'
+
+                }, {
+                    field: 'ucreatedate',
+                    title: '创建时间',
+                    sort: true,
+                    align: 'center',
+                    templet: function (d) {
+
+                        // date.setTime(d.ucreatedate);
+
+                        // return date.Format("yyyy-MM-dd hh:mm:ss");
+
+                        return showTime(d.ucreatedate);
+                    }
+                },
+                    // {
+                    //     field: 'likeCounts',
+                    //     title: '点赞次数',
+                    //
+                    //     align:'center'
+                    // }, {
+                    //     field: 'status',
+                    //     title: '状态',
+                    //
+                    //     align:'center'
+                    // },
+                    {
+                        fixed: 'right',
+                        width: 165,
+                        align: 'center',
+                        toolbar: '#barDemo'
+                    }
+                ]
+            ]
+        });
+
+        table.on('tool(usertest)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
 
 
 
-        form.on('submit(comedit)', function (data) {
+            //查看
+            if (layEvent === 'detail') {
+                layer.open({
+                    type: 1,
+                    title: '充值',
+                    area: ['50%', '80%'],
+                    content: $("#editForm").html(),
+
+
+                })
+                $("#uid").val(data.uid);
+                console.log(data.uid)
+                form.render();
+            }
+
+        })
+
+        form.on('submit(sureEdit)', function (data) {
             let formData = new FormData(data.form);
-
+            // formData.append("uid", $("#sureEdit")[0].uid);
             // 添加一个文件呢？
             // 添加文件的步骤：首先，第一步：获取file的jsDom对象
             $.ajax({
-                url: "/payuser/ajaxrecharge",// 请求数据服务器地址，只能是当前项目，JSONP才能访问外网（需要服务器配合才能用）
-
+                url: "/user/addusermoney",// 请求数据服务器地址，只能是当前项目，JSONP才能访问外网（需要服务器配合才能用）
                 contentType: false,// 默认就是表单数据(不写)，如果此时要传递的是json字符串，
                 // 那么此时就用application/json,如果此时要传递图片"multipart/form-data，还有数组，集合，还有对象，那么contentType必须指定为false
                 data: formData,// 要上传的参数
@@ -104,26 +225,13 @@
 
                 },
                 processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
-                success: function (re) {// 请求成功，回调函数,data，指的就是服务器返回的数据
-                    if (re.status == 200) {
-                        layer.open({
-
-
-                        })
-                        data = re.data
-
-                        data.forEach( pay => {
-                            let ht = $("<option value="+pay.uid+" >"+pay.+"</option>")
-                            $("#paymentname").append(ht)
-                            form.render()
-                        })
-
-                    } else {
-                        layer.alert(re.msg, {
-                            icon: 2
-                        }, function (index) {
-                            layer.close(index)
-                        })
+                success: function (res) {// 请求成功，回调函数,data，指的就是服务器返回的数据
+                    if (res.res) {
+                        layer.msg(res.msg);
+                        // tb.reload();// 添加成功数据之后要重载表格
+                        if (editOpen != undefined) {
+                            layer.close(editOpen);
+                        }
                     }
                 },
                 type: 'post',// ajax请求的方式，post或get
@@ -132,43 +240,6 @@
         });
 
 
-        form.on('submit(commitadd)', function (data) {
-            let formData = new FormData(data.form);
-
-
-            // 添加一个文件呢？
-            // 添加文件的步骤：首先，第一步：获取file的jsDom对象
-            $.ajax({
-                url: "/payment/ajaxaddmoney",// 请求数据服务器地址，只能是当前项目，JSONP才能访问外网（需要服务器配合才能用）
-
-                contentType: false,// 默认就是表单数据(不写)，如果此时要传递的是json字符串，
-                // 那么此时就用application/json,如果此时要传递图片"multipart/form-data，还有数组，集合，还有对象，那么contentType必须指定为false
-                data: formData,// 要上传的参数
-                dataType: 'json',// 服务器响应数据：json,text,html,xml
-                error: function () {//请求错误的时候，会触发此函数
-
-                },
-                processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
-                success: function (re) {// 请求成功，回调函数,data，指的就是服务器返回的数据
-                    if (re.status == 200) {
-                        layer.alert(re.msg, {
-                            icon: 1
-                        }, function (index) {
-                            layer.close(index)
-
-                        })
-                    } else {
-                        layer.alert(re.msg, {
-                            icon: 2
-                        }, function (index) {
-                            layer.close(index)
-                        })
-                    }
-                },
-                type: 'post',// ajax请求的方式，post或get
-            });
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-        });
 
     });
 

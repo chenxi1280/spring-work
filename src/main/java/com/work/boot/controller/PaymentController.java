@@ -58,4 +58,8 @@ public class PaymentController {
 
         return payuserService.ajaxeditpayment(paymentQuery);
     }
+    @RequestMapping("/addpayuser")
+    public String addpayuser(){
+        return "addrecharge";
+    }
 }

@@ -91,15 +91,26 @@ public class HomeController {
 
     @RequestMapping("/loginh")
     public String loginh() {
-
         return "login";
+    }
+
+    @RequestMapping("/homeindex")
+    public String homeindex() {
+
+        return "homeindex";
+
+    }
+    @RequestMapping("/main")
+    public String main() {
+
+        return "main";
 
     }
 
-    @RequestMapping("/logintest")
-    public String logintest() {
+    @RequestMapping("/loginPage")
+    public String loginPage() {
 
-        return "login-1";
+        return "loginPage";
 
     }
 

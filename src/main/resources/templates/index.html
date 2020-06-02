@@ -20,6 +20,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+<!--                    <i class="layui-icon layui-icon-username" style="font-size: 30px;"></i>-->
                     <span th:text="${session.user.getUusername()}"></span>
                 </a>
                 <dl class="layui-nav-child">
@@ -48,7 +49,7 @@
                     <a href="javascript:;" th:if="${session.user.getTypeid() >= 2}">业主管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/user/showuser" th:href="@{/user/showuser}" target="main">业主信息</a></dd>
-                        <dd><a href="javascript:;">业主成员</a></dd>
+<!--                        <dd><a href="javascript:;">业主成员</a></dd>-->
                         <dd><a href="javascript:;">绑定业主</a></dd>
 
                     </dl>
@@ -58,12 +59,12 @@
                     <a href="javascript:;">费用管理</a>
                     <dl class="layui-nav-child">
 
-                        <dd><a href="javascript:;" th:if="${session.user.getTypeid() >= 2}">添加收费</a></dd>
-                        <dd><a href="/payment/setpay" th:href="@{/payment/setpay}" target="main">物业收费</a></dd>
-                        <dd><a href="javascript:;">缴费清单</a></dd>
-                        <dd><a href="javascript:;">车位收费</a></dd>
-                        <dd><a href="javascript:;">临时车位缴费清单</a></dd>
-                        <dd><a href="/payuser/payuserhtml" th:href="@{/payuser/payuserhtml}" target="main">费用总汇</a></dd>
+                        <dd><a href="/payment/addpayuser;" th:href="@{/payment/addpayuser}" target="main" >充值</a></dd>
+                        <dd><a href="/payment/setpay" th:href="@{/payment/setpay}" target="main">收费设置</a></dd>
+<!--                        <dd><a href="javascript:;">车位收费</a></dd>-->
+<!--                        <dd><a href="javascript:;">临时车位缴费清单</a></dd>-->
+                        <dd><a href="/payuser/payuserhtml" th:href="@{/payuser/payuserhtml}" target="main">费用清单</a></dd>
+                        <dd><a href="javascript:;">缴费汇总</a></dd>
 
                     </dl>
                 </li>
@@ -76,52 +77,52 @@
                         </dd>
                         <dd><a href="/messages/showmessages" th:href="@{/messages/showmessages}" target="main">公告管理</a>
                         </dd>
-                        <dd><a href="/messages/addmessageshtml" th:href="@{/messages/addmessageshtml}" target="main">访客登记</a>
-                        </dd>
-                        <dd><a href="javascript:;">投诉建议</a></dd>
-                        <dd><a href="javascript:;">投诉单</a></dd>
+<!--                        <dd><a href="/messages/addmessageshtml" th:href="@{/messages/addmessageshtml}" target="main">访客登记</a>-->
+<!--                        </dd>-->
+<!--                        <dd><a href="javascript:;">投诉建议</a></dd>-->
+<!--                        <dd><a href="javascript:;">投诉单</a></dd>-->
 
 
                     </dl>
                 </li>
 
+<!--                <li class="layui-nav-item">-->
+<!--                    <a href="javascript:;">投诉管理</a>-->
+<!--                    <dl class="layui-nav-child">-->
+
+<!--                        <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/getguarantee}"-->
+<!--                               target="main">投诉建议</a></dd>-->
+<!--                        <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/getguarantee}" target="main">投诉单</a>-->
+<!--                        </dd>-->
+
+<!--                    </dl>-->
+<!--                </li>-->
+
                 <li class="layui-nav-item">
-                    <a href="javascript:;">投诉管理</a>
-                    <dl class="layui-nav-child">
-
-                        <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/getguarantee}"
-                               target="main">投诉建议</a></dd>
-                        <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/getguarantee}" target="main">投诉单</a>
-                        </dd>
-
-                    </dl>
-                </li>
-
-                <li class="layui-nav-item">
-                    <a href="javascript:;">报修管理</a>
+                    <a href="javascript:;">报修投诉</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/guarantee/showmyguaratee" th:href="@{/guarantee/showmyguaratee}" target="main">
-                            自己的保修信息</a></dd>
+                            自己的保修投诉信息</a></dd>
                         <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/getguarantee}" target="main">
-                            报修信息</a></dd>
+                            报修投诉信息</a></dd>
                         <dd><a href="/guarantee/getguarantee" th:href="@{/guarantee/addguarantee}" target="main">
-                            报修单</a></dd>
+                            报修投诉单</a></dd>
 
                     </dl>
                 </li>
 
 
-                <li class="layui-nav-item" th:if="${session.user.getTypeid() >= 2}">
-                    <a href="javascript:;">门禁管理</a>
-                    <dl class="layui-nav-child">
+<!--                <li class="layui-nav-item" th:if="${session.user.getTypeid() >= 2}">-->
+<!--                    <a href="javascript:;">门禁管理</a>-->
+<!--                    <dl class="layui-nav-child">-->
 
-                        <dd><a href="javascript:;">设备信息</a></dd>
-                        <dd><a href="javascript:;">访客登记</a></dd>
-                        <dd><a href="javascript:;">开门记录</a></dd>
-                        <dd><a href="javascript:;">钥匙管理</a></dd>
+<!--                        <dd><a href="javascript:;">设备信息</a></dd>-->
+<!--                        <dd><a href="javascript:;">访客登记</a></dd>-->
+<!--                        <dd><a href="javascript:;">开门记录</a></dd>-->
+<!--                        <dd><a href="javascript:;">钥匙管理</a></dd>-->
 
-                    </dl>
-                </li>
+<!--                    </dl>-->
+<!--                </li>-->
 
                 <li class="layui-nav-item" th:if="${session.user.getTypeid() >= 2}">
                     <a href="javascript:;">组织管理</a>
@@ -129,21 +130,21 @@
 
                         <dd><a href="/user/showuser" th:href="@{/admin/showadmin}" target="main">员工信息</a></dd>
                         <dd><a href="javascript:;">权限管理</a></dd>
-                        <dd><a href="javascript:;">小区设备</a></dd>
+<!--                        <dd><a href="javascript:;">小区设备</a></dd>-->
 
                     </dl>
                 </li>
 
-                <li class="layui-nav-item" th:if="${session.user.getTypeid() >= 2}">
-                    <a href="javascript:;">巡检管理</a>
-                    <dl class="layui-nav-child">
+<!--                <li class="layui-nav-item" th:if="${session.user.getTypeid() >= 2}">-->
+<!--                    <a href="javascript:;">巡检管理</a>-->
+<!--                    <dl class="layui-nav-child">-->
 
-                        <dd><a href="javascript:;">巡检点</a></dd>
-                        <dd><a href="javascript:;">巡检路线</a></dd>
-                        <dd><a href="javascript:;">巡检计划</a></dd>
+<!--                        <dd><a href="javascript:;">巡检点</a></dd>-->
+<!--                        <dd><a href="javascript:;">巡检路线</a></dd>-->
+<!--                        <dd><a href="javascript:;">巡检计划</a></dd>-->
 
-                    </dl>
-                </li>
+<!--                    </dl>-->
+<!--                </li>-->
 
 
             </ul>
@@ -154,7 +155,7 @@
         <!-- 内容主体区域 -->
         <!--        <div style="padding: 15px;">内容主体区域</div>-->
 
-        <iframe src="templates/2.html" width="100%" height="100%" name="main"></iframe>
+        <iframe src="/home/homeindex" width="100%" height="100%" name="main"></iframe>
 
     </div>
 

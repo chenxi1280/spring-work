@@ -3,6 +3,7 @@ package com.work.boot.service.impl;
 import com.work.boot.dao.AdminDao;
 import com.work.boot.dao.UserDao;
 import com.work.boot.pojo.dto.RData;
+import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.Admin;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -318,6 +320,19 @@ public class UserServiceImpl implements UserService {
 
         return  resultData;
 
+    }
+
+    @Override
+    @Transactional
+    public ResponseDTO addusermoney(String uid, BigDecimal money) {
+        if (money.compareTo(BigDecimal.ZERO) == 1) {
+            User user = userDao.selectByPrimaryKey(uid);
+            BigDecimal mymoney = user.getMymoney();
+            BigDecimal add = mymoney.add(money);
+            userDao.updatemoneyByid(uid,add);
+            return ResponseDTO.ok("成功", 200);
+        }
+        return ResponseDTO.ok("失败", 500);
     }
 
 

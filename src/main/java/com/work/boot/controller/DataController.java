@@ -24,7 +24,7 @@ public class DataController {
     private UserService userService ;
     @RequestMapping("/showdate")
     public String showadmin() {
-        return "getcitydemo";
+        return "homeindex";
     }
 
     @RequestMapping("/getcity")

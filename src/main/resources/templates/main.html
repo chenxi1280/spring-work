@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta charset="UTF-8">
+    <title>闪购管理后台</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <style type="text/css">
+        .layui-nav-child {
+            padding: 0;
+        }
+    </style>
+</head>
+<div th:replace="fragment/js::js"></div>
+<link rel="stylesheet" th:href="@{/layui/css/home.css}" media="all">
+<body class="layui-layout-body">
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 -->
+        <div class="layui-header">
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layadmin-flexible">
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩" id="leftMove">
+                        <i class="layui-icon layui-icon-shrink-right" id="flexible"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs">
+                    <a onclick="window.location=dom" target="_blank" title="前台">
+                        <i class="layui-icon layui-icon-website"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a id="refresh" title="刷新">
+                        <i class="layui-icon layui-icon-refresh-3"></i>
+                    </a>
+                </li>
+
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+
+                <li class="layui-nav-item">
+                    <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
+                        <i class="layui-icon layui-icon-notice" style="color:black"></i>
+
+                        <!-- 如果有新消息，则显示小圆点 -->
+                        <span class="layui-badge-dot"></span>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item layui-hide-xs">
+                    <a href="javascript:;" layadmin-event="note">
+                        <i class="layui-icon layui-icon-note"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs">
+                    <a href="javascript:;" layadmin-event="fullscreen" id="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <div style="display: flex;align-items: center">
+                        <img th:src="${session.photo}" style="width: 30px;height: 30px;border-radius: 100%"/>
+                        <a href="javascript:;">
+                            <cite th:text="${session.nickName}">5秒真男人</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a lay-href="set/user/info.html">基本资料</a></dd>
+                            <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                            <hr>
+                            <dd layadmin-event="logout" style="text-align: center;"><a th:href="@{/logout}">退出</a></dd>
+                        </dl>
+                    </div>
+                </li>
+                <li class="layui-nav-item layui-hide-xs">
+                    <a href="javascript:;" layadmin-event="about"><i
+                            class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm">
+                    <a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu" id="leftMenuDiv">
+            <div class="layui-side-scroll">
+                <div class="layui-logo">
+                    <span>物业系统</span>
+                </div>
+                <ul class="layui-nav layui-nav-tree " id="sideMenu">
+                    <li class="layui-nav-item " th:each="r:${session.hisRoles}">
+                        <!--                        <div th:if="${r.name} != '基础权限' ">-->
+                        <a href="javascript:;" name="superMarketMenu">
+                            <i th:class="${r.icon}+' layui-icon'" ></i>
+                            <cite th:text="${r.name}" th:if="${r.name} != '基础权限'">角色名称</cite>
+                        </a>
+                        <dl class="layui-nav-child" th:each="p:${r.permissionVOS}" th:if="${p.show}">
+                            <dd data-name="button">
+                                <a th:lay-href="@{${p.url}}" th:text="${p.name}">角色列表</a>
+                            </dd>
+                        </dl>
+                        <!--                        </div>-->
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;"></a>
+                        <dl class="layui-nav-child layui-anim-fadein">
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab">
+                <ul class="layui-tab-title" id="tabUl">
+                    <li th:lay-href="@{/pages/back/dashBoard}">
+                        <i class="layui-icon layui-icon-home" style="color: black"></i></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body">
+            <iframe id="layadmin-iframe" th:src="@{/pages/back/dashBoard}" frameborder="0"
+                    class="layadmin-iframe"></iframe>
+        </div>
+        <!-- 辅助元素，一般用于移动设备下遮罩 -->
+        <div class="layadmin-body-shade" id="shade"></div>
+    </div>
+</div>
+<script th:inline="javascript" type="text/javascript">
+
+    layui.use('element', function () {
+        var element = layui.element;
+
+        let $ = layui.$;
+        let iframe = $("#layadmin-iframe");
+
+        $("[name=superMarketMenu]").click(function () {
+            $(".layui-nav-child").css({
+                padding: 0
+            })
+        });
+        $("#sideMenu [lay-href]").hover(function () {
+            $(this).css({
+                color: 'white'
+            });
+        }, function () {
+            if (iframe.attr("src") != $(this).attr("lay-href")) {
+                $(this).css({
+                    color: 'rgba(255, 255, 255, .7)'
+                });
+            }
+        });
+        $("[lay-href]").click(function () {
+            let thisJobj = $(this);// 把jsDom对象转换程jquery对象
+            let txt = thisJobj.text();
+            $("#sideMenu [lay-href]").css({
+                color: 'rgba(255, 255, 255, .7)'
+            });
+            $("[lay-href]").parent().removeClass('layui-this');
+            let src = thisJobj.attr("lay-href");
+            thisJobj.parent().addClass('layui-this');
+            thisJobj.css({
+                color: 'white'
+            });
+            let tabUl = $("#tabUl");
+            tabUl.children("li").removeClass('layui-this');
+            // 是否存在过当前点击的标签历史
+            let oldTag = tabUl.find("[lay-href='" + src + "']");
+
+            if (oldTag.length === 0) {// 不存在则新加一个历史标签
+                let tag = $(" <li  class=\"layui-this\" lay-href='" + src + "'>\n" +
+                    "                        <span >" + txt + "</span>\n" +
+                    "                        <i class=\"layui-icon layui-unselect layui-tab-close\">ဆ</i></li>")
+                tag.click(function (e) {
+                    let i = tag.children("i")[0];
+                    if (e.target == i) {// 如果点击的是关闭
+                        if (tag.attr("lay-href") == iframe.attr("src")) {// 如果移除的是当前标签的页面，那么默认选中这些标签中的下一个，如果下一个没有，选中最后一个
+                            let currentTag;
+
+                            if (tag[0] == $("#tabUl").children("li:last-child")[0]) {
+                                tag.remove();// 移除历史标签
+
+                                currentTag = $("#tabUl").children("li:last-child");
+                            } else {
+                                currentTag = tag.next();
+                                tag.remove();
+                            }
+                            currentTag.click();
+                        } else {
+                            tag.remove();// 移除历史标签
+                        }
+
+                    } else {
+                        iframe.attr("src", src);
+                        tabUl.children("li").removeClass('layui-this');
+                        tag.addClass('layui-this');
+                        $("[lay-href]").parent().removeClass('layui-this');
+                        $("#sideMenu [lay-href='" + src + "']").parent().addClass('layui-this');
+                    }
+
+                });
+                tabUl.append(tag);
+            } else {
+                oldTag.addClass('layui-this');
+            }
+            // 改变页面内容
+            iframe.attr('src', src);
+            if (isMobile()) {
+                $("#leftMove").click();
+
+            }
+        });
+        // 展开主页
+        $("[lay-tips='主页']").click();
+        // 刷新页面
+        $("#refresh").click(function () {
+            iframe.attr("src", iframe.attr("src"))
+        });
+        // 手动触发控制台
+        $("#dashBoard").click();
+
+        $("#leftMove").click(function () {
+            let menuDiv = $("#leftMenuDiv");
+            let offset = menuDiv.offset().left;
+            let layBody = $("#LAY_app_body");
+            let layTabs = $("#LAY_app_tabs");
+            let icon = $("#flexible");
+            if (offset === 0) {
+                $("#shade").css({display: 'none'})
+                layTabs.css({
+                    'left': '0',
+                });
+                layBody.css({
+                    'left': '0',
+
+                });
+                menuDiv.css({
+                    'transform': 'translate3d(-220px, 0, 0)',
+                    "-webkit-transform": 'translate3d(-220px, 0, 0)',
+                });
+                icon.removeClass('layui-icon-shrink-right');
+                icon.addClass('layui-icon-spread-left');
+            } else {
+                if (isMobile()) {// 如果是手机，打开遮罩
+                    $("#shade").css({display: 'block'})
+                }
+                menuDiv.css({
+                    'transform': 'translate3d(0, 0, 0)',
+                    "-webkit-transform": 'translate3d(0, 0, 0)',
+                });
+                layBody.css({
+                    'left': '220px',
+                });
+                layTabs.css({
+                    'left': '220px',
+                });
+                icon.removeClass('layui-icon-spread-left');
+                icon.addClass('layui-icon-shrink-right');
+            }
+
+        })
+    });
+    $("#shade").click(function () {
+        $("#leftMove").click();
+    });
+    $("#fullscreen").click(function () {
+        toggleFullScreen();
+    });
+
+    /**
+     * 切换全屏与否
+     */
+    function toggleFullScreen() {
+        // alternative standard method
+        if (!document.fullscreenElement &&
+            !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {  // current working methods
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+    }
+
+</script>
+
+</body>
+</html>
+
+

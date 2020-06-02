@@ -25,20 +25,12 @@
 </style>
 
 <body>
-省份：<select id="province">
-    <option>请选择省份</option>
-</select>
-城市：<select id="city">
-    <option>请选择省份</option>
-</select>
-地区：<select id="district">
-    <option>请选择省份</option>
-</select>
-<br>
 
 
-<div class="layui-carousel" id="carouselView">
+
+<div class="layui-carousel" id="carouselView" style="margin: 20px auto">
     <div carousel-item="" id="preview">
+
     </div>
 </div>
 
@@ -56,9 +48,9 @@
                 },
                 dataType:'json',
                 success:function (data) {
-
+                    console.log(data)
                     data.item.forEach(value => {
-                        var str = ' <div class="word" style="width: 600px;height: 320px; color: #e3e3e3"><img src="/img/work.png/"> <p >'+value.name+ '</p> <p>'+value.value+'</p></div> ';
+                        var str = ' <div class="word" style="width: 600px;height: 320px; color: black;"><h1 >'+value.name+ '</h1><div style="height: 20px"></div> <p>'+value.value+'</p></div> ';
                         $('#preview').append(str);
 
                     })
@@ -97,34 +89,4 @@
 
 
 </body>
-
-<script>
-
-
-    var province = $('#province')
-
-
-    $.ajax({
-
-        url: 'http://localhost:8080/date/getcity',  // 请求的地址
-        // async: true,
-        type: 'get',
-        // contentType : 'pplication/json',
-        dataType: "json",
-        success: function (_data) {
-            // console.log(_data)
-            _data.list.forEach((v) => {
-                // console.log(v.name)
-
-                let a = $("<option value='" + v.value + " '>" + v.name + " </option>")
-
-                province.append(a)
-
-            })
-
-        },
-    })
-
-
-</script>
 </html>

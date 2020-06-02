@@ -121,7 +121,7 @@
 
   </select>
   <select id="selectCount" resultType="java.lang.Integer">
-    select     count(userpayid)
+    select     count(*)
     from payuser
     <where>
       <!--      <if test="name != null and name!=''">-->
@@ -137,7 +137,7 @@
       <!--        and system=#{system}-->
       <!--      </if>-->
     </where>
-    limit #{start},#{limit}
+
 
   </select>
     <select id="selectAll" resultType="com.work.boot.pojo.entity.Payuser">

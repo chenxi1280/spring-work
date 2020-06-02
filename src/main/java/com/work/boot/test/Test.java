@@ -16,6 +16,13 @@ public class Test {
             System.out.println(i1);
         }
 
+
+    }
+    int a(){
+        return 1;
+    }
+    String a(int a){
+        return "";
     }
 }
 
