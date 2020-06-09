@@ -95,7 +95,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                     var path = d.uimg;
                     console.log(path)
                     //需要一个图片标签进行图片展示
-                    return "<img src='../" + path + "' style='width: 150px; height: 150px;'/>"
+                    return "<img showBig src='../" + path  + "' style='width: 150px; height: 150px;'/>"
                 }
             }, {
                 field: 'ubroom',
@@ -166,6 +166,21 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
             showBigImg();// 渲染大图查看，给这些图片绑定点击事件
         }
     });
+
+
+    function showBigImg() {// 渲染大图查看
+        $("img[showBig]").unbind("click").click(function () {// 先解除绑定，再绑定，绑定图片点击事件，否则会出现绑定两次点击事件
+            let bigImg = layer.open({// 弹框之后，如遇到select标签，radio,checkbox之类，需要使用表单渲染
+                type: 1,
+                offset: '10px',
+                area: ['60%','90%'],
+                title: "大图展示",
+                shadeClose: true,
+                content: $("#showBigImgDiv").html()
+            });
+            $("#showBigImg")[0].src = this.src;
+        });
+    }
 
     //监听头工具栏事件   监听绑定表
     table.on('toolbar(usertest)', function (obj) {

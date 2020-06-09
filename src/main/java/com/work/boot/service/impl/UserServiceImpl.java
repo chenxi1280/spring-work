@@ -4,11 +4,9 @@ import com.work.boot.dao.AdminDao;
 import com.work.boot.dao.PermissionDao;
 import com.work.boot.dao.RoleDao;
 import com.work.boot.dao.UserDao;
-import com.work.boot.pojo.dto.RData;
-import com.work.boot.pojo.dto.ResponseDTO;
-import com.work.boot.pojo.dto.Result;
-import com.work.boot.pojo.dto.ResultData;
+import com.work.boot.pojo.dto.*;
 import com.work.boot.pojo.entity.Admin;
+import com.work.boot.pojo.entity.Role;
 import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
@@ -407,7 +405,7 @@ public class UserServiceImpl implements UserService, BaseService {
     @Override
     public boolean checkPhoneExist(String phone) {
 
-        return  userDao.checkPhoneExist(phone) != null;
+        return  userDao.checkPhoneExist(phone) == null;
     }
 
     @Override
@@ -425,6 +423,13 @@ public class UserServiceImpl implements UserService, BaseService {
 
     @Override
     public ResponseDTO add(User user) {
+        UserVO userVO = userDao.selectUserByPhone(user.getUphoneid());
+
+        if (userVO != null){
+
+            return ResponseDTO.fail("用户已经注册");
+        }
+        user.setTypeid(0);
         user.setMymoney(new BigDecimal(0));
         user.setUusername(user.getUname());
         user.setUcreatedate(new Date());
@@ -471,6 +476,69 @@ public class UserServiceImpl implements UserService, BaseService {
 
 
         return ResponseDTO.get(userDao.updateByPrimaryKeySelective(newuser) == 1 );
+    }
+
+
+    @Override
+    public ResponseDTO dispatchUserPermission(String userId, List<Role> roles) {
+        TreeSet treeSet = new TreeSet();// 就是装最后分配好的角色id
+        // 1、先把权限字符串取出来进行排序操作
+        // 当作查询参数,服务器也要对权限字符串进行排序
+        Set<String> collect = roles.stream().map(elem -> {
+            String permissions = elem.getPermissions();
+            if (StringUtils.isEmpty(permissions)) {
+                return "";// 这里返回空字符串才行
+            } else {
+                // StringUtils 和js中的join方法很强大
+                String[] split = permissions.split(",");
+                // 数组排序
+//                Arrays.sort(split);// 从小到大排序(这里要注意的是，如果是字符串，大小排序不是按照数字来的)
+                Arrays.sort(split, Comparator.comparingInt(Integer::valueOf));// 特别关键
+                // 就是这个方法，就是把数组直接变成字符串
+                return StringUtils.arrayToDelimitedString(split, ",");
+            }
+        }).collect(Collectors.toSet());
+        List<Role> roles1 = roleDao.selectByPermissions(collect);
+        Map<String, List<Role>> collect1 = roles1.stream().collect(Collectors.groupingBy(Role::getPermissions));
+        for (Role r : roles) {
+            List<Role> roles2 = collect1.get(r.getPermissions());// 从查询结果里边取角色
+            if (CollectionUtils.isEmpty(roles2)) {// 结果集里边没有这个角色，就需要新增角色
+//                r.setSystem(false);// 不是系统级
+                r.setNote("==> 新增角色：");
+                // 有没有RoleId有关系吗？
+                roleDao.insertSelective(r);
+                treeSet.add(r.getRoleId());
+            } else {
+                treeSet.add(roles2.get(0).getRoleId());
+            }
+        }
+        User u = new User();
+        u.setUid(userId);
+        u.setRole(StringUtils.collectionToDelimitedString(treeSet, ","));
+        return ResponseDTO.get(userDao.updateByPrimaryKeySelective(u) == 1);
+    }
+
+    @Override
+    public PageDTO ajaxadminlist() {
+
+        List<UserVO> list = userDao.selectAdminAll();
+
+        Integer count = userDao.selectByAdminCount();
+
+        list.forEach(v -> {
+
+            if (v.getRole().length()> 10 ){
+                v.setNote("最高权限");
+            } else if (v.getRole().length()  > 5 &&  v.getRole().length()  <= 10){
+                v.setNote("普通权限");
+            }else if (v.getRole().length() <=5 ){
+                v.setNote("员工权限");
+            }
+
+        });
+
+
+        return PageDTO.setPageData(count,list);
     }
 
     @Override

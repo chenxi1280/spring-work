@@ -2,15 +2,21 @@ package com.work.boot.controller;
 
 
 
+import com.work.boot.pojo.dto.PageDTO;
 import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Guarantee;
+import com.work.boot.pojo.entity.Role;
 import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
+import com.work.boot.pojo.vo.RoleVO;
+import com.work.boot.service.RoleService;
 import com.work.boot.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -28,10 +35,17 @@ public class UserController extends BaseController{
 //    @Qualifier("userServiceImpl ")
     private UserService userService;
 
+
+    @Resource
+    RoleService roleService;
+
+
     @RequestMapping("/showuser")
     public String showuser() {
+
         return "showuser";
     }
+
 
     //暂时无用
     @RequestMapping("/getAll")
@@ -216,6 +230,16 @@ public class UserController extends BaseController{
 
     }
 
+    @RequestMapping("/editbyid")
+    @ResponseBody
+    public ResponseDTO editbyid(User user,MultipartFile pic) {
+        String imgname = saveFile(pic, "/upload/user");
+        user.setUimg(imgname);
+        return userService.edit(user);
+
+
+    }
+
     @RequestMapping("/edit")
     @ResponseBody
     public ResponseDTO edit(User user) {
@@ -239,6 +263,35 @@ public class UserController extends BaseController{
 
 
     }
+
+
+    @RequestMapping("/ajaxadminlist")
+    @ResponseBody
+    public PageDTO ajaxadminlist(Model model) {
+//        PageDTO systemRoles = roleService.getSystemRoles();
+//        model.addAttribute("systemRoles", systemRoles.getData());
+        return userService.ajaxadminlist();
+
+
+    }
+
+
+    // 获取用户的角色
+    @RequestMapping("getUserRoles/{phone}")
+    @ResponseBody
+    List<RoleVO> getUserRoles(@PathVariable String phone) {
+        return userService.selectHisRolesByPhone(phone);
+    }
+
+    // 对用户进行角色和权限分配
+    @RequestMapping("dispatchUserPermission/{userId}")
+    @ResponseBody
+    ResponseDTO dispatchUserPermission(@PathVariable String userId, @RequestBody List<Role> roles) {
+
+        return userService.dispatchUserPermission(userId, roles);
+    }
+
+
 
 
 //    @RequestMapping("/toeditguarantee")

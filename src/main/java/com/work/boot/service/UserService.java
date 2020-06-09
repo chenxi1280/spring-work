@@ -1,14 +1,17 @@
 package com.work.boot.service;
 
+import com.work.boot.pojo.dto.PageDTO;
 import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.dto.ResultData;
+import com.work.boot.pojo.entity.Role;
 import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.query.UserQueryS;
 import com.work.boot.pojo.vo.PermissionVO;
 import com.work.boot.pojo.vo.RoleVO;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,4 +67,11 @@ public interface UserService {
     ResponseDTO edit(User user);
 
     ResponseDTO useraddusermoney(UserAddQurey user);
+
+    // 事务控制
+    @Transactional
+    ResponseDTO dispatchUserPermission(String userId, List<Role> roles);
+
+    PageDTO ajaxadminlist();
+
 }

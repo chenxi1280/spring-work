@@ -391,6 +391,19 @@
         </where>
 
     </select>
+    <select id="selectAdminAll" resultType="com.work.boot.pojo.vo.UserVO">
+        select <include refid="Base_Column_List" />
+        from user
+        where typeid = '1'
+
+
+    </select>
+    <select id="selectByAdminCount" resultType="java.lang.Integer">
+        select count(*)
+        from user
+        where typeid = 1
+
+    </select>
 
     <update id="updatemoneyByid">
         update user

@@ -63,4 +63,8 @@ public interface UserDao {
     UserVO checkPhoneExist(String phone);
 
     List<User> selectByPayUser(PayuserQuery payuserQuery);
+
+    List<UserVO> selectAdminAll();
+
+    Integer selectByAdminCount();
 }

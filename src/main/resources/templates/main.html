@@ -17,6 +17,74 @@
 </head>
 <div th:replace="fragment/js::js"></div>
 <link rel="stylesheet" th:href="@{/layui/css/home.css}" media="all">
+
+<script type="text/javascript" th:src="@{/lh/upload/upload.js}"></script>
+<script type="text/html" id="editUserFormDiv">
+    <div style="padding: 20px">
+        <form class="layui-form" id="userEditForm" lay-filter="userEditForm">
+            <input type="hidden" name="uid" th:value="${session.userId}"/>
+            <div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="uname" id="nickName" th:value="${session.uname}" required
+                               lay-verify="required"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="uusername" id="realName" th:value="${session.uusername}" required
+                               lay-verify="required"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password" id="password" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">图片</label>
+                    <div class="layui-input-block">
+                        <input type="file" id="editPic" name="pic" style="display: none">
+
+                        <div style="display: flex">
+                            <div>
+                                <img id="editUploadImg" th:src="${session.uimg}"
+                                     style="width: 80px;height: 80px;border-radius: 10px;border: lightgray 1px dashed;"/>
+                                <i class="layui-icon layui-icon-addition"
+                                   style="position: absolute;left: 35px;top: 35px;z-index: -1"></i>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-input-block">
+                        <div >
+                            <img th:src="${session.uimg}" style="width: 100px;height: 100px;"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block">
+                        <div style="padding: 10px 0">
+                            <button class="layui-btn " lay-submit lay-filter="userEditForm">修改</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+
+
+</script>
+
 <body class="layui-layout-body">
 <div id="LAY_app">
     <div class="layui-layout layui-layout-admin">
@@ -63,13 +131,13 @@
                 </li>
                 <li class="layui-nav-item">
                     <div style="display: flex;align-items: center">
-                        <img th:src="${session.photo}" style="width: 30px;height: 30px;border-radius: 100%"/>
+                        <img th:src="${session.uimg}" style="width: 30px;height: 30px;border-radius: 100%"/>
                         <a href="javascript:;">
-                            <cite th:text="${session.nickName}">5秒真男人</cite>
+                            <cite th:text="${session.uname}">5秒真男人</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                            <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                            <dd><a href="javascript:;" id="editUserInfo">基本资料</a></dd>
+<!--                            <dd><a lay-href="set/user/password.html">修改密码</a></dd>-->
                             <hr>
                             <dd layadmin-event="logout" style="text-align: center;"><a th:href="@{/logout}">退出</a></dd>
                         </dl>
@@ -145,11 +213,68 @@
 </div>
 <script th:inline="javascript" type="text/javascript">
 
-    layui.use('element', function () {
-        var element = layui.element;
-
+    layui.use(['element', 'layer', 'form'], function () {
+        // top=> 指的顶层窗口
+        let layer = layui.layer;
+        let element = layui.element;
+        let form = layui.form;
         let $ = layui.$;
+
         let iframe = $("#layadmin-iframe");
+
+
+        // 监听表单事件
+        form.on('submit(userEditForm)', function (data) {
+
+
+
+            if (data.field.password.length != 0) {// 就是用户要修改密码
+                if (data.field.password.length < 6) {
+                    layer.msg('密码太弱');
+                    return false;
+                }
+            }
+
+            let formData = new FormData(data.form);
+
+            // $.post('/user/editbyid', data.field, function (res) {
+            //     layer.msg(res.msg);// 弹出消息
+            //     setTimeout(function () {
+            //         window.location.reload();
+            //     }, 2000)
+            // });
+
+            $.ajax({
+
+                contentType: false,// 默认就是表单数据(不写)，如果此时要传递的是json字符串，
+                url: '/user/editbyid',
+                dataType: 'json',
+                data: formData,
+                type: 'post',// ajax请求的方式，post或get
+                processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
+                success: function (res) {
+                    //在前端的控制台进行输出
+
+                    if (res.status == 200) {
+
+                        layer.alert(res.msg, {
+                            icon: 1
+                        }, function () {
+                            //重新刷新我们的table表格数据
+                            window.parent.location.reload()
+                        })
+                    } else {
+                        layer.alert(res.msg, {
+                            icon: 2
+                        }, function () {
+                            //重新刷新我们的table表格数据
+                            window.location.reload()
+                        })
+                    }
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
 
         $("[name=superMarketMenu]").click(function () {
             $(".layui-nav-child").css({
@@ -167,6 +292,27 @@
                 });
             }
         });
+
+        $("#editUserInfo").click(function () {
+            layer.open({
+                type: 1,
+                title: '修改信息',
+                area: 'fit-content',
+                shadeClose: true,
+                content: $("#editUserFormDiv").html()
+            });
+
+            $("#editUploadImg").click(function () {// 点击图片就触发这个file
+                $("#editPic").click();
+            });
+
+            $("#editPic").change(function () {
+                imgPreview(this.files[0], $("#editUploadImg")[0]);
+            });
+
+
+        });
+
         $("[lay-href]").click(function () {
             let thisJobj = $(this);// 把jsDom对象转换程jquery对象
             let txt = thisJobj.text();

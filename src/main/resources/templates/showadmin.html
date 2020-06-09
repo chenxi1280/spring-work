@@ -1,57 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <title>物业人员信息</title>
-    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
-    <script type="text/javascript" src="/layui/layui.js"></script>
-    <script type="text/javascript" src="/js/admin.js"></script>
-    <script type="text/javascript" src="/js/date.js"></script>
+<div th:replace="fragment/js::js"></div>
+<style>
+    /*修改layui表格的高度*/
+    .layui-table-cell {
+        height: auto;
+    }
+</style>
+<body class="layui-card-body layui-card">
+<div style="padding: 10px;" class="layui-card">
+    <form id="queryForm" class="layui-form" method="post"
+          style="display: flex;align-items: center">
+        <div class="layui-hide-xs" style="display: flex;align-items: center">
+            <span style="width: fit-content">用户昵称:</span>
+            <input class="layui-input" name="nickName" id="nickName"
+                   style="width: 120px;"/>
+        </div>
+        <div class="layui-hide-xs" style="display: flex;align-items: center;margin-left: 20px">
+            <label style="width:  fit-content">真实姓名:</label><input class="layui-input" name="realName" id="realName"
+                                                                   style="width: 120px"/>
+        </div>
+        <div style="display: flex;align-items: center;margin-left: 20px">
+            <label style="width:  fit-content">手机号:</label><input class="layui-input" name="phone" id="phone"
+                                                                  style="width: 120px"/>
+        </div>
 
-</head>
-<body>
-<!--模糊查询-->
-<div class="layui-row" style="margin: 10px auto; width: 50%">
-    ID：
-    <div class="layui-inline">
-        <input class="layui-input" name="id" id="useruid" autocomplete="off">
-    </div>
-    名字：
-    <div class="layui-inline">
-        <input class="layui-input" name="id" id="username" autocomplete="off">
-    </div>
-    电话号码：
-    <div class="layui-inline">
-        <input class="layui-input" name="id" id="userphone" autocomplete="off">
-    </div>
-    <button class="layui-btn" data-type="reload" id="find">
-        <i class="layui-icon ">&#xe615;</i>
-    </button>
-
+        <div style="display: flex;align-items: center;margin-left: 20px">
+            <button type="button" class="layui-btn" id="queryBtn" lay-submit lay-filter="queryForm">查询</button>
+        </div>
+    </form>
+    <table id="userTable" lay-filter="userTableFilter"></table>
+    <!--        <div th:include="plugins/splitBar::splitBar"></div>-->
 
 </div>
-
-<!--自定义表头工具栏-->
-<script type="text/html" id="bar">
-    <div class="layui-btn-group">
-        <button class="layui-btn" lay-event="add">增加</button>
-        <!--        <button  class="layui-btn" lay-event="delete">删除</button>-->
+<!--查看这个角色的权限的弹框-->
+<script type="text/html" id="showPermissionDiv">
+    <div style="padding: 20px">
+        <div style="display: flex;flex-wrap: wrap">
+            <div th:each="r,rStat:${systemRoles}" class="layui-form"
+                 style="border: solid lightgray 1px;border-radius: 5px;padding: 10px;width: fit-content;margin: 5px">
+                <input type="checkbox" name="roleTitle" lay-skin="primary" lay-filter="roleTitle"
+                       th:id="'roleId-'+${r.flag}" th:ind="'role-'+${rStat.index}"><span
+                    style="font-size: 14px;font-weight: bold;cursor: pointer" th:text="${r.name}">角色名称</span>
+                <div style="padding-left: 20px">
+                    <div th:each="p:${r.permissionVOS}" style="padding: 3px">
+                        <input type="checkbox" lay-filter="permissionTitle" th:title="${p.name}"
+                               th:name="'roleName-'+${r.flag}" th:pid="${p.permissionId}"
+                               th:id="'permissionId-'+${p.flag}" lay-skin="primary">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center">
+            <button class="layui-btn layui-btn-danger" id="sureDispatch">确认调整</button>
+            <button class="layui-btn warning" id="cancelDispatch">取消</button>
+        </div>
     </div>
-    <!--    <div class="layui-btn-group">-->
-    <!--        <button  class="layui-btn" lay-event="publish">发布</button>-->
-    <!--        <button  class="layui-btn" lay-event="down">下线</button>-->
-    <!--    </div>-->
 </script>
 
-<!--表示加载数据的表格标签-->
-<table class="layui-hide" id="userdemo" lay-filter="usertest"></table>
-<!--自定义按钮功能-->
-<script type="text/html" id="barDemo">
 
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+<!--// 加上th:inline='javascript' 否则可能会因为小于或者大于符号导致 thymeleaf模板引擎解析错误。-->
+<script th:inline="javascript" type="text/javascript">
+    $(function () {
+        let systemRoles = [[${systemRoles}]];
+        layui.use(['table', 'layer', 'laydate', 'form'], function () {
+            var table = layui.table;
+            var layer = layui.layer;
+            var laydate = layui.laydate;
+            var form = layui.form;
+            laydate.render({
+                elem: '#creteDateRange' //指定元素
+                , range: '至'
+            });
+            //第一个实例
+            var userTable = table.render({
+                elem: '#userTable'
+                , page: true
+                , url: '/user/ajaxadminlist' //数据接口
+                , cols: [[ //表头
+                    {width: 40, type: "checkbox"}
+                    , {field: 'uid', title: 'ID', width: 60}
+                    , {field: 'uname', title: '昵称', width: 140}
+                    , {field: 'uusername', title: '姓名', width: 100}
+                    , {field: 'uphoneid', title: '手机号', width: 120}
+
+                    , {field: 'note', title: '备注', width: 140,edit:'text'}
+                    , {
+                        field: '', title: '操作', width: 180, templet: function (d) {
+                            return '<div >' +
+                                '<button class="layui-btn  layui-btn-warm layui-btn-xs" lay-event="showPermissions">调整权限</button>' +
+                                '<button class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="lock">删除</button>' +
+                                '</div>'
+                        }
+                    }
+                ]]
+                , toolbar: 'default'
+                , done() {
+                    showBigImg();
+                }
+            });
+
+            table.on('edit(userTableFilter)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                let p = {};
+                p.userId = obj.data.userId;
+                p[obj.field] = obj.value;
+                $.post('/pages/back/user/edit', p, function (res) {
+                        layer.msg(res.msg);
+                    }
+                );
+            });
+            //监听行中工具栏事件
+            table.on('tool(userTableFilter)', function (obj) {
+                let d = obj.data;
+                switch (obj.event) {
+                    case 'showPermissions':
+                        $.post('/user/getUserRoles/' + d.uphoneid, {}, function (res) {
+                            let editRoleOpen = layer.open({
+                                type: 1,
+                                area: ['98%', '90%'],
+                                title: '调整用户权限',
+                                content: $('#showPermissionDiv').html() //这里content是一个普通的String
+                            });
+                            let hisRoles = res;//返回的是一个权限组（角色的集合）
+                            console.log(res)
+                            for (let x = 0; x < hisRoles.length; x++) {
+                                let r = hisRoles[x];
+                                $("[name=roleTitle]").each(function () {
+                                    let flag = this.id.split('-')[1];
+                                    if (flag == r.flag) {
+                                        this.checked = true;
+                                    }
+                                });
+                                let permissions = r.permissionVOS;// 拿到当前角色的权限
+                                console.log(permissions)
+                                if(permissions!=null){
+                                    for (let x = 0; x < permissions.length; x++) {
+                                        let p = permissions[x];
+                                        $("[id^=permissionId-]").each(function () {
+                                            let flag = this.id.split('-')[1];
+                                            if (flag == p.flag) {
+                                                this.checked = true;
+                                            }
+                                        })
+                                    }
+                                }
+
+                            }
+                            form.on('checkbox(roleTitle)', function (data) {
+                                let flag = data.elem.id.split('-')[1];
+                                let checked = data.elem.checked;
+                                $("[name=roleName-" + flag + "]").each(function () {
+                                    this.checked = checked;
+                                });
+                                form.render();
+                            });
+                            form.on('checkbox(permissionTitle)', function (data) {
+                                let flag = data.elem.name.split('-')[1];
+                                let checked = false;
+
+                                // ??????
+                                $("[name=roleName-" + flag + "]").each(function () {
+                                    if (this.checked) {
+                                        checked = this.checked;
+                                        return false;// 结束循环
+                                    }
+                                });
+                                $("#roleId-" + flag)[0].checked = checked;
+                                form.render();
+                            });
+                            form.render();
+                            $("#cancelDispatch").click(function () {
+                                layer.close(editRoleOpen)// 取消关闭修改角色的弹框
+                            });
+                            $("#sureDispatch").click(function () {
+                                // 首先应该封装被选中的角色和权限的数据，应该封装成一个集合，这个集合是roleVO,而且里边的属性是permissionList是一个数组
+                                let roleVOs = [];// 角色参数数组里边
+                                // 对所有选中角色进行遍历，查看是否选中，选中就将其放到集合里边。
+                                $("[name=roleTitle]").each(function () {
+                                    if (this.checked) {// 当前选中
+                                        let index = $(this).attr("ind").split('-')[1];// 获取系统级角色的下标
+                                        let roleVO = [[${systemRoles}]][index];// 获取系统级别的角色VO对象 permissions(满的)
+                                        let permissionsStr = '';// 逗号分隔的字符串
+                                        $("[name=roleName-" + roleVO.flag + "]").each(function () {//
+                                            if (this.checked) {// 指这个角色下边的权限
+                                                let pid = $(this).attr("pid");
+                                                permissionsStr += pid + ",";
+                                            }
+                                        });
+                                        permissionsStr = permissionsStr.substring(0, permissionsStr.length - 1);
+                                        roleVO.permissions = permissionsStr;
+                                        roleVOs.push(roleVO);
+
+                                    }
+                                });
+
+                                $.ajax({
+                                    url: '/user/dispatchUserPermission/' + d.userId,// 请求数据服务器地址，只能是当前项目，JSONP才能访问外网（需要服务器配合才能用）
+                                    contentType: "application/json",// 默认就是表单数据(不写)，如果此时要传递的是json字符串，
+                                    // 那么此时就用application/json,如果此时要传递图片"multipart/form-data，还有数组，集合，还有对象，那么contentType必须指定为false
+                                    data: JSON.stringify(roleVOs),// 要上传的参数,把数组对象转换为JSON字符串
+                                    dataType: 'json',// 服务器响应数据：json,text,html,xml
+                                    error: function () {//请求错误的时候，会触发此函数
+
+                                    },
+                                    processData: true,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
+                                    success: function (res) {// 请求成功，回调函数,data，指的就是服务器返回的数据
+                                        layer.msg(res.msg);
+                                    },
+                                    type: 'post',// ajax请求的方式，post或get
+                                });
+
+
+                            });
+                        });
+
+                        break;
+                    case 'lock':
+                        // 锁定功能
+                        layer.msg('锁定功能')
+                        // $.post('/pages/back/user/lockUser/' + obj.data.userId, {}, function (res) {
+                        //     layer.layer(res);
+                        //     userTable.reload();
+                        // });
+                        break;
+                    case 'edit':
+                        // 在这之前还需要render(渲染)一把
+                        break;
+                }
+            });
+            form.on('submit(queryForm)', function (data) {
+                userTable.reload({
+                    where: data.field,
+                    page: {curr: 1}
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+            onInput($("#queryForm input"));
+
+        });
+    })
+    function onInput(jObj) {
+
+
+        jObj.on({
+
+            'input': function () {
+
+                $("#queryBtn").click();// 这里直接换成查询按钮点击事件
+
+            }
+
+        })
+    }
 
 </script>
 

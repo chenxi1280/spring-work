@@ -1,10 +1,12 @@
 package com.work.boot.controller;
 
 
+import com.work.boot.pojo.dto.PageDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Admin;
 import com.work.boot.pojo.entity.User;
 import com.work.boot.service.AdminService;
+import com.work.boot.service.RoleService;
 import com.work.boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +29,17 @@ public class AdminCotroller {
 //    @Qualifier("userServiceImpl ")
     private AdminService adminService;
 
+    @Resource  //自动装配
+//    @Qualifier("userServiceImpl ")
+    private RoleService roleService;
+
     @RequestMapping("/showadmin")
-    public String showadmin() {
+    public String showadmin(Model model) {
+
+
+        PageDTO systemRoles = roleService.getSystemRoles();
+        model.addAttribute("systemRoles", systemRoles.getData());
+
         return "showadmin";
     }
 

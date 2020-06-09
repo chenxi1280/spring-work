@@ -45,13 +45,13 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
-            <div class="layui-input-block">
-                <input type="password" name="upassword" style="width: 50%" lay-verify="required"
-                       th:value="${user.upassword}" autocomplete="off" placeholder="请输入密码" class="layui-input">
-            </div>
-        </div>
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">密码</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="password" name="upassword" style="width: 50%" lay-verify="required"-->
+<!--                       th:value="${user.upassword}" autocomplete="off" placeholder="请输入密码" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
 
 
         <!--        <div class="layui-form-item">-->
@@ -84,16 +84,16 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否为小区业主 </label>
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">是否为小区业主 </label>-->
 
 
-            <div class="layui-input-block">
-                <input type="checkbox" name="close" id="close" lay-skin="switch" lay-text="开启|关闭">
-            </div>
+<!--            <div class="layui-input-block">-->
+<!--                <input type="checkbox" name="close" id="close" lay-skin="switch" lay-text="开启|关闭">-->
+<!--            </div>-->
 
 
-        </div>
+<!--        </div>-->
         <!--图片-->
         <div class="layui-form-item">
             <label class="layui-form-label">照片</label>
@@ -105,14 +105,7 @@
             <!--            </a>-->
 
             <div class="layui-input-block">
-                <input type="text" name="uimg" style="width: 50%" id="uimg" lay-verify="required" lay-reqtext="照片必选项"
-                       th:value="${user.uimg}" autocomplete="off" class="layui-input layui-disabled">
-                <!--图片上传-->
-                <br>
-                <div class="layui-upload">
-                    <button type="button" class="layui-btn layui-btn-normal" id="chooseimg">选择图片</button>
-                    <button type="button" class="layui-btn" id="uploadimg">开始上传</button>
-                </div>
+                <img th:src="${user.uimg}" style="width: 100px;height: 100px;"/>
             </div>
 
         </div>

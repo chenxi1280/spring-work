@@ -118,5 +118,22 @@
     order by sort
 
   </select>
+    <select id="selectByPermissions" resultType="com.work.boot.pojo.entity.Role">
+
+      select
+      <include refid="Base_Column_List"/>
+      from role where `system`=0 and permissions in
+      <foreach collection="ids" open="(" close=")" item="str" separator=",">
+        #{str}
+      </foreach>
+
+    </select>
+  <select id="getSystemRoles" resultType="com.work.boot.pojo.vo.RoleVO">
+
+    select
+    <include refid="Base_Column_List"/>
+    from role
+    order by sort
+  </select>
 
 </mapper>
