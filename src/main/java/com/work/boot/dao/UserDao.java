@@ -2,7 +2,10 @@ package com.work.boot.dao;
 
 import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserQuery;
+import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.vo.EvaluationVO;
 import com.work.boot.pojo.vo.PayuserVo;
+import com.work.boot.pojo.vo.UserVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
@@ -47,4 +50,14 @@ public interface UserDao {
     List<User> selectByListPay(@Param("list") List<PayuserVo> list);
 
     int updatemoneyByid(@Param("uid") String uid,@Param("money") BigDecimal subtract);
+
+    User selectDbUserByPhone(UserQueryS query);
+
+    UserVO selectUserByPhone(String phone);
+
+    User login(UserQueryS query);
+
+    List<UserVO> selectUserBylist(@Param("ids") List<EvaluationVO> list);
+
+    UserVO checkPhoneExist(String phone);
 }

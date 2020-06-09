@@ -49,7 +49,7 @@
                             <div class="layui-form-item" style="margin-top: 10px">
                                 <label class="layui-form-label">手机号</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="phone" id="phone" placeholder="请输入手机号" autocomplete="off"
+                                    <input type="text" name="uphoneid" id="phone" placeholder="请输入手机号" autocomplete="off"
                                            lay-verify="required|phone|number"
                                            class="layui-input">
                                 </div>
@@ -57,7 +57,7 @@
                             <div class="layui-form-item" id="passDiv">
                                 <label class="layui-form-label">密码</label>
                                 <div class="layui-input-block">
-                                    <input type="password" name="password" placeholder="请输入密码" autocomplete="off"
+                                    <input type="password" name="upassword" placeholder="请输入密码" autocomplete="off"
                                            class="layui-input">
                                 </div>
                             </div>
@@ -183,7 +183,7 @@
             form.on('submit(loginForm)', function (data) {
                 console.log(loginType)
                 if (loginType == 'password') {// 表示是密码提交，那么就应该验证密码
-                    if (data.field.password.length <= 5) {
+                    if (data.field.upassword.length <= 5) {
                         layer.msg("密码长度少于6位！");
                         return false;// 结束了，不要往后走了
                     }

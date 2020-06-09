@@ -1,6 +1,8 @@
 package com.work.boot.service.impl;
 
 import com.work.boot.dao.AdminDao;
+import com.work.boot.dao.PermissionDao;
+import com.work.boot.dao.RoleDao;
 import com.work.boot.dao.UserDao;
 import com.work.boot.pojo.dto.RData;
 import com.work.boot.pojo.dto.ResponseDTO;
@@ -8,6 +10,12 @@ import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.Admin;
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.UserQuery;
+import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.vo.PermissionVO;
+import com.work.boot.pojo.vo.RoleVO;
+import com.work.boot.pojo.vo.UserVO;
+import com.work.boot.service.BaseService;
 import com.work.boot.service.UserService;
 import com.work.boot.util.GetLimit;
 import com.work.boot.util.GetUUID32;
@@ -17,25 +25,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, BaseService {
 
     @Resource
     private UserDao userDao;
 
     @Resource
     private AdminDao adminDao;
+
+    @Resource
+    private RoleDao roleDao;
+
+    @Resource
+    private PermissionDao permissionDao;
 
     @Override
     public Result getAll() {
@@ -333,6 +347,83 @@ public class UserServiceImpl implements UserService {
             return ResponseDTO.ok("成功", 200);
         }
         return ResponseDTO.ok("失败", 500);
+    }
+
+    @Override
+    public User selectDbUserByPhone(UserQueryS query) {
+
+        return userDao.selectDbUserByPhone(query);
+    }
+
+    @Override
+    public List<RoleVO> selectHisRolesByPhone(String phone) {
+
+        UserVO u = userDao.selectUserByPhone(phone);
+
+        if (!StringUtils.isEmpty(u.getRole())) {
+
+            List<RoleVO> roles = roleDao.selectHisRolesByRoles(u.getRole());
+            // 在查询完成roles之后，我们应该 roles的permissionVOS赋值
+            if (!CollectionUtils.isEmpty(roles)) {
+                List<PermissionVO> permissionVOS = this.selectHisPermissionByRoles(roles);// 查出所有的权限
+                return getRoleVOList(roles, permissionVOS);
+            }
+
+
+        }
+        return null;
+    }
+
+    @Override
+    public List<PermissionVO> selectHisPermissionByRoles(List<RoleVO> roles) {
+        List<PermissionVO> list = new ArrayList<>();
+//        // 第一种 ：
+//        for (RoleVO role : roles) {
+//            List<PermissionVO> permissionVOS = permissionDao.selectPermissionsByIds(role.getPermissions());
+//            list.addAll(permissionVOS);
+////            Collections.addAll(list, permissionVOS);// 这里有个把两个集合加入到一个集合里边去
+//        }
+        // 断言工具
+//        Assert.notNull(roles, "传递的集合为null");
+        if (!CollectionUtils.isEmpty(roles)) {
+            Set<String> paramSet = new TreeSet<>();// 查询参数集合
+            for (RoleVO role : roles) {// 在内存之中进行的。效率基本最高的
+                String psIds = role.getPermissions();// 1,2,34
+                if (!StringUtils.isEmpty(psIds)) {
+                    Collections.addAll(paramSet, psIds.split(","));
+                }
+            }
+            if (!CollectionUtils.isEmpty(paramSet)) {
+                list = permissionDao.selectPermissionsBySet(paramSet);
+            }
+
+        }
+        // 第三种
+        return list;
+    }
+
+    @Override
+    public boolean checkPhoneExist(String phone) {
+
+        return  userDao.checkPhoneExist(phone) != null;
+    }
+
+    @Override
+    public User selectUserByPhone(UserQueryS query) {
+        return userDao.selectUserByPhone(query.getPhone());
+    }
+
+    @Override
+    public ResponseDTO homeuser(UserQuery userQuery) {
+
+        User user = userDao.selectByPrimaryKey(userQuery.getUid());
+
+        return ResponseDTO.ok("", user);
+    }
+
+    @Override
+    public User login(UserQueryS query) {
+        return userDao.login(query);
     }
 
 

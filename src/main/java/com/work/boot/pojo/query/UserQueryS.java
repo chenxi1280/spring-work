@@ -13,5 +13,6 @@ import lombok.Data;
 @Data
 public class UserQueryS extends User {
     private String code;
+    private String phone;
 
 }

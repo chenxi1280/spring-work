@@ -1,5 +1,6 @@
 package com.work.boot.controller;
 
+import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Evaluation;
 import com.work.boot.service.EvaluationService;
@@ -29,7 +30,12 @@ public class EvaluationController {
         return evaluationService.addeva(evaluation);
     }
 
+    @RequestMapping("/geteva")
+    @ResponseBody
+    public ResponseDTO geteva(){
 
+        return evaluationService.geteva();
+    }
 
 
 }

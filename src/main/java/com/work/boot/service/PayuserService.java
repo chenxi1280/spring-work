@@ -26,4 +26,7 @@ public interface PayuserService {
     void deductions();
 
     PageDTO ajaxrecharge(UserQuery userQuery);
+
+    ResponseDTO datebing();
+
 }

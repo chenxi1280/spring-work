@@ -12,6 +12,9 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss  #统一进行日期格式的数据返回
+    time-zone: Asia/Shanghai   # 默认时区
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

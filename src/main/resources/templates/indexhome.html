@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="/js/jquery-3.5.0.js"></script>
+
+<script src="/layui/layui.js"></script>
+<script src="/js/admin.js"></script>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+
+<link th:href="@{/layui/css/layui.css}" type="text/css" rel="stylesheet">
+<script src="/layui/layui.js"></script>
+
+<link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+<script src="/js/date.js"></script>
+
+<div class="layui-card">
+    <div class="layui-card-header">待办事项</div>
+    <div class="layui-card-body">
+
+        <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;" id="bbb">
+            <div carousel-item="" ID="aaa">
+                <ul class="layui-row layui-col-space10 layui-this">
+                    <li class="layui-col-xs6">
+                        <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                            <h3 id="money">账户余额 </h3>
+
+                        </a>
+                    </li>
+                    <li class="layui-col-xs6">
+                        <a lay-href="app/forum/list.html" class="layadmin-backlog-body">
+                            <h3 id="carnumber" >车位数</h3>
+
+                        </a>
+                    </li>
+                    <li class="layui-col-xs6">
+                        <a lay-href="template/goodslist.html" class="layadmin-backlog-body">
+                            <h3 id="cstate">状态</h3>
+                        </a>
+                    </li>
+
+                    <li class="layui-col-xs6">
+                        <a lay-href="template/goodslist.html" class="layadmin-backlog-body">
+                            <h3 id="typid">缴费状态</h3>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="layui-carousel-ind"><ul><li class="layui-this"></li><li></li></ul></div><button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
+    </div>
+</div>
+
+<script th:inline="javascript" type="text/javascript">
+    layui.use(['layer', 'table', 'form'], function () {
+            let layer = layui.layer;// 弹出层
+            let table = layui.table;// 分页组件
+            let form = layui.form;// 分页组件
+            let $ = layui.$;// 使用jquery
+
+        $.ajax({
+            async: true,                    //默认为true，默认为异步请求
+            type: "POST",                   //类型post
+            url: "/user/homeuser",                 //url
+            contentType: "application/json",//请求内容编码类型
+            // data: "name=John&age=18",       //发送到服务器的数据
+            dataType: "json",               //b返回数据格式
+            success: function(msg){         //成功的方法
+                console.log(msg)
+
+                if (msg.data.role.split(",").length < 3) {
+
+                    let s = msg.data.cstate == 1 ? "小区用户" : "费小区用户"
+                    $("#cstate").append($("  <p><cite >" + s + "</cite></p> "))
+
+                    $("#carnumber").append($("  <p><cite >" + msg.data.carnumber + "</cite></p> "))
+                    $("#money").append($("  <p><cite >" + msg.data.mymoney + "</cite></p> "))
+
+                    let b = msg.data.typeid == 1 ? "正常" : "欠费"
+                    console.log(msg.data.typid)
+                    $("#typid").append($("  <p><cite >" + b + "</cite></p> "))
+                }else {
+                    $("#aaa").css({display: 'none'})
+                    $("#bbb").append($("<div><h1>管理员</h1></div>"))
+                }
+            }
+        });
+
+
+
+    });
+</script>
+</body>
+</html>

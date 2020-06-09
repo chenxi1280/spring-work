@@ -90,4 +90,15 @@
       createtime = #{createtime,jdbcType=TIMESTAMP}
     where rid = #{rid,jdbcType=VARCHAR}
   </update>
+
+
+  <select id="selectgeteva" resultType="com.work.boot.pojo.vo.EvaluationVO">
+    select <include refid="Base_Column_List" />
+    from evaluation
+    order by createtime desc
+
+
+  </select>
+<!--  &#45;&#45;     limit 0,5 ;-->
+<!--  &#45;&#45;     order by createtime desc-->
 </mapper>

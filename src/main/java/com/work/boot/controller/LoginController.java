@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class LoginController {
 
-    @RequestMapping("/login")
+    @RequestMapping("/logins")
     @ResponseBody
     public ResponseDTO login(UserQueryS user) {// 这个方法是执行登录操作的
         // 获取subject

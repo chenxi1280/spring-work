@@ -369,13 +369,14 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
     });
 
     //提交表单内容
-    $("#submit").on("click", function () {
+    form.on("submit(sub)",function (data) {
+        console.log(data)
 
         $.ajax({
             type: 'post',
             url: '/user/adduser',
             dataType: 'json',
-            data: $("#form").serialize(),
+            data: data.field,
             // succeess:function(res){
             //
             //
@@ -402,28 +403,30 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
     })
 
 
-    // //提交表单内容
-    // $("#submit").on("click",function(){
-    //     //为了将表单里面的file文件进行序列化 传到后台
-    //     var form=  document.getElementById("form")
-    //     //将我们的文本信息序列化的同时序列化我们的file文件  'file': 文件
-    //     var fd  = new FormData(form)
+    // $("#submit").on("click", function () {
     //
     //     $.ajax({
-    //         type:'POST',
-    //         url:'/user/adduser',
-    //         dataType:'json',
-    //         data: fd,
-    //         //阻止jquery对文件数据进行操作,让我们服务器能够正常解析文件
-    //         contentType:false,
-    //         //取消jquery的ajax对我们的数据进行任何的序列化
-    //         processData:false,
-    //         success:function(res){
-    //             //在前端的控制台进行输出
+    //         type: 'post',
+    //         url: '/user/adduser',
+    //         dataType: 'json',
+    //         data: $("#form").serialize(),
+    //         // succeess:function(res){
+    //         //
+    //         //
+    //         //     parent.layer.alert(res.message,{
+    //         //         icon:
+    //         //     },function(){
+    //         //                         //重新刷新我们的table表格数据
+    //         //         window.parent.location.reload()
+    //         //     })
+    //         //
+    //         // },
     //
-    //             parent.layer.alert(res.message,{
-    //                 icon:1
-    //             },function(){
+    //         success: function (res) {
+    //             //在前端的控制台进行输出
+    //             layer.alert(res.message, {
+    //                 icon: 2
+    //             }, function () {
     //                 //重新刷新我们的table表格数据
     //                 window.parent.location.reload()
     //             })
@@ -431,6 +434,8 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
     //
     //     })
     // })
+
+
 
 
     //自定义验证规则

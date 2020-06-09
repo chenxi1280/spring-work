@@ -35,23 +35,28 @@
     delete from user
     where `uid` = #{uid,jdbcType=VARCHAR}
   </delete>
-    <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="com.work.boot.pojo.entity.User" useGeneratedKeys="true">
-    insert into user (uname, uusername, upassword,
-      cstate, aid, xid, ubroom,
-      uphoneid, uimg, typeid,
-      ucreatedate, uupdatedate, `role`,
-      mymoney, carnumber, roomarea,
-      paymentid)
-    values (#{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR}, #{upassword,jdbcType=VARCHAR},
-      #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR}, #{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR},
-      #{uphoneid,jdbcType=VARCHAR}, #{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER},
-      #{ucreatedate,jdbcType=TIMESTAMP}, #{uupdatedate,jdbcType=TIMESTAMP}, #{role,jdbcType=VARCHAR},
-      #{mymoney,jdbcType=DECIMAL}, #{carnumber,jdbcType=INTEGER}, #{roomarea,jdbcType=DECIMAL},
-      #{paymentid,jdbcType=VARCHAR})
+    <insert id="insert" parameterType="com.work.boot.pojo.entity.User">
+    insert into user (`uid`, uname, uusername,
+      upassword, cstate, aid,
+      xid, ubroom, uphoneid,
+      uimg, typeid, ucreatedate,
+      uupdatedate, `role`, mymoney,
+      carnumber, roomarea, paymentid
+      )
+    values (#{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR},
+      #{upassword,jdbcType=VARCHAR}, #{cstate,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR},
+      #{xid,jdbcType=VARCHAR}, #{ubroom,jdbcType=VARCHAR}, #{uphoneid,jdbcType=VARCHAR},
+      #{uimg,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER}, #{ucreatedate,jdbcType=TIMESTAMP},
+      #{uupdatedate,jdbcType=TIMESTAMP}, #{role,jdbcType=VARCHAR}, #{mymoney,jdbcType=DECIMAL},
+      #{carnumber,jdbcType=INTEGER}, #{roomarea,jdbcType=DECIMAL}, #{paymentid,jdbcType=VARCHAR}
+      )
   </insert>
-    <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="com.work.boot.pojo.entity.User" useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="com.work.boot.pojo.entity.User">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                `uid`,
+            </if>
             <if test="uname != null">
                 uname,
             </if>
@@ -105,6 +110,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=VARCHAR},
+            </if>
             <if test="uname != null">
                 #{uname,jdbcType=VARCHAR},
             </if>
@@ -236,6 +244,13 @@
       paymentid = #{paymentid,jdbcType=VARCHAR}
     where `uid` = #{uid,jdbcType=VARCHAR}
   </update>
+
+
+
+
+
+
+
     <!--  sql-->
     <select id="selectAll" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
@@ -334,6 +349,36 @@
         #{uid.uid}
 
     </foreach>
+    </select>
+    <select id="selectDbUserByPhone" resultType="com.work.boot.pojo.entity.User">
+        select
+        <include refid="Base_Column_List"/>
+        from user where uphoneid=#{uphoneid} and upassword=#{upassword}
+
+    </select>
+    <select id="selectUserByPhone" resultType="com.work.boot.pojo.vo.UserVO">
+        select
+        <include refid="Base_Column_List"/>
+        from user where uphoneid=#{phone}
+    </select>
+    <select id="login" resultType="com.work.boot.pojo.entity.User">
+        select
+        <include refid="Base_Column_List"/>
+        from user where uphoneid=#{uphoneid} and upassword=#{upassword}
+    </select>
+    <select id="selectUserBylist" resultType="com.work.boot.pojo.vo.UserVO">
+        select <include refid="Base_Column_List" />
+        from user
+        where uid in <foreach collection="ids" separator="," open="(" close=")" item="u" >
+        #{u.uid}
+
+
+    </foreach>
+
+    </select>
+    <select id="checkPhoneExist" resultType="com.work.boot.pojo.vo.UserVO">
+        select <include refid="Base_Column_List"/>
+        from user where uphoneid=#{uphoneid}
     </select>
 
     <update id="updatemoneyByid">

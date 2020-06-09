@@ -94,12 +94,19 @@ public class HomeController {
         return "login";
     }
 
+    @RequestMapping("/indexhome")
+    public String indexhome() {
+        return "indexhome";
+    }
+
     @RequestMapping("/homeindex")
     public String homeindex() {
 
         return "homeindex";
 
     }
+
+
     @RequestMapping("/main")
     public String main() {
 

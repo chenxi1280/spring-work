@@ -1,7 +1,12 @@
 package com.work.boot.config.shiro;
 
+import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserQuery;
+import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.vo.RoleVO;
+import com.work.boot.pojo.vo.UserVO;
 import com.work.boot.service.UserService;
+import com.work.boot.util.password.PasswordUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -42,42 +47,45 @@ public class UserRealm extends AuthorizingRealm {
         Object credentials = authenticationToken.getCredentials();// 获取密码（密码）：是前端传递来的，不具备真实性
         Session session = SecurityUtils.getSubject().getSession();
         Object code = session.getAttribute("code");// 先把code取出来
-        UserQuery query = new UserQuery();
+        UserQueryS query = new UserQueryS();
 
-//        if (StringUtils.isEmpty(code)) {// 走常规密码验证
-//            String password = new String((char[]) credentials);// 前端传递过来的// String.valueOf((char[]) credentials)
-//            query.setPhone((String) principal);
-//            UserVO dbUser = userService.selectDbUserByPhone(query);// 拿到了数据库的用户
-//            if (dbUser == null) {
-//                throw new UnknownAccountException("账户或密码错误");
-//            } else {// 账户虽然存在，就要开始比较密码
-//                if (!PasswordUtil.encodePassword(password).equals(dbUser.getPassword())) {
+        if (StringUtils.isEmpty(code)) {// 走常规密码验证
+            String password = new String((char[]) credentials);// 前端传递过来的// String.valueOf((char[]) credentials)
+            query.setUphoneid((String) principal);
+            query.setUpassword(PasswordUtil.encodePassword(password));
+            User dbUser = userService.login(query);// 拿到了数据库的用户
+            if (dbUser == null) {
+                throw new UnknownAccountException("账户或密码错误");
+            }
+//            else {// 账户虽然存在，就要开始比较密码
+//                if (!PasswordUtil.encodePassword(password).equals(dbUser.getUpassword())) {
 //                    // 缓存数据库里边存当前用户密码错误的次数
 //                    throw new CredentialsException("账户或密码错误");
 //                }
 //            }
-//            session.setAttribute("userId", dbUser.getUserId());
-//            session.setAttribute("nickName", dbUser.getNickName());
-//            session.setAttribute("phone", dbUser.getPhone());
-//            // 设置角色
-//            List<RoleVO> roleVOS = userService.selectHisRolesByPhone(dbUser.getPhone());
-//            session.setAttribute("hisRoles", roleVOS);
-//        } else {// 验证码登录的方式
-//            Object loginCode = session.getAttribute("loginCode");// 咱们自己发的
-//            if (code.equals(loginCode)) {// 登录成功
-//                query.setPhone((String) principal);
-//
-//                UserVO dbUser = userService.selectDbUserByPhone(query);// 拿到了数据库的用户
-//                session.setAttribute("userId", dbUser.getUserId());
-//                session.setAttribute("nickName", dbUser.getNickName());
-//                session.setAttribute("phone", dbUser.getPhone());
-//                // 设置角色
-//                List<RoleVO> roleVOS = userService.selectHisRolesByPhone(dbUser.getPhone());
-//                session.setAttribute("hisRoles", roleVOS);
-//            } else {
-//                throw new CredentialsException("验证码错误");
-//            }
-//        }
+            session.setAttribute("uid", dbUser.getUid());
+            session.setAttribute("uname", dbUser.getUname());
+            session.setAttribute("uphoneid", dbUser.getUphoneid());
+            // 设置角色
+            List<RoleVO> roleVOS = userService.selectHisRolesByPhone(dbUser.getUphoneid());
+            session.setAttribute("hisRoles", roleVOS);
+        }
+        else {// 验证码登录的方式
+            Object loginCode = session.getAttribute("loginCode");// 咱们自己发的
+            if (code.equals(loginCode)) {// 登录成功
+                query.setPhone((String) principal);
+
+                User dbUser = userService.selectUserByPhone(query);// 拿到了数据库的用户
+                session.setAttribute("userId", dbUser.getUid());
+                session.setAttribute("nickName", dbUser.getUname());
+                session.setAttribute("phone", dbUser.getUphoneid());
+                // 设置角色
+                List<RoleVO> roleVOS = userService.selectHisRolesByPhone(dbUser.getUphoneid());
+                session.setAttribute("hisRoles", roleVOS);
+            } else {
+                throw new CredentialsException("验证码错误");
+            }
+        }
         //第二种方式
 //        query.setPassword(PasswordUtil.encodePassword(password));
 //        UserVO u = userService.login(query);

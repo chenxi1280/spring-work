@@ -1,6 +1,9 @@
 package com.work.boot.dao;
 
 import com.work.boot.pojo.entity.Evaluation;
+import com.work.boot.pojo.vo.EvaluationVO;
+
+import java.util.List;
 
 public interface EvaluationDao {
     int deleteByPrimaryKey(String rid);
@@ -14,4 +17,7 @@ public interface EvaluationDao {
     int updateByPrimaryKeySelective(Evaluation record);
 
     int updateByPrimaryKey(Evaluation record);
+
+    List<EvaluationVO> selectgeteva();
+
 }

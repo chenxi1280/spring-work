@@ -104,7 +104,7 @@ public class ShiroConfig {
     @Bean
     public RememberMeManager rememberMeManager() { // 5
         CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
-        SimpleCookie cookie = new SimpleCookie("qianfeng-RememberMe");
+        SimpleCookie cookie = new SimpleCookie("bs-RememberMe");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(7 * 24 * 60 * 60 * 1000); // 单位是秒，cookie存活的时间，如果存活7天
         rememberMeManager.setCookie(cookie);
@@ -196,7 +196,7 @@ public class ShiroConfig {
     //    自定义注销登录之后做的事情
     public LogoutFilter getLogoutFilter() { // 在ShiroFilterFactoryBean中使用
         LogoutFilter logoutFilter = new LogoutFilter();// 退出登录过滤器做了点手脚
-        logoutFilter.setRedirectUrl("/logoutApp");    //  自定义退出登录之后，跳转访问的方法路径
+        logoutFilter.setRedirectUrl("/home/loginPage");    //  自定义退出登录之后，跳转访问的方法路径
         return logoutFilter;
     }
 
@@ -213,7 +213,7 @@ public class ShiroConfig {
         // 1：必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        shiroFilterFactoryBean.setLoginUrl("/loginPage");    // 登陆错误或者被拦截之后，去访问访问的路径（方法）而不是页面
+        shiroFilterFactoryBean.setLoginUrl("/home/loginPage");    // 登陆错误或者被拦截之后，去访问访问的路径（方法）而不是页面
         shiroFilterFactoryBean.setSuccessUrl("/pages/back/loginSuccess");    // 设置登陆成功执行方法的路径
 
 //        shiroFilterFactoryBean.setUnauthorizedUrl("/unAuthPage");  // 没有授权，后执行的方法，在控制器上的注解没有授权，没有角色或者权限，抛出异常之后，跳转的地址，这个配置无效的，需要全局异常捕获
@@ -236,7 +236,11 @@ public class ShiroConfig {
 
 //        filterChainDefinitionMap.put("/login", "user");    // 定义内置登录处理,表单需要加method=post
 
-        filterChainDefinitionMap.put("/pages/back/**", "authc");// 这些路径全部需要登录之后，才能访问
+        filterChainDefinitionMap.put("/home/main", "authc");// 这些路径全部需要登录之后，才能访问
+        filterChainDefinitionMap.put("/user/**", "authc");// 这些路径全部需要登录之后，才能访问
+        filterChainDefinitionMap.put("/admin/**", "authc");// 这些路径全部需要登录之后，才能访问
+        filterChainDefinitionMap.put("/messages/**", "authc");// 这些路径全部需要登录之后，才能访问
+
 
         filterChainDefinitionMap.put("/**", "anon");// 所有路径不需要任何检测，即可访问
 

@@ -4,6 +4,7 @@ import com.work.boot.dao.PaymentDao;
 import com.work.boot.dao.PayuserDao;
 import com.work.boot.dao.UserDao;
 import com.work.boot.pojo.dto.PageDTO;
+import com.work.boot.pojo.dto.RData;
 import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.entity.Payment;
 import com.work.boot.pojo.entity.Payuser;
@@ -19,10 +20,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -46,20 +44,20 @@ public class PayuserServiceImpl implements PayuserService {
     @Override
     public PageDTO paylist(PayuserQuery payuserQuery) {
 
-        List<PayuserVo> list= payuserDao.selectAllByQuery(payuserQuery);
+        List<PayuserVo> list = payuserDao.selectAllByQuery(payuserQuery);
         Integer count = payuserDao.selectCount(payuserQuery);
         List<User> userList = userDao.selectByListPay(list);
-        List<Payment> listPay= paymentDao.selectByListPay(list);
+        List<Payment> listPay = paymentDao.selectByListPay(list);
         list.forEach(p -> {
 
             userList.forEach(user -> {
-                if (user.getUid().equals(p.getUid())){
+                if (user.getUid().equals(p.getUid())) {
                     p.setUusername(user.getUusername());
                 }
             });
 
             listPay.forEach(payment -> {
-                if (payment.getPaymentid() == p.getPaymentid()){
+                if (payment.getPaymentid() == p.getPaymentid()) {
 
                     p.setPaymentname(payment.getPaymentname());
                 }
@@ -67,7 +65,6 @@ public class PayuserServiceImpl implements PayuserService {
             });
 
         });
-
 
 
         return PageDTO.setPageData(count, list);
@@ -87,7 +84,6 @@ public class PayuserServiceImpl implements PayuserService {
         Payment payment = paymentDao.selectByPrimaryKey(id);
 
 
-
         return ResponseDTO.ok("ok", payment);
     }
 
@@ -100,7 +96,7 @@ public class PayuserServiceImpl implements PayuserService {
         try {
             re = paymentDao.updateByPrimaryKeySelective(paymentQuery);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
@@ -121,19 +117,18 @@ public class PayuserServiceImpl implements PayuserService {
         BigDecimal money = new BigDecimal(0);
 
 
-
         for (User user : userList) {
-            if (user.getCstate() == 1){
-                if (user.getCarnumber()!=0) {
+            if (user.getCstate() == 1) {
+                if (user.getCarnumber() != 0) {
                     BigDecimal paymath = new BigDecimal(0);
                     for (Payment payment : payments) {
-                        if (payment.getPaymentid() ==2 ){
+                        if (payment.getPaymentid() == 2) {
                             paymath = payment.getPaymentmoney();
                         }
                     }
                     BigDecimal multiply = paymath.multiply(new BigDecimal(user.getCarnumber()));
                     BigDecimal subtract = user.getMymoney().subtract(multiply);
-                    if (subtract.compareTo(BigDecimal.ZERO) == 1){
+                    if (subtract.compareTo(BigDecimal.ZERO) == 1) {
                         try {
                             int i = userDao.updatemoneyByid(user.getUid(), subtract);
                             Payuser payuser = new Payuser();
@@ -143,22 +138,22 @@ public class PayuserServiceImpl implements PayuserService {
                             payuser.setUid(user.getUid());
                             payuser.setPayuserdate(new Date());
                             payuserDao.insert(payuser);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                         }
                     }
                 }
-                if (user.getRoomarea() !=0){
+                if (user.getRoomarea() != 0) {
                     BigDecimal paymath = new BigDecimal(0);
                     for (Payment payment : payments) {
-                        if (payment.getPaymentid() == 1 ){
+                        if (payment.getPaymentid() == 1) {
                             paymath = payment.getPaymentmoney();
                         }
                     }
                     BigDecimal multiply = paymath.multiply(new BigDecimal(user.getRoomarea()));
                     BigDecimal subtract = user.getMymoney().subtract(multiply);
-                    if (subtract.compareTo(BigDecimal.ZERO) == 1){
+                    if (subtract.compareTo(BigDecimal.ZERO) == 1) {
                         try {
                             int i = userDao.updatemoneyByid(user.getUid(), subtract);
                             Payuser payuser = new Payuser();
@@ -168,7 +163,7 @@ public class PayuserServiceImpl implements PayuserService {
                             payuser.setUid(user.getUid());
                             payuser.setPayuserdate(new Date());
                             payuserDao.insert(payuser);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                         }
@@ -180,8 +175,6 @@ public class PayuserServiceImpl implements PayuserService {
         }
 
 
-
-
     }
 
     @Override
@@ -189,5 +182,37 @@ public class PayuserServiceImpl implements PayuserService {
 
 
         return null;
+    }
+
+    @Override
+    public ResponseDTO datebing() {
+        List<Payment> payments = paymentDao.selectAll();
+        Map<Integer, List<Payment>> collect1 = payments.stream().collect(Collectors.groupingBy(Payment::getPaymentid));
+        List<Payuser> payusers = payuserDao.selectAll();
+        Map<Integer, List<Payuser>> collect = payusers.stream().collect(Collectors.groupingBy(Payuser::getPaymentid));
+
+        HashMap<String,Integer> stringHashMap = new HashMap<String,Integer>();
+
+        collect.forEach((i,v) ->{
+            BigDecimal cout = new BigDecimal(0);
+
+            for (Payuser payuser : v) {
+                BigDecimal paymoney = payuser.getPaymoney();
+                cout =  cout.add(payuser.getPaymoney());
+            }
+            stringHashMap.put(collect1.get(i).get(0).getPaymentname(), cout.intValue());
+        });
+        List<RData> list = new ArrayList();
+        stringHashMap.forEach((i,v) ->{
+            RData rData = new RData();
+            rData.setName(i);
+            rData.setValue(v);
+            list.add(rData);
+        });
+
+
+
+
+        return   ResponseDTO.ok("成功", list);
     }
 }

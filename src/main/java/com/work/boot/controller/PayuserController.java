@@ -31,6 +31,11 @@ public class PayuserController {
         return "payuserlist";
     }
 
+    @RequestMapping("/showpaydata")
+    public String showpaydata(){
+        return "showpaydata";
+    }
+
     @RequestMapping("ajaxlist")
     @ResponseBody
     public PageDTO paylist(PayuserQuery payuserQuery){
@@ -44,5 +49,13 @@ public class PayuserController {
 
         return payuserService.ajaxrecharge(userQuery);
     }
+
+    @RequestMapping("/datebing")
+    @ResponseBody
+    public ResponseDTO datebing( ){
+
+        return payuserService.datebing();
+    }
+
 
 }

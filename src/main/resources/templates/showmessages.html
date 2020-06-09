@@ -13,6 +13,7 @@
 <body>
 <!--模糊查询-->
 <div class="layui-row" style="margin: 10px auto; width: 50%">
+    <form class="layui-form">
     ID：
     <div class="layui-inline">
         <input class="layui-input" name="id" id="useruid" autocomplete="off">
@@ -21,19 +22,23 @@
     <div class="layui-inline">
         <input class="layui-input" name="id" id="username" autocomplete="off">
     </div>
-    类型：
-    <form class="layui-form">
-        <select name="itype" id="itype" style="width: 150px">
-            <option value="1">未处理</option>
-            <option value="2">等待维修</option>
-            <option value="3">维修完成</option>
-            <option value="4">已完成</option>
+        类型：
+        <div style="width: 100px ; display: inline-block" >
+
+        <select name="itype" id="itype" style="width: 60px">
+            <option value="0">全体人员</option>
+            <option value="1">全体业主</option>
+            <option value="2">全体管理人员</option>
 
         </select>
+        </div>
     </form>
-    <button class="layui-btn" data-type="reload" id="find">
+
+    <div style="display: inline-block" >
+        <button class="layui-btn" data-type="reload" id="find">
         <i class="layui-icon ">&#xe615;</i>
-    </button>
+        </button>
+    </div>
 
 </div>
 

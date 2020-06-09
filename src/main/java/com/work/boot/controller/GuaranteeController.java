@@ -4,8 +4,6 @@ import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Guarantee;
 import com.work.boot.pojo.vo.GuaranteeAllVo;
 import com.work.boot.service.GuaranteeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/guarantee")
 @Controller
-public class GuaranteeController extends FileController{
+public class GuaranteeController extends BaseController {
 
     @Resource
     private GuaranteeService guaranteeService;

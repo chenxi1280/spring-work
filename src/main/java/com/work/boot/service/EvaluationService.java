@@ -1,5 +1,6 @@
 package com.work.boot.service;
 
+import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Evaluation;
 
@@ -12,4 +13,7 @@ import com.work.boot.pojo.entity.Evaluation;
  */
 public interface EvaluationService {
     Result addeva(Evaluation evaluation);
+
+    ResponseDTO geteva();
+
 }

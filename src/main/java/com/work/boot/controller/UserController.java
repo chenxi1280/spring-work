@@ -5,8 +5,8 @@ package com.work.boot.controller;
 import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController{
 
 
     @Resource  //自动装配
@@ -39,6 +39,22 @@ public class UserController {
 
         Result result = userService.getAll();
         return result;
+
+    }
+
+    //业主信息表ajax请求地址
+    @RequestMapping("/homeuser")
+    @ResponseBody
+    public ResponseDTO homeuser() {
+
+
+
+        UserQuery userQuery = new UserQuery();
+
+        userQuery.setUid(getUserId());
+
+        return  userService.homeuser(userQuery);
+
 
     }
 
@@ -166,6 +182,20 @@ public class UserController {
     public String addmoneyhtml() {
 
         return "addmoney";
+
+    }
+
+    @RequestMapping("/useraddmoney")
+    public String useraddmoney() {
+
+        return "useraddmoney";
+
+    }
+
+    @RequestMapping("/addusercstatus")
+    public String addusermoney() {
+
+        return "addusercstatus";
 
     }
 

@@ -4,10 +4,15 @@ import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.UserQuery;
+import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.vo.PermissionVO;
+import com.work.boot.pojo.vo.RoleVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface UserService {
 
@@ -37,4 +42,19 @@ public interface UserService {
     ResultData datatest();
 
     ResponseDTO addusermoney(String uid, BigDecimal money);
+
+    User selectDbUserByPhone(UserQueryS query);
+
+    List<RoleVO> selectHisRolesByPhone(String uphoneid);
+
+    User login(UserQueryS query);
+
+    // 根据角色直接就能查询这些角色的权限
+    List<PermissionVO> selectHisPermissionByRoles(List<RoleVO> roles);
+
+    boolean checkPhoneExist(String phone);
+
+    User selectUserByPhone(UserQueryS query);
+
+    ResponseDTO homeuser(UserQuery userQuery);
 }

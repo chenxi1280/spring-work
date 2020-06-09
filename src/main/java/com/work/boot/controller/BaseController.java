@@ -1,6 +1,8 @@
 package com.work.boot.controller;
 
 import com.work.boot.config.webmvc.WebMvcConfig;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +20,7 @@ import java.util.UUID;
  * @Created by cxd
  */
 //@Component
-public class FileController {
+public class BaseController {
 
     protected String saveFile(MultipartFile f,String uploadPath){
 
@@ -51,4 +53,17 @@ public class FileController {
     protected HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
+    protected Session getSession() {// 获取shiro自己的session
+        return SecurityUtils.getSubject().getSession();
+    }
+
+    protected String getUserId() {// 获取当前用户id
+        return (String) getSession().getAttribute("userId");
+    }
+
+    protected String getPhone() {// 获取当前用户手机
+        return (String) getSession().getAttribute("phone");
+    }
+
+
 }
