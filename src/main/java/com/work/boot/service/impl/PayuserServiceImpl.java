@@ -44,15 +44,19 @@ public class PayuserServiceImpl implements PayuserService {
     @Override
     public PageDTO paylist(PayuserQuery payuserQuery) {
 
-        List<PayuserVo> list = payuserDao.selectAllByQuery(payuserQuery);
-        Integer count = payuserDao.selectCount(payuserQuery);
-        List<User> userList = userDao.selectByListPay(list);
+        List<User> userList= userDao.selectByPayUser(payuserQuery);
+        payuserQuery.setUsers(userList);
+        List<PayuserVo> list = payuserDao.selectByUserList(payuserQuery);
+        Integer count = payuserDao.selectByUserCount(payuserQuery);
         List<Payment> listPay = paymentDao.selectByListPay(list);
+
         list.forEach(p -> {
 
             userList.forEach(user -> {
                 if (user.getUid().equals(p.getUid())) {
                     p.setUusername(user.getUusername());
+                    p.setPhone(user.getUphoneid());
+
                 }
             });
 

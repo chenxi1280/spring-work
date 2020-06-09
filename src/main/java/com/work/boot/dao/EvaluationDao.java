@@ -20,4 +20,5 @@ public interface EvaluationDao {
 
     List<EvaluationVO> selectgeteva();
 
+    Integer inserts(Evaluation evaluation);
 }

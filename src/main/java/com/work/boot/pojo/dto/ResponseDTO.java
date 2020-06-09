@@ -103,9 +103,9 @@ public class ResponseDTO implements Serializable {
      */
     public static ResponseDTO get(boolean res) {
         if (res) {
-            return ResponseDTO.ok(successMsg);
+            return ResponseDTO.ok(successMsg,200);
         } else {
-            return ResponseDTO.fail(errorMsg);
+            return ResponseDTO.fail(errorMsg,500);
         }
     }
 

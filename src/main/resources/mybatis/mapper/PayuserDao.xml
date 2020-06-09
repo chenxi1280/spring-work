@@ -144,6 +144,33 @@
       select <include refid="Base_Column_List" />
       from payuser
     </select>
+  <select id="selectByUserList" resultType="com.work.boot.pojo.vo.PayuserVo">
+    select <include refid="Base_Column_List" />
+    from payuser
+    <where>
+      `uid` in <foreach collection="users" separator="," open="(" close=")" item="u">#{u.uid} </foreach>
+      <if test="paymentid != null and paymentid !=''">
+        and paymentid = #{paymentid}
+
+      </if>
+
+    </where>
+    limit #{start},#{limit}
+
+  </select>
+  <select id="selectByUserCount" resultType="java.lang.Integer">
+    select count(*)
+    from payuser
+    <where>
+      `uid` in <foreach collection="users" separator="," open="(" close=")" item="u">#{u.uid} </foreach>
+      <if test="paymentid != null and paymentid !=''">
+        and  paymentid = #{paymentid}
+
+      </if>
+
+    </where>
+
+  </select>
 
 
 </mapper>

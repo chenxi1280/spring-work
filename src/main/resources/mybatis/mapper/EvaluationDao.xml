@@ -12,7 +12,7 @@
     rid, `uid`, context, evaluation, createtime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from evaluation
     where rid = #{rid,jdbcType=VARCHAR}
@@ -21,17 +21,17 @@
     delete from evaluation
     where rid = #{rid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.work.boot.pojo.entity.Evaluation">
-    insert into evaluation (rid, `uid`, context, 
-      evaluation, createtime)
-    values (#{rid,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}, 
-      #{evaluation,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP})
+  <insert id="insert" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Evaluation" useGeneratedKeys="true">
+    insert into evaluation ( rid ,`uid`, context, evaluation,
+      createtime)
+    values ( #{rid,jdbcType=VARCHAR},#{uid,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}, #{evaluation,jdbcType=INTEGER},
+      #{createtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.work.boot.pojo.entity.Evaluation">
+  <insert id="insertSelective" keyColumn="rid" keyProperty="rid" parameterType="com.work.boot.pojo.entity.Evaluation" useGeneratedKeys="true">
     insert into evaluation
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="rid != null">
-        rid,
+        `rid`,
       </if>
       <if test="uid != null">
         `uid`,
@@ -47,9 +47,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+
       <if test="rid != null">
         #{rid,jdbcType=VARCHAR},
       </if>
+
       <if test="uid != null">
         #{uid,jdbcType=VARCHAR},
       </if>
@@ -92,6 +94,8 @@
   </update>
 
 
+<!--  sql-->
+
   <select id="selectgeteva" resultType="com.work.boot.pojo.vo.EvaluationVO">
     select <include refid="Base_Column_List" />
     from evaluation
@@ -99,6 +103,30 @@
 
 
   </select>
-<!--  &#45;&#45;     limit 0,5 ;-->
-<!--  &#45;&#45;     order by createtime desc-->
+
+
+  <insert id="inserts">
+    insert into evaluation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
+      <if test="evaluation != null">
+        evaluation,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+    </trim>
+
+
+  </insert>
+
+
 </mapper>

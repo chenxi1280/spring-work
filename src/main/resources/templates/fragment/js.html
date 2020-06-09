@@ -2,12 +2,35 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="js">
+    <meta charset="UTF-8">
+    <!--    收集屏幕适配-->
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=1,minimum-scale=1.0"/>
     <!--  layui自带jquery-->
-
     <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-3.5.0.js}"></script>
     <link th:href="@{/layui/css/layui.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/sg.css}" type="text/css" rel="stylesheet">
+    <script type="text/html" id="showBigImgDiv">
+        <div>
+            <img id="showBigImg" src="" style="width: 100%;height: 100%"/>
+        </div>
+    </script>
     <script th:inline="javascript" type="text/javascript">
+
+        function showBigImg() {// 渲染大图查看
+            $("img[showBig]").unbind("click").click(function () {// 先解除绑定，再绑定，绑定图片点击事件，否则会出现绑定两次点击事件
+                let bigImg = layer.open({// 弹框之后，如遇到select标签，radio,checkbox之类，需要使用表单渲染
+                    type: 1,
+                    offset: '10px',
+                    area: ['60%','90%'],
+                    title: "大图展示",
+                    shadeClose: true,
+                    content: $("#showBigImgDiv").html()
+                });
+                $("#showBigImg")[0].src = this.src;
+            });
+        }
 
 
         //图片上传预览功能,file:指的是文件,img指的JS dom对象q("#carPhoto")[0]
@@ -33,7 +56,6 @@
             };
             reader.readAsDataURL(file);
         }
-
 
         var windowH = window.innerHeight;// 获取窗口的高度
         var windowW = window.innerWidth;// 获取窗口的宽度
@@ -101,6 +123,11 @@
             return mobile_flag;
         }
 
+        $(function () {
+            showBigImg();// 调用一次函数才会生效
+        })
+
     </script>
+
 </div>
 </html>

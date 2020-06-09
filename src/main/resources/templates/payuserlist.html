@@ -14,6 +14,37 @@
     }
 </style>
 <body>
+
+<form class="layui-form" style="padding:5px 0;display: flex;align-items: center;"
+      id="queryForm">
+    <div class="layui-form-item" style="margin: 0">
+        <label class="layui-form-label" style="width: fit-content;">电话号码</label>
+        <input type="text" name="phone" id="roleName"
+               style="width: 120px" class="layui-input">
+    </div>
+    <div class="layui-form-item" style="margin: 0">
+        <label class="layui-form-label" style="width: fit-content">名字</label>
+        <input type="text" name="uname" id="roleNote"
+               style="width: 120px" class="layui-input">
+    </div>
+
+    <div class="layui-form-item" style="width: 200px;margin: 0">
+        <label class="layui-form-label">收费设置</label>
+        <div class="layui-input-block">
+            <select name="paymentid" id="paymentname" lay-filter="paymentname" >
+                <option>请选择</option>
+
+            </select>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item" style="margin: 0">
+        <button class="layui-btn" style="margin-left: 10px" id="queryBtn" lay-submit lay-filter="queryForm">查询</button>
+    </div>
+</form>
+
+
 <table id="payTable" lay-filter="payTable"></table>
 
 
@@ -26,6 +57,28 @@
         let form = layui.form;// 分页组件
         let $ = layui.$;// 使用jquery
 
+        $.ajax({
+            // async: true,                    //默认为true，默认为异步请求
+            type: "POST",                   //类型post
+            url: "/payment/ajaxpayment",                 //url
+            // contentType: "application/json",//请求内容编码类型
+            // data: "name=John&age=18",       //发送到服务器的数据
+            dataType: "json",               //返回数据格式
+            success: function(re){         //成功的方法
+
+                data = re.data
+
+                data.forEach( pay => {
+                    let ht = $("<option value="+pay.paymentid+" >"+pay.paymentname+"</option>")
+                    $("#paymentname").append(ht)
+                    $("#paymentname").attr("money",pay.paymentmoney)
+                    form.render()
+                })
+
+
+            }
+        });
+
         //第一个实例
         let tb = table.render({// 渲染表格
             elem: '#payTable'
@@ -33,9 +86,11 @@
             , page: true //开启分页
             , cols: [[ //表头，这里是两个[[开头，两个]]结尾
                 {field: '', type: 'checkbox', title: '多选'}
+                , {field: 'phone', title: '电话号码', width: 160 }
                 , {field: 'uusername', title: '用户名', width: 160 }
                 , {field: 'paymentname', title: '缴费名', width: 80}
                 , {field: 'paymoney', title: '缴费金额', width: 200}
+
                 , {field: 'patstate', title: '缴费情况', width: 160,templet: function (d) {
                         switch (d.patstate) {
                                 case 1 :
@@ -44,6 +99,10 @@
                                     return "未交费";
                         }
                     }}
+                , {field: 'payuserdate', title: '时间', width: 250 ,templet: function (d) {
+
+                        return showTime(d.payuserdate);
+                    }}
                 // , {field: 'note', title: '备注', width: 160, edit: 'text'}
                 // , {field: 'system', title: '系统级别', width: 160,templet: function (d) {// 这个d指的是本行的数据 js对象
                 //         // console.log(d)
@@ -51,19 +110,27 @@
                 //         return '<div style="color: '+color+';font-weight: bold">'+d.system+'</div>'
                 //
                 //     }}
-                , {
-                    field: '', title: '操作', templet: function (d) {// 这个d指的是本行的数据 js对象
-                        // console.log(d)
-                        return '<div>\n' +
-                            '            <button class="layui-btn layui-btn-xs " lay-event="updateData">查看</button>\n' +
-                            '            <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="editData">编辑</button>\n' +
-                            '            <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="deleteData">删除</button>\n' +
-                            ' </div>'
-
-                    }
-                }
+                // , {
+                //     field: '', title: '操作', templet: function (d) {// 这个d指的是本行的数据 js对象
+                //         // console.log(d)
+                //         return '<div>\n' +
+                //             '            <button class="layui-btn layui-btn-xs " lay-event="updateData">查看</button>\n' +
+                //             ' </div>'
+                //
+                //     }
+                // }
             ]]
             , toolbar: 'default'
+        });
+
+
+
+        form.on('submit(queryForm)', function (data) {
+            console.log(data)
+            tb.reload({
+                where: data.field
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
 

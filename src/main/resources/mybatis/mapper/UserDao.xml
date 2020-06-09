@@ -290,7 +290,7 @@
     </select>
 
     <select id="getusers" resultMap="BaseResultMap">
-    select uid,  uusername,  cstate,  ubroom, uphoneid, typeid, ucreatedate,aid,uimg
+    select <include refid="Base_Column_List" />
     from user
     limit #{start},#{limits}
 
@@ -303,8 +303,7 @@
 
     <select id="selectByUserName" parameterType="string" resultMap="BaseResultMap">
 
-    select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
-    typeid, ucreatedate
+    select <include refid="Base_Column_List" />
     from user
     where uname = #{uname}
 
@@ -312,8 +311,7 @@
 
     <select id="selectcheckUser" resultMap="BaseResultMap">
 
-    select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
-    typeid, ucreatedate
+    select <include refid="Base_Column_List" />
     from user
     where uname = #{uname}  and  upassword = #{upassword}
 
@@ -321,8 +319,7 @@
 
     <select id="selectById" parameterType="string" resultMap="BaseResultMap">
 
-    select uid, uname, uusername, upassword, cstate, aid, xid, ubroom, uphoneid, uimg,
-    typeid, ucreatedate
+    select <include refid="Base_Column_List" />
     from user
     where uid = #{uid}
 
@@ -379,6 +376,20 @@
     <select id="checkPhoneExist" resultType="com.work.boot.pojo.vo.UserVO">
         select <include refid="Base_Column_List"/>
         from user where uphoneid=#{uphoneid}
+    </select>
+    <select id="selectByPayUser" resultType="com.work.boot.pojo.entity.User">
+        select <include refid="Base_Column_List" />
+        from user
+        <where>
+            <if test="uname != null and uname!= '' ">
+                and uname like concat('%',#{uname},'%')
+            </if>
+            <if test="phone != null and phone!= '' ">
+                and uphoneid like concat('%',#{phone},'%')
+            </if>
+
+        </where>
+
     </select>
 
     <update id="updatemoneyByid">

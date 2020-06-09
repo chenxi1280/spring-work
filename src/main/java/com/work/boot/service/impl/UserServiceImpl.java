@@ -10,6 +10,7 @@ import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.Admin;
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.query.UserQueryS;
 import com.work.boot.pojo.vo.PermissionVO;
@@ -21,6 +22,7 @@ import com.work.boot.util.GetLimit;
 import com.work.boot.util.GetUUID32;
 import com.work.boot.util.Md5Util;
 import com.work.boot.util.UpUtils;
+import com.work.boot.util.password.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -419,6 +421,56 @@ public class UserServiceImpl implements UserService, BaseService {
         User user = userDao.selectByPrimaryKey(userQuery.getUid());
 
         return ResponseDTO.ok("", user);
+    }
+
+    @Override
+    public ResponseDTO add(User user) {
+        user.setMymoney(new BigDecimal(0));
+        user.setUusername(user.getUname());
+        user.setUcreatedate(new Date());
+        user.setUupdatedate(new Date());
+        user.setUid(GetUUID32.getuuid32());
+        user.setUpassword(PasswordUtil.encodePassword(user.getUpassword()));
+        user.setRole("7");
+        user.setCstate(0);
+
+
+        return ResponseDTO.get(userDao.insertSelective(user) == 1 );
+    }
+
+    @Override
+    public ResponseDTO edit(User user) {
+        UserVO userVO = userDao.selectUserByPhone(user.getUphoneid());
+        if (userVO != null) {
+
+            user.setUid(userVO.getUid());
+            user.setXid("1");
+            user.setUupdatedate(new Date());
+            user.setCstate(1);
+            StringBuffer pay = new StringBuffer();
+            if (user.getRoomarea() != 0) {
+                pay.append("1,");
+            }
+            if (user.getCarnumber() != 0) {
+                pay.append("2,");
+            }
+            user.setPaymentid(pay.toString().substring(0, pay.toString().length() - 1));
+        }
+
+        return ResponseDTO.get(userDao.updateByPrimaryKeySelective(user) == 1 );
+    }
+
+    @Override
+    public ResponseDTO useraddusermoney(UserAddQurey user) {
+        UserVO userVO = userDao.selectUserByPhone(user.getPhone());
+        User newuser = new User();
+        newuser.setUid(userVO.getUid());
+        newuser.setUupdatedate(new Date());
+        newuser.setMymoney(userVO.getMymoney().add(new BigDecimal(user.getMoney())));
+
+
+
+        return ResponseDTO.get(userDao.updateByPrimaryKeySelective(newuser) == 1 );
     }
 
     @Override

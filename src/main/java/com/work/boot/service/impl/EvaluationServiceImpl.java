@@ -36,14 +36,20 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     public Result addeva(Evaluation evaluation) {
         evaluation.setCreatetime(new Date());
-
-
+        Evaluation  evaluation1 = evaluationDao.selectByPrimaryKey(evaluation.getRid());
         Result result = new Result();
+        if (evaluation1 != null){
 
-        result.setStatus(500);
-        result.setMessage("操作失败");
+            result.setStatus(500);
+            result.setMessage("操作失败,已评价");
+
+            return  result;
+        }
+
+
+
         try {
-            int insert = evaluationDao.insert(evaluation);
+            int insert = evaluationDao.insertSelective(evaluation);
             if (insert == 1) {
                 result.setStatus(200);
                 result.setMessage("操作成功");

@@ -104,9 +104,11 @@ public class GuaranteeController extends BaseController {
     @ResponseBody
     public Result ajaxaddguarantee(GuaranteeAllVo guaranteeAllVo, MultipartFile rupimg, HttpServletRequest httpRequest){
 
-        String imgname = saveFile(rupimg, "/upload/goods/");
+        String imgname = saveFile(rupimg, "/upload/guarantee/");
 
         guaranteeAllVo.setRimg(imgname);
+
+        guaranteeAllVo.setUid(getUserId());
 
         return  guaranteeService.ajaxaddguarantee(guaranteeAllVo,httpRequest);
 
@@ -115,7 +117,10 @@ public class GuaranteeController extends BaseController {
     @ResponseBody
     public Result getmyguarateelist(HttpServletRequest httpRequest,Integer page, Integer limit){
 
-        return  guaranteeService.getmyguarateelist(httpRequest,page,limit);
+        String userId = getUserId();
+
+
+        return  guaranteeService.getmyguarateelist(userId,page,limit);
 
     }
     @RequestMapping("/delguarantee")

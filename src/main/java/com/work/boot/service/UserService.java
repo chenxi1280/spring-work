@@ -4,6 +4,7 @@ import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.dto.ResultData;
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.query.UserQueryS;
 import com.work.boot.pojo.vo.PermissionVO;
@@ -57,4 +58,10 @@ public interface UserService {
     User selectUserByPhone(UserQueryS query);
 
     ResponseDTO homeuser(UserQuery userQuery);
+
+    ResponseDTO add(User user);
+
+    ResponseDTO edit(User user);
+
+    ResponseDTO useraddusermoney(UserAddQurey user);
 }

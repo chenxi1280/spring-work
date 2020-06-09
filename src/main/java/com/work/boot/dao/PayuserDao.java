@@ -1,8 +1,10 @@
 package com.work.boot.dao;
 
 import com.work.boot.pojo.entity.Payuser;
+import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.PayuserQuery;
 import com.work.boot.pojo.vo.PayuserVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,5 +27,9 @@ public interface PayuserDao {
     Integer selectCount(PayuserQuery payuserQuery);
 
     List<Payuser> selectAll();
+
+    List<PayuserVo> selectByUserList(PayuserQuery payuserQuery);
+
+    Integer selectByUserCount(PayuserQuery payuserQuery);
 
 }

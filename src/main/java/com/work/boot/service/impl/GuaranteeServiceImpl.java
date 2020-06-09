@@ -222,12 +222,10 @@ public class GuaranteeServiceImpl implements GuaranteeService {
     @Override
     public Result ajaxaddguarantee(GuaranteeAllVo guaranteeAllVo, HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+
+
 
         guaranteeAllVo.setRid(GetUUID32.getuuid32());
-        guaranteeAllVo.setUid(user.getUid());
-        guaranteeAllVo.setUphone(user.getUphoneid());
         guaranteeAllVo.setRstate(1);
         guaranteeAllVo.setRpublicdate(new Date());
 
@@ -252,17 +250,16 @@ public class GuaranteeServiceImpl implements GuaranteeService {
     }
 
     @Override
-    public Result getmyguarateelist(HttpServletRequest request, Integer page, Integer limit) {
+    public Result getmyguarateelist(String request, Integer page, Integer limit) {
 
         Integer sta = (page - 1) * limit;
 
-        HttpSession session = request.getSession();
-        User users = (User) session.getAttribute("user");
+
         Result result = new Result();
         result.setTotal(0);
 
         try{
-            List<GuaranteeAllVo> lists = guaranteeDao.selectLikeUserAll(users.getUid(),sta,limit);
+            List<GuaranteeAllVo> lists = guaranteeDao.selectLikeUserAll(request,sta,limit);
             //循环 设置名字
             lists.forEach(g -> {
                 User user = userDao.selectByPrimaryKey(g.getUid());

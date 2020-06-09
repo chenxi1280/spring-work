@@ -162,6 +162,9 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                 }
             ]
         ]
+        , done() {// 表格渲染完成之后，也就是图片都被渲染好了
+            showBigImg();// 渲染大图查看，给这些图片绑定点击事件
+        }
     });
 
     //监听头工具栏事件   监听绑定表

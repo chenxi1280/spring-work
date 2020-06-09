@@ -40,9 +40,9 @@
                style="display: none" >
 
         <div class="layui-form-item">
-            <label class="layui-form-label">商品原价</label>
+            <label class="layui-form-label">充值金额</label>
             <div class="layui-input-block">
-                <input type="text" name="money" id="money" placeholder="请输入充值金额" lay-verify="number"
+                <input type="text" name="money" id="money" placeholder="请输入充值金额" lay-verify="required|number"
                        style="width: 200px" class="layui-input">
             </div>
         </div>
@@ -98,12 +98,12 @@
                     {
                         type: 'checkbox',
                         fixed: 'left'
-                    }, {
-                    field: 'uid',
-                    title: 'ID',
-                    sort: true,
-                    width: 100,
-                    fixed: 'left'
+                    },  {
+                    field: 'uphoneid',
+                    title: '电话',
+
+                    align: 'center',
+                    edit: 'text',
                 }, {
                     field: 'uusername',
                     title: '业主名字',
@@ -111,24 +111,8 @@
                     edit: 'text',
 
                 }, {
-                    field: 'uimg',
-                    title: '照片',
-                    align: 'center',
-                    templet: function (d) {
-                        var path = d.uimg;
-                        console.log(path)
-                        //需要一个图片标签进行图片展示
-                        return "<img src='../" + path + "' style='width: 150px; height: 150px;'/>"
-                    }
-                }, {
                     field: 'ubroom',
                     title: '地址',
-                    align: 'center',
-                    edit: 'text',
-                }, {
-                    field: 'uphoneid',
-                    title: '联系方式',
-
                     align: 'center',
                     edit: 'text',
                 }, {
@@ -146,15 +130,27 @@
                         }
                     }
 
+                },  {
+                    field: 'roomarea',
+                    title: '面积',
+                    width: 90,
+                    align: 'center'
+
                 }, {
-                    field: 'aid',
-                    title: '创建员工',
+                    field: 'carnumber',
+                    title: '车位数',
+                    width: 90,
+                    align: 'center'
+
+                },{
+                    field: 'mymoney',
+                    title: '余额',
                     width: 150,
                     align: 'center'
 
                 }, {
-                    field: 'ucreatedate',
-                    title: '创建时间',
+                    field: 'uupdatedate',
+                    title: '更新时间',
                     sort: true,
                     align: 'center',
                     templet: function (d) {
@@ -163,7 +159,7 @@
 
                         // return date.Format("yyyy-MM-dd hh:mm:ss");
 
-                        return showTime(d.ucreatedate);
+                        return showTime(d.uupdatedate);
                     }
                 },
                     // {

@@ -7,6 +7,7 @@ import com.work.boot.service.AdminService;
 import com.work.boot.service.LoginService;
 import com.work.boot.service.UserService;
 import com.work.boot.util.AdmintoUser;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,25 +102,28 @@ public class HomeController {
 
     @RequestMapping("/homeindex")
     public String homeindex() {
-
         return "homeindex";
-
     }
 
 
     @RequestMapping("/main")
     public String main() {
-
         return "main";
-
     }
 
     @RequestMapping("/loginPage")
     public String loginPage() {
 
-        return "loginPage";
+        SecurityUtils.getSubject().logout();
 
+        return "loginPage";
     }
+
+    @RequestMapping("/registered")
+    public String registered() {
+        return "registeredPage";
+    }
+
 
     @RequestMapping("/setCookie")
     public String setCookie(HttpServletRequest request) {

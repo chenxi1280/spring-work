@@ -1,6 +1,7 @@
 package com.work.boot.dao;
 
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.PayuserQuery;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.query.UserQueryS;
 import com.work.boot.pojo.vo.EvaluationVO;
@@ -60,4 +61,6 @@ public interface UserDao {
     List<UserVO> selectUserBylist(@Param("ids") List<EvaluationVO> list);
 
     UserVO checkPhoneExist(String phone);
+
+    List<User> selectByPayUser(PayuserQuery payuserQuery);
 }

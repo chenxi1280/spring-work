@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
+<link href="/css/sgre.css" rel="stylesheet" type="text/css">
+<div th:replace="fragment/js::js"></div>
+
 <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
 <script type="text/javascript" src="/layui/layui.js"></script>
 <script type="text/javascript" src="/js/date.js"></script>
@@ -12,6 +16,9 @@
 <style>
     /*修改layui表格的高度*/
     .layui-table-cell {
+        height: auto;
+    }
+    thead .layui-table-cell {
         height: auto;
     }
 </style>
@@ -140,7 +147,7 @@
             //绑定body里面的table标签-->id
             elem: '#demo',
             //table表格的高度
-            height: 600,
+            // height: 600,
             //请求后台的地址(获取video的视频信息)
             url: '/guarantee/getmyguarateelist',
             //表格的名称
@@ -165,41 +172,43 @@
                 [ //表头
                     {
                         type: 'checkbox',
-                        fixed: 'left'
+                        // fixed: 'left'
                     }, {
                     field: 'rid',
                     title: 'ID',
                     sort: true,
-                    fixed: 'left'
+                    // fixed: 'left'
                 }, {
                     field: 'rname',
                     title: '报修名字',
                     align: 'center',
                     edit: 'text',
+                    width: 100,
 
                 },
                     {
                         field: 'rcontent',
                         title: '报修内容',
                         align: 'center',
-                        // edit: 'text',
+                        width: 150,
                     },
                     {
                         field: 'raddress',
                         title: '地址',
                         align: 'center',
-
+                        width: 100,
                     },
                     {
                         field: 'uphone',
                         title: '用户手机号码',
                         align: 'center',
-
+                        width: 150,
                     },
                     {
                         field: 'maintenanceusername',
                         title: '维修人员名字',
                         align: 'center',
+                        width: 90,
 
                     },
                     //     {
@@ -212,20 +221,23 @@
                     {
                         field: 'uid',
                         title: '报修用户',
-
+                        width: 90,
                         align: 'center',
                         // edit: 'text',
-                    }, {
-                    field: 'revaluation',
-                    title: '维修费用',
-                    width: 150,
-                    align: 'center',
-
-                }, {
+                    },
+                //     {
+                //     field: 'revaluation',
+                //     title: '维修费用',
+                //     width: 90,
+                //     align: 'center',
+                //
+                // },
+                    {
                     field: 'rpublicdate',
                     title: '创建时间',
                     sort: true,
                     align: 'center',
+                    width: 150,
                     templet: function (d) {
 
                         // date.setTime(d.ucreatedate);
@@ -241,6 +253,7 @@
                         title: '修改时间',
                         sort: true,
                         align: 'center',
+                        width: 150,
                         templet: function (d) {
 
                             // date.setTime(d.ucreatedate);
@@ -255,6 +268,7 @@
                         title: '完成时间',
                         sort: true,
                         align: 'center',
+                        width: 150,
                         templet: function (d) {
 
                             // date.setTime(d.ucreatedate);
@@ -274,6 +288,7 @@
                         field: 'rstate',
                         title: '状态',
                         align: 'center',
+                        width: 100,
                         templet:function (d) {
                             if (d.rstate == 1) {
                                 return '未处理';
@@ -300,17 +315,25 @@
                         title: '图片',
                         templet: function (d) {
                             // 这个d指的是本行的数据 js对象
-                            return '<div><img style="width: 100px;height: 100px" src=' + d.rimg + '/></div>'
+
+                            let imgDiv = "<div><img showBig style='width: 50px;height: 50px;border-radius: 5px' src=" + d.rimg + "/></div>"
+                            return imgDiv;
+                            // return '<div><img style="width: 100px;height: 100px" src=' + d.rimg + '/></div>'
                         }
                     },
                     {
-                        fixed: 'right',
+                        // fixed: 'right',
                         width: 165,
                         align: 'center',
                         toolbar: '#barDemo'
                     }
                 ]
             ]
+            , done() {// 表格渲染完成之后，也就是图片都被渲染好了
+                showBigImg();// 渲染大图查看，给这些图片绑定点击事件
+            }
+
+
         });
 
         // // //监听行工具事件

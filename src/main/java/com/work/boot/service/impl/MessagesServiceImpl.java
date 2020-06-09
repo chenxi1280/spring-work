@@ -104,8 +104,7 @@ public class MessagesServiceImpl implements MessagesService {
         }
 
 
-        HttpSession session = request.getSession();
-        User u = (User) request.getSession().getAttribute("user");
+
         // 视频的地址
         // 视频的描述
         // 视频的封面
@@ -115,8 +114,7 @@ public class MessagesServiceImpl implements MessagesService {
         nMessage.setIid(id);
         nMessage.setIcreatedate(date);
 
-        nMessage.setAcid(u.getUid());
-        nMessage.setXid(u.getXid());
+
 
 //
 //        MultimediaInfo info = VideoUtil.getInfo(video.getVideoPath(), request);

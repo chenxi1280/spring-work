@@ -4,7 +4,9 @@ package com.work.boot.controller;
 
 import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
+import com.work.boot.pojo.entity.Guarantee;
 import com.work.boot.pojo.entity.User;
+import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -46,7 +48,6 @@ public class UserController extends BaseController{
     @RequestMapping("/homeuser")
     @ResponseBody
     public ResponseDTO homeuser() {
-
 
 
         UserQuery userQuery = new UserQuery();
@@ -185,12 +186,7 @@ public class UserController extends BaseController{
 
     }
 
-    @RequestMapping("/useraddmoney")
-    public String useraddmoney() {
 
-        return "useraddmoney";
-
-    }
 
     @RequestMapping("/addusercstatus")
     public String addusermoney() {
@@ -209,5 +205,51 @@ public class UserController extends BaseController{
 
 
     }
+
+    @RequestMapping("/add")
+    @ResponseBody
+    public ResponseDTO add(User user,MultipartFile ruimg) {
+        String imgname = saveFile(ruimg, "/upload/user");
+        user.setUimg(imgname);
+        return userService.add(user);
+
+
+    }
+
+    @RequestMapping("/edit")
+    @ResponseBody
+    public ResponseDTO edit(User user) {
+
+        return userService.edit(user);
+
+
+    }
+
+    @RequestMapping("/useraddmoney")
+    public String useraddmoney(){
+
+        return "useraddmoney";
+    }
+
+    @RequestMapping("/useraddusermoney")
+    @ResponseBody
+    public ResponseDTO useraddusermoney(UserAddQurey user) {
+
+        return userService.useraddusermoney(user);
+
+
+    }
+
+
+//    @RequestMapping("/toeditguarantee")
+//    @ResponseBody
+//    public Result toeditguarantee(Guarantee guarantee, MultipartFile rupimg){
+//        String imgname = saveFile(rupimg, "/upload/goods/");
+//
+//        guarantee.setRimg(imgname);
+//        return guaranteeService.toeditguarantee(guarantee);
+//    }
+
+
 
 }

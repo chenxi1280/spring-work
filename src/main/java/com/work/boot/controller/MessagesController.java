@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/messages")
-public class MessagesController {
+public class MessagesController extends BaseController{
     @Autowired
     private MessagesService messagesService;
 
@@ -81,6 +81,8 @@ public class MessagesController {
     @ResponseBody
     public Result addmessages(Message nMessage, HttpServletRequest request) {
 
+
+        nMessage.setAuid(getUserId());
 
         Result result = messagesService.addMessages(nMessage, request);
 

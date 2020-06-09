@@ -17,4 +17,6 @@ public class PayuserVo extends Payuser {
 
     private String paymentname;
 
+    private String phone;
+
 }

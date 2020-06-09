@@ -63,7 +63,7 @@ public class UserRealm extends AuthorizingRealm {
 //                    throw new CredentialsException("账户或密码错误");
 //                }
 //            }
-            session.setAttribute("uid", dbUser.getUid());
+            session.setAttribute("userId", dbUser.getUid());
             session.setAttribute("uname", dbUser.getUname());
             session.setAttribute("uphoneid", dbUser.getUphoneid());
             // 设置角色
