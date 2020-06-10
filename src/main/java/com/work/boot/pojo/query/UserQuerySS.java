@@ -1,18 +1,17 @@
 package com.work.boot.pojo.query;
 
-import com.work.boot.pojo.entity.User;
 import lombok.Data;
 
 /**
- * @Classname UserQueryS
+ * @Classname UserQuerySS
  * @Description TODO
- * @Date 2020/6/3 0:04
+ * @Date 2020/6/10 9:57
  * @CreateComputer by PC
  * @Created by cxd
  */
 @Data
-public class UserQueryS extends User {
-    private String code;
+public class UserQuerySS extends PageQuery {
+
     private String phone;
     private String realName;
 

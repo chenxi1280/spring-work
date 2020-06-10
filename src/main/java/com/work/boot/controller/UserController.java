@@ -10,6 +10,8 @@ import com.work.boot.pojo.entity.Role;
 import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
+import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.query.UserQuerySS;
 import com.work.boot.pojo.vo.RoleVO;
 import com.work.boot.service.RoleService;
 import com.work.boot.service.UserService;
@@ -36,8 +38,6 @@ public class UserController extends BaseController{
     private UserService userService;
 
 
-    @Resource
-    RoleService roleService;
 
 
     @RequestMapping("/showuser")
@@ -267,10 +267,10 @@ public class UserController extends BaseController{
 
     @RequestMapping("/ajaxadminlist")
     @ResponseBody
-    public PageDTO ajaxadminlist(Model model) {
+    public PageDTO ajaxadminlist(UserQuerySS userQuery) {
 //        PageDTO systemRoles = roleService.getSystemRoles();
 //        model.addAttribute("systemRoles", systemRoles.getData());
-        return userService.ajaxadminlist();
+        return userService.ajaxadminlist(userQuery);
 
 
     }
@@ -284,13 +284,20 @@ public class UserController extends BaseController{
     }
 
     // 对用户进行角色和权限分配
-    @RequestMapping("dispatchUserPermission/{userId}")
+    @RequestMapping("dispatchUserPermission/{uid}")
     @ResponseBody
-    ResponseDTO dispatchUserPermission(@PathVariable String userId, @RequestBody List<Role> roles) {
+    ResponseDTO dispatchUserPermission(@PathVariable String uid, @RequestBody List<Role> roles) {
 
-        return userService.dispatchUserPermission(userId, roles);
+        return userService.dispatchUserPermission(uid, roles);
     }
 
+    // 对用户进行角色和权限分配
+    @RequestMapping("deleteadmin")
+    @ResponseBody
+    ResponseDTO deleteadmin(String uid) {
+
+        return userService.deleteadmin(uid);
+    }
 
 
 

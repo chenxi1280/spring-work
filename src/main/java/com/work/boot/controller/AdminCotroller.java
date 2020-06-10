@@ -43,6 +43,14 @@ public class AdminCotroller {
         return "showadmin";
     }
 
+
+    @RequestMapping("/adminlist")
+    public String adminList() {
+
+
+        return "adminList";
+    }
+
     //暂时无用
     @RequestMapping("/getAll")
     @ResponseBody

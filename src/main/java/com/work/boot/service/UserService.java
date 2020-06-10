@@ -9,6 +9,7 @@ import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.query.UserQuerySS;
 import com.work.boot.pojo.vo.PermissionVO;
 import com.work.boot.pojo.vo.RoleVO;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +73,7 @@ public interface UserService {
     @Transactional
     ResponseDTO dispatchUserPermission(String userId, List<Role> roles);
 
-    PageDTO ajaxadminlist();
+    PageDTO ajaxadminlist(UserQuerySS userQueryS);
 
+    ResponseDTO deleteadmin(String uid);
 }

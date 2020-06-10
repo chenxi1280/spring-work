@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragment/js::js"></div>
+<style>
+    /*修改layui表格的高度*/
+    .layui-table-cell {
+        height: auto;
+    }
+</style>
+<body class="layui-card-body layui-card">
+<div style="padding: 10px;" class="layui-card">
+    <form id="queryForm" class="layui-form" method="post"
+          style="display: flex;align-items: center">
+
+        <div style="display: flex;align-items: center;margin-left: 20px">
+            <label style="width:  fit-content">真实姓名:</label>
+            <input class="layui-input" name="realName" id="realName"
+                   style="width: 120px"/>
+        </div>
+        <div style="display: flex;align-items: center;margin-left: 20px">
+            <label style="width:  fit-content">手机号:</label><input class="layui-input" name="phone" id="phone"
+                                                                  style="width: 120px"/>
+        </div>
+
+        <div style="display: flex;align-items: center;margin-left: 20px">
+            <button type="button" class="layui-btn" id="queryBtn" lay-submit lay-filter="queryForm">查询</button>
+        </div>
+    </form>
+    <table id="userTable" lay-filter="userTableFilter"></table>
+    <!--        <div th:include="plugins/splitBar::splitBar"></div>-->
+
+</div>
+<!--查看这个角色的权限的弹框-->
+
+
+
+<!--// 加上th:inline='javascript' 否则可能会因为小于或者大于符号导致 thymeleaf模板引擎解析错误。-->
+<script th:inline="javascript" type="text/javascript">
+    $(function () {
+
+        layui.use(['table', 'layer', 'laydate', 'form'], function () {
+            var table = layui.table;
+            var layer = layui.layer;
+            var laydate = layui.laydate;
+            var form = layui.form;
+
+            var userTable = table.render({
+                elem: '#userTable'
+                , page: true
+                , url: '/maintenanceuser/ajaxList' //数据接口
+                , cols: [[ //表头
+                    {width: 40, type: "checkbox"}
+
+                    , {field: 'maintenanceuserid', title: 'ID', width: 60}
+                    , {field: 'maintenanceusername', title: '姓名', width: 140}
+                    , {field: 'maintenanceuseridstate', title: '状态', width: 100,templet(d){
+
+                            if (d.maintenanceuseridstate == 1){
+                                return "工作中"
+                            }
+                            if (d.maintenanceuseridstate == 2){
+                                return "休息"
+                            }
+                        }}
+                    , {field: 'maintenanceuserphone', title: '手机号', width: 120}
+
+                    , {field: 'note', title: '备注', width: 140,edit:'text'}
+                    , {
+                        field: '', title: '操作', width: 180, templet: function (d) {
+                            return '<div >' +
+                                '<button class="layui-btn  layui-btn-warm layui-btn-xs" lay-event="showPermissions">修改</button>' +
+                                '<button class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="lock">删除</button>' +
+                                '</div>'
+                        }
+                    }
+                ]]
+                , toolbar: 'default'
+                , done() {
+                    showBigImg();
+                }
+            });
+            form.on('submit(queryForm)', function (data) {
+                userTable.reload({
+                    where: data.field,
+                    page: {curr: 1}
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+            onInput($("#queryForm input"));
+
+            //监听行中工具条
+            table.on('tool(roleTable)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var d = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                switch (layEvent) {
+                    case 'edit':
+                        layer.open({// 弹框之后，如遇到select标签，radio,checkbox之类，需要使用表单渲染
+                            type: 2,
+                            offset: '10px',
+                            area: '80%',
+                            title: "修改",
+                            shadeClose: true,
+                            content: $("#showPermissionTable").html()
+                        });
+
+                        break;
+                    case 'delete':
+                        // 有没有数组？
+
+                        layer.confirm('您确定操作吗?', function (index) {
+                            // 第一步，拿到所有选中的行的角色id
+                            $("#")
+                                $.ajax({
+                                        async: true,                    //默认为true，默认为异步请求
+                                        type: "POST",                   //类型post
+                                        url: "/user/admindelete",                 //url
+                                        contentType: "application/json",//请求内容编码类型
+                                        data: {'uid' : d.field.uid},       //发送到服务器的数据
+                                        dataType: "json",               //返回数据格式
+                                        success: function(msg){         //成功的方法
+                                            layer.msg(msg.msg)
+                                        }
+                                    });
+
+
+                            layer.close(index);
+                        });
+                        break;
+                }
+            });
+
+
+
+
+
+
+        });
+    })
+    function onInput(jObj) {
+
+
+        jObj.on({
+
+            'input': function () {
+
+                $("#queryBtn").click();// 这里直接换成查询按钮点击事件
+
+            }
+
+        })
+    }
+
+</script>
+
+
+</body>
+
+
+</html>

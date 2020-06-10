@@ -45,5 +45,10 @@ public class Role implements Serializable {
      */
     private String permissions;
 
+    /**
+     * 系统权限
+     */
+    private Integer system;
+
     private static final long serialVersionUID = 1L;
 }

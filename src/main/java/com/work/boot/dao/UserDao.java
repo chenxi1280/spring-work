@@ -4,6 +4,7 @@ import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.PayuserQuery;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.query.UserQuerySS;
 import com.work.boot.pojo.vo.EvaluationVO;
 import com.work.boot.pojo.vo.PayuserVo;
 import com.work.boot.pojo.vo.UserVO;
@@ -64,7 +65,7 @@ public interface UserDao {
 
     List<User> selectByPayUser(PayuserQuery payuserQuery);
 
-    List<UserVO> selectAdminAll();
+    List<UserVO> selectAdminAll(UserQuerySS userQueryS );
 
-    Integer selectByAdminCount();
+    Integer selectByAdminCount(UserQuerySS userQueryS );
 }

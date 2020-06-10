@@ -101,5 +101,38 @@
       from maintenanceuser
       where maintenanceuseridstate = 1
     </select>
+    <select id="selectList" resultType="com.work.boot.pojo.vo.MaintenanceuserVO">
+      select <include refid="Base_Column_List" />
+      from maintenanceuser
+      <where>
+
+        <if test="name != null and name!= '' ">
+          and maintenanceusername like concat('%',#{name},'%')
+        </if>
+        <if test="phone != null and phone!= '' ">
+          and maintenanceuserphone like concat('%',#{phone},'%')
+        </if>
+
+
+      </where>
+
+      limit #{start},#{limit}
+
+
+    </select>
+  <select id="selectCountList" resultType="java.lang.Integer">
+    select COUNT(*)
+    from maintenanceuser
+    <where>
+
+      <if test="name != null and name!= '' ">
+        and maintenanceusername like concat('%',#{name},'%')
+      </if>
+      <if test="phone != null and phone!= '' ">
+        and maintenanceuserphone like concat('%',#{phone},'%')
+      </if>
+    </where>
+
+  </select>
 
 </mapper>

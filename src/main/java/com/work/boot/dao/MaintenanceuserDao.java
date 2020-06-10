@@ -3,7 +3,9 @@ package com.work.boot.dao;
 import com.work.boot.pojo.entity.Guarantee;
 import com.work.boot.pojo.entity.Maintenanceuser;
 import com.work.boot.pojo.query.GuaranteeAllQury;
+import com.work.boot.pojo.query.MaintenanceuserQuery;
 import com.work.boot.pojo.vo.GuaranteeAllVo;
+import com.work.boot.pojo.vo.MaintenanceuserVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
@@ -29,4 +31,7 @@ public interface MaintenanceuserDao {
 
     List<Maintenanceuser> selectOnin();
 
+    List<MaintenanceuserVO> selectList(MaintenanceuserQuery maintenanceuserQuery);
+
+    Integer selectCountList(MaintenanceuserQuery maintenanceuserQuery);
 }

@@ -11,6 +11,7 @@ import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.UserAddQurey;
 import com.work.boot.pojo.query.UserQuery;
 import com.work.boot.pojo.query.UserQueryS;
+import com.work.boot.pojo.query.UserQuerySS;
 import com.work.boot.pojo.vo.PermissionVO;
 import com.work.boot.pojo.vo.RoleVO;
 import com.work.boot.pojo.vo.UserVO;
@@ -480,7 +481,7 @@ public class UserServiceImpl implements UserService, BaseService {
 
 
     @Override
-    public ResponseDTO dispatchUserPermission(String userId, List<Role> roles) {
+    public ResponseDTO dispatchUserPermission(String uid, List<Role> roles) {
         TreeSet treeSet = new TreeSet();// 就是装最后分配好的角色id
         // 1、先把权限字符串取出来进行排序操作
         // 当作查询参数,服务器也要对权限字符串进行排序
@@ -503,7 +504,7 @@ public class UserServiceImpl implements UserService, BaseService {
         for (Role r : roles) {
             List<Role> roles2 = collect1.get(r.getPermissions());// 从查询结果里边取角色
             if (CollectionUtils.isEmpty(roles2)) {// 结果集里边没有这个角色，就需要新增角色
-//                r.setSystem(false);// 不是系统级
+                r.setSystem(0);// 不是系统级
                 r.setNote("==> 新增角色：");
                 // 有没有RoleId有关系吗？
                 roleDao.insertSelective(r);
@@ -513,17 +514,17 @@ public class UserServiceImpl implements UserService, BaseService {
             }
         }
         User u = new User();
-        u.setUid(userId);
+        u.setUid(uid);
         u.setRole(StringUtils.collectionToDelimitedString(treeSet, ","));
         return ResponseDTO.get(userDao.updateByPrimaryKeySelective(u) == 1);
     }
 
     @Override
-    public PageDTO ajaxadminlist() {
+    public PageDTO ajaxadminlist(UserQuerySS userQueryS) {
 
-        List<UserVO> list = userDao.selectAdminAll();
+        List<UserVO> list = userDao.selectAdminAll(userQueryS);
 
-        Integer count = userDao.selectByAdminCount();
+        Integer count = userDao.selectByAdminCount(userQueryS);
 
         list.forEach(v -> {
 
@@ -539,6 +540,14 @@ public class UserServiceImpl implements UserService, BaseService {
 
 
         return PageDTO.setPageData(count,list);
+    }
+
+    @Override
+    public ResponseDTO deleteadmin(String uid) {
+
+
+
+        return ResponseDTO.get( userDao.deleteByPrimaryKey(uid) == 1  );
     }
 
     @Override

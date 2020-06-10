@@ -394,14 +394,36 @@
     <select id="selectAdminAll" resultType="com.work.boot.pojo.vo.UserVO">
         select <include refid="Base_Column_List" />
         from user
-        where typeid = '1'
+        <where>  typeid = '1'
+
+            <if test="realName != null and realName!= '' ">
+                and uusername like concat('%',#{realName},'%')
+            </if>
+            <if test="phone != null and phone!= '' ">
+                and uphoneid like concat('%',#{phone},'%')
+            </if>
+
+
+          </where>
+
+        limit #{start},#{limit}
 
 
     </select>
     <select id="selectByAdminCount" resultType="java.lang.Integer">
         select count(*)
         from user
-        where typeid = 1
+        <where>  typeid = '1'
+
+            <if test="realName != null and realName!= '' ">
+                and uusername like concat('%',#{realName},'%')
+            </if>
+            <if test="phone != null and phone!= '' ">
+                and uphoneid like concat('%',#{phone},'%')
+            </if>
+
+
+        </where>
 
     </select>
 
