@@ -299,6 +299,14 @@ public class UserController extends BaseController{
         return userService.deleteadmin(uid);
     }
 
+    @RequestMapping("editadmin")
+    @ResponseBody
+    ResponseDTO editadmin(User user) {
+
+        return userService.editadmin(user);
+    }
+
+
 
 
 //    @RequestMapping("/toeditguarantee")

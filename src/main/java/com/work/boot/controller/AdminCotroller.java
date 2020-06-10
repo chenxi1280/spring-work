@@ -2,6 +2,7 @@ package com.work.boot.controller;
 
 
 import com.work.boot.pojo.dto.PageDTO;
+import com.work.boot.pojo.dto.ResponseDTO;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Admin;
 import com.work.boot.pojo.entity.User;
@@ -197,6 +198,15 @@ public class AdminCotroller {
 
 
     }
+
+    @RequestMapping("add")
+    @ResponseBody
+    ResponseDTO add(User user) {
+
+        return userService.addadmin(user);
+    }
+
+
 
 
 }

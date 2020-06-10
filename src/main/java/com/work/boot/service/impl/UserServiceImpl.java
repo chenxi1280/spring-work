@@ -551,6 +551,40 @@ public class UserServiceImpl implements UserService, BaseService {
     }
 
     @Override
+    public ResponseDTO editadmin(User user) {
+
+
+
+
+        return ResponseDTO.get(userDao.updateByPrimaryKeySelective(user) == 1 );
+    }
+
+    @Override
+    public ResponseDTO addadmin(User user) {
+
+        UserVO userVO = userDao.selectUserByPhone(user.getUphoneid());
+
+        if (userVO != null){
+
+            return ResponseDTO.fail("用户已经注册");
+        }
+        user.setTypeid(1);
+        user.setMymoney(new BigDecimal(0));
+//        user.setUusername(user.getUname());
+        user.setUcreatedate(new Date());
+        user.setUupdatedate(new Date());
+        user.setUid(GetUUID32.getuuid32());
+        user.setUpassword(PasswordUtil.encodePassword(user.getUpassword()));
+        user.setRole("7");
+        user.setCstate(0);
+
+
+        return ResponseDTO.get(userDao.insertSelective(user) == 1 );
+
+
+    }
+
+    @Override
     public User login(UserQueryS query) {
         return userDao.login(query);
     }

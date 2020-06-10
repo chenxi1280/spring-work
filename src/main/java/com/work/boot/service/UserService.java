@@ -76,4 +76,8 @@ public interface UserService {
     PageDTO ajaxadminlist(UserQuerySS userQueryS);
 
     ResponseDTO deleteadmin(String uid);
+
+    ResponseDTO editadmin(User user);
+
+    ResponseDTO addadmin(User user);
 }

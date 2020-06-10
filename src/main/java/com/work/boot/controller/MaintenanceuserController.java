@@ -1,9 +1,8 @@
 package com.work.boot.controller;
 
-import com.work.boot.pojo.dto.PageDTO;
-import com.work.boot.pojo.dto.RData;
-import com.work.boot.pojo.dto.Result;
-import com.work.boot.pojo.dto.ResultData;
+import com.work.boot.pojo.dto.*;
+import com.work.boot.pojo.entity.Maintenanceuser;
+import com.work.boot.pojo.entity.User;
 import com.work.boot.pojo.query.MaintenanceuserQuery;
 import com.work.boot.service.MaintenanceuserService;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,12 @@ public class MaintenanceuserController {
     @Resource
     private MaintenanceuserService maintenanceuserService;
 
+    @RequestMapping("/addmaintenanceuser")
+    String addmaintenanceuser(){
+        return "addmaintenanceuser";
+    }
+
+
     @RequestMapping("/getmaintenanceuser")
     @ResponseBody
     public Result getmaintenanceuser(){
@@ -38,5 +43,30 @@ public class MaintenanceuserController {
 
         return maintenanceuserService.ajaxList(maintenanceuserQuery);
     }
+
+    @RequestMapping("/add")
+    @ResponseBody
+    ResponseDTO add(Maintenanceuser maintenanceuser) {
+
+        return maintenanceuserService.add(maintenanceuser);
+    }
+
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    ResponseDTO delete(Maintenanceuser maintenanceuser) {
+
+        return maintenanceuserService.delete(maintenanceuser);
+    }
+
+
+    @RequestMapping("/edit")
+    @ResponseBody
+    ResponseDTO edit(Maintenanceuser maintenanceuser) {
+
+        return maintenanceuserService.edit(maintenanceuser);
+    }
+
+
 
 }

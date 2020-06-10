@@ -56,6 +56,50 @@
     </div>
 </script>
 
+<script type="text/html" id="editdemo">
+    <form class="layui-form" style="padding: 20px">
+        <input type="text" style="display: none" id="uid" name="uid">
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">名字</label>
+            <div class="layui-input-block">
+                <input type="text" name="uname" id="uname" placeholder="请输入"
+                       style="width: 200px" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">名字</label>
+            <div class="layui-input-block">
+                <input type="text" name="uusername" id="uusername" placeholder="请输入"
+                       style="width: 200px" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话号码</label>
+            <div class="layui-input-block">
+                <input type="text" name="uphoneid" id="uphoneid" placeholder="请输入" lay-verify="required|phone"
+                       style="width: 200px" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" type="submit" id="sureEdit" lay-submit lay-filter="sureEdit">确定修改</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<!--自定义表头工具栏-->
+<script type="text/html" id="bar">
+    <div class="layui-btn-group">
+        <button class="layui-btn" lay-event="add">增加</button>
+        <!--        <button class="layui-btn" lay-event="delete">删除</button>-->
+    </div>
+</script>
 
 <!--// 加上th:inline='javascript' 否则可能会因为小于或者大于符号导致 thymeleaf模板引擎解析错误。-->
 <script th:inline="javascript" type="text/javascript">
@@ -70,6 +114,29 @@
                 elem: '#creteDateRange' //指定元素
                 , range: '至'
             });
+
+            //监听头工具栏事件   监听绑定表
+            table.on('toolbar(userTableFilter)', function (obj) {
+
+
+
+                switch (obj.event) {
+                    case 'add':
+                        layer.open({
+                            type: 2,
+                            title: '新建用户',
+                            area: ['50%', '80%'],
+                            content: '/admin/addadminhtml'
+                        })
+
+                        break;
+
+
+                }
+                ;
+            });
+
+
             //第一个实例
             var userTable = table.render({
                 elem: '#userTable'
@@ -87,12 +154,13 @@
                         field: '', title: '操作', width: 180, templet: function (d) {
                             return '<div >' +
                                 '<button class="layui-btn  layui-btn-warm layui-btn-xs" lay-event="showPermissions">调整权限</button>' +
+                                '<button class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="edit">修改</button>' +
                                 '<button class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="lock">删除</button>' +
                                 '</div>'
                         }
                     }
                 ]]
-                , toolbar: 'default'
+                , toolbar: '#bar'
                 , done() {
                     showBigImg();
                 }
@@ -223,6 +291,7 @@
                             //使用我们的ajax进行请求发送  异步的形式
                             //异步请求    //同步请求
                             //使用jauery的形式写ajax
+                            obj.del();
                             $.ajax({
                                 type: "post",
                                 url: "/user/deleteadmin",
@@ -259,9 +328,67 @@
                         break;
                     case 'edit':
                         // 在这之前还需要render(渲染)一把
+                        layer.open({
+                            type: 1,
+                            title: '修改',
+                            area: ['50%', '80%'],
+                            // content: '/goods/editgood' + '?id=' + data.goodsId,
+                            content: $("#editdemo").html(),
+
+                        })
+
+                        form.render();
+                        $("#uid").val(d.uid)
+                        $("#uname").val(d.uname)
+                        $("#uusername").val(d.uusername)
+                        $("#uphoneid").val(d.uphoneid)
+
+
+
+
                         break;
                 }
             });
+
+
+            form.on("submit(sureEdit)",function (data) {
+                let formData = new FormData(data.form)
+
+
+                $.ajax({
+                    // async: true,                    //默认为true，默认为异步请求
+                    type: "POST",                   //类型post
+                    url: "/user/editadmin",                 //url
+                    // contentType: false,              //请求内容编码类型
+                    data: data.field,       //发送到服务器的数据
+                    // dataType: "json",               //返回数据格式
+                    // processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
+                    success: function(res){         //成功的方法
+
+                        console.log(res)
+
+                        if (res.status == 200) {
+
+                            layer.alert(res.msg, {
+                                icon: 1
+                            }, function () {
+                                //重新刷新我们的table表格数据
+                                window.parent.location.reload()
+                            })
+                        } else {
+                            layer.alert(res.msg, {
+                                icon: 2
+                            }, function () {
+                                //重新刷新我们的table表格数据
+                                window.location.reload()
+                            })
+                        }
+                    }
+                });
+
+            })
+
+
             form.on('submit(queryForm)', function (data) {
                 userTable.reload({
                     where: data.field,
@@ -272,7 +399,16 @@
             onInput($("#queryForm input"));
 
         });
+
+
+
+
+
+
     })
+
+
+
     function onInput(jObj) {
 
 
