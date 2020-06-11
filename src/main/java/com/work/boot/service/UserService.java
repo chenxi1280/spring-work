@@ -80,4 +80,6 @@ public interface UserService {
     ResponseDTO editadmin(User user);
 
     ResponseDTO addadmin(User user);
+
+    ResponseDTO edituserpro(User user);
 }

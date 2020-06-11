@@ -185,12 +185,13 @@ public class UserController extends BaseController{
     }
 
     @RequestMapping("/adduserhtml")
-
     public String adduserhtml() {
 
         return "adduser";
 
     }
+
+
 
     @RequestMapping("/addmoneyhtml")
 
@@ -220,10 +221,12 @@ public class UserController extends BaseController{
 
     }
 
-    @RequestMapping("/add")
+    @RequestMapping("add")
     @ResponseBody
     public ResponseDTO add(User user,MultipartFile ruimg) {
-        String imgname = saveFile(ruimg, "/upload/user");
+
+
+        String imgname = saveFile(ruimg, "/upload/user/");
         user.setUimg(imgname);
         return userService.add(user);
 
@@ -306,8 +309,12 @@ public class UserController extends BaseController{
         return userService.editadmin(user);
     }
 
+    @RequestMapping("edituserpro")
+    @ResponseBody
+    ResponseDTO edituserpro(User user) {
 
-
+        return userService.edituserpro(user);
+    }
 
 //    @RequestMapping("/toeditguarantee")
 //    @ResponseBody

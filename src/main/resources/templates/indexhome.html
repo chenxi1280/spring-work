@@ -72,15 +72,15 @@
             success: function(msg){         //成功的方法
                 console.log(msg)
 
-                if (msg.data.role.split(",").length < 3) {
+                if (msg.data.typeid == 0) {
 
-                    let s = msg.data.cstate == 1 ? "小区用户" : "费小区用户"
+                    let s = msg.data.cstate == 1 ? "小区用户" : "非小区用户"
                     $("#cstate").append($("  <p><cite >" + s + "</cite></p> "))
 
                     $("#carnumber").append($("  <p><cite >" + msg.data.carnumber + "</cite></p> "))
                     $("#money").append($("  <p><cite >" + msg.data.mymoney + "</cite></p> "))
 
-                    let b = msg.data.typeid == 1 ? "正常" : "欠费"
+                    let b = msg.data.paymentid == 1 ? "正常" : "欠费"
                     console.log(msg.data.typid)
                     $("#typid").append($("  <p><cite >" + b + "</cite></p> "))
                 }else {

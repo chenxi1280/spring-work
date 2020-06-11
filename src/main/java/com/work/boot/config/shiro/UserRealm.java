@@ -79,8 +79,10 @@ public class UserRealm extends AuthorizingRealm {
 
                 User dbUser = userService.selectUserByPhone(query);// 拿到了数据库的用户
                 session.setAttribute("userId", dbUser.getUid());
-                session.setAttribute("nickName", dbUser.getUname());
-                session.setAttribute("phone", dbUser.getUphoneid());
+                session.setAttribute("uname", dbUser.getUname());
+                session.setAttribute("uusername", dbUser.getUusername());
+                session.setAttribute("uphoneid", dbUser.getUphoneid());
+                session.setAttribute("uimg", dbUser.getUimg());
                 // 设置角色
                 List<RoleVO> roleVOS = userService.selectHisRolesByPhone(dbUser.getUphoneid());
                 session.setAttribute("hisRoles", roleVOS);

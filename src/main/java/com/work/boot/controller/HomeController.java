@@ -121,6 +121,8 @@ public class HomeController {
 
     @RequestMapping("/registered")
     public String registered() {
+
+
         return "registeredPage";
     }
 

@@ -252,8 +252,8 @@ public class UserServiceImpl implements UserService, BaseService {
             return result;
         }
 
-        HttpSession session = request.getSession();
-        User u = (User) request.getSession().getAttribute("user");
+
+
         // 视频的地址
         // 视频的描述
         // 视频的封面
@@ -263,9 +263,6 @@ public class UserServiceImpl implements UserService, BaseService {
         user.setUid(id);
 
 
-        if (u != null) {
-            user.setAid(u.getUid());
-        }
 
 
         user.setUimg("img/" + user.getUimg().substring(4));
@@ -570,7 +567,7 @@ public class UserServiceImpl implements UserService, BaseService {
         }
         user.setTypeid(1);
         user.setMymoney(new BigDecimal(0));
-//        user.setUusername(user.getUname());
+        user.setUusername(user.getUname());
         user.setUcreatedate(new Date());
         user.setUupdatedate(new Date());
         user.setUid(GetUUID32.getuuid32());
@@ -582,6 +579,14 @@ public class UserServiceImpl implements UserService, BaseService {
         return ResponseDTO.get(userDao.insertSelective(user) == 1 );
 
 
+    }
+
+    @Override
+    public ResponseDTO edituserpro(User user) {
+
+
+
+        return ResponseDTO.get(userDao.updateByPrimaryKeySelective(user) ==1 );
     }
 
     @Override

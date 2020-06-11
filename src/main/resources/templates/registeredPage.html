@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,9 +10,10 @@
     }
 
 </style>
-<!--<link th:href="@{/css/sg.css}" type="text/css" rel="stylesheet">-->
-<link href="/css/sgre.css" rel="stylesheet" type="text/css">
+<link th:href="@{/css/sg.css}" type="text/css" rel="stylesheet">
+<link href="/css/sg.css" rel="stylesheet" type="text/css">
 <div th:replace="fragment/js::js"></div>
+
 <body style="margin: 0">
 <div>
     <div style="background: orange;height: 60px;display: flex;justify-content: center;padding-bottom: 10px">
@@ -30,83 +31,78 @@
     <div style="display: flex;justify-content: center; border: #393D49 10px">
         <div class="sg-container" style="border: solid lightgray 1px;margin: 70px auto;">
             <div style="padding: 20px 40px">
+
                 <div style="font-size: 30px;font-weight: bold;text-align: center; ; ">注册系统</div>
+                <form class="layui-form layui-form-pane" style="padding: 20px">
 
+                    <div class="layui-form-item" style="margin-top: 10px">
+                        <label class="layui-form-label">手机号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="uphoneid" id="phone" placeholder="请输入手机号" autocomplete="off"
+                                   lay-verify="required|phone|number"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="passDiv">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="upassword" lay-verify="required" placeholder="请输入密码"
+                                   autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="passwordDiv">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="password2" lay-verify="required" placeholder="请输入密码"
+                                   autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                                                <div class="layui-form-item" id="codeDiv">
+                                                    <label class="layui-form-label">验证码</label>
+                                                    <div class="layui-input-block" style="display: flex">
+                                                        <input type="tel" name="code" lay-verify="required" placeholder="请输入6位数验证码"
+                                                               class="layui-input" style="border-radius: 0;border-right: none">
+                                                        <button id="sendCode" type="button" class="layui-btn-primary layui-btn"
+                                                                style="border-radius: 0 3px 3px 0">
+                                                            发送验证码
+                                                        </button>
+                                                    </div>
+                                                </div>
+                    <div class="layui-form-item" style="margin-top: 10px">
+                        <label class="layui-form-label">昵称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="uname" lay-verify="uname" id="uname" placeholder="请输入"
 
-                        <form class="layui-form layui-form-pane" style="padding: 20px">
+                                   class="layui-input">
+                        </div>
+                    </div>
 
-                            <div class="layui-form-item" style="margin-top: 10px">
-                                <label class="layui-form-label">手机号</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="uphoneid" id="phone" placeholder="请输入手机号" autocomplete="off"
-                                           lay-verify="required|phone|number"
-                                           class="layui-input">
+                    <div class="layui-form-item" style="margin-top: 10px">
+                        <label class="layui-form-label">照片</label>
+                        <div class="layui-input-block">
+                            <input type="file" id="shop_logo" lay-verify="required" name="ruimg" style="display: none">
+
+                            <div style="display: flex">
+                                <div>
+                                    <img id="shop_logoImg"
+                                         style="width: 80px;height: 80px;border-radius: 10px;border: lightgray 1px dashed;"/>
+                                    <i class="layui-icon layui-icon-addition"
+                                       style="position: absolute;left: 35px;top: 35px;z-index: -1"></i>
+
                                 </div>
                             </div>
-                            <div class="layui-form-item" id="passDiv">
-                                <label class="layui-form-label">密码</label>
-                                <div class="layui-input-block">
-                                    <input type="password" name="upassword" lay-verify="required" placeholder="请输入密码" autocomplete="off"
-                                           class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" id="passwordDiv">
-                                <label class="layui-form-label">密码</label>
-                                <div class="layui-input-block">
-                                    <input type="password" name="password2" lay-verify="required" placeholder="请输入密码" autocomplete="off"
-                                           class="layui-input">
-                                </div>
-                            </div>
-<!--                            <div class="layui-form-item" id="codeDiv">-->
-<!--                                <label class="layui-form-label">验证码</label>-->
-<!--                                <div class="layui-input-block" style="display: flex">-->
-<!--                                    <input type="tel" name="code" lay-verify="required" placeholder="请输入6位数验证码"-->
-<!--                                           class="layui-input" style="border-radius: 0;border-right: none">-->
-<!--                                    <button id="sendCode" type="button" class="layui-btn-primary layui-btn"-->
-<!--                                            style="border-radius: 0 3px 3px 0">-->
-<!--                                        发送验证码-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-                            <div class="layui-form-item" style="margin-top: 10px">
-                                <label class="layui-form-label">昵称</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="uname" lay-verify="uname" id="uname" placeholder="请输入"
+                        </div>
 
-                                           class="layui-input">
-                                </div>
-                            </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn" type="button" lay-submit lay-filter="comadd"
+                                    style="width: 100%;background: orange">确定
+                            </button>
+                        </div>
+                    </div>
 
-                            <div class="layui-form-item" style="margin-top: 10px">
-                                <label class="layui-form-label">照片</label>
-                                <div class="layui-input-block">
-                                    <input type="file" id="shop_logo" lay-verify="required" name="ruimg" style="display: none">
-
-                                    <div style="display: flex">
-                                        <div>
-                                            <img id="shop_logoImg"
-                                                 style="width: 80px;height: 80px;border-radius: 10px;border: lightgray 1px dashed;"/>
-                                            <i class="layui-icon layui-icon-addition"
-                                               style="position: absolute;left: 35px;top: 35px;z-index: -1"></i>
-
-                                        </div>
-                                    </div>
-                            </div>
-
-<!--                            <div class="layui-form-item" style="margin-top: 10px">-->
-<!--                                <label class="layui-form-label">店铺详情</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <textarea placeholder="请输入内容" class="layui-textarea" name="shop_detail"></textarea>-->
-<!--                                </div>-->
-<!--                            </div>-->
-                            <div class="layui-form-item">
-                                <button class="layui-btn" lay-submit lay-filter="comadd"
-                                        style="width: 100%;background: orange">确定
-                                </button>
-                            </div>
-                            </div>
-
-                        </form>
+                </form>
 
 
             </div>
@@ -123,67 +119,68 @@
         layui.use(['layer', 'form'], function () {
             let layer = layui.layer;
             let form = layui.form;
+
             //监听图片
-            $("#shop_logoImg").on("click",function () {
+            $("#shop_logoImg").on("click", function () {
                 $("#shop_logo").click();
             })
             $("#shop_logo").change(function () {
-                imgPreview(this.files[0],$("#shop_logoImg")[0])
+                imgPreview(this.files[0], $("#shop_logoImg")[0])
             })
 
 
-
-
-
             form.on('submit(comadd)', function (data) {
-                console.log(data.field)
-                    // 表示是密码提交，那么就应该验证密码
+                // 表示是密码提交，那么就应该验证密码
                 // if (data.field.password.length < 5) {
                 //     layer.msg("密码长度少于6位！");
                 //     return false;// 结束了，不要往后走了
                 // }
-                console.log(data.field.password2)
-                if ( data.field.upassword.length < 5 )  {// 验证码登录的时候
 
-                        layer.msg("密码太短");
-                        return false;// 结束了，不要往后走了
+                if (data.field.upassword.length < 5) {// 验证码登录的时候
+                    layer.msg("密码太短");
+                    return false;// 结束了，不要往后走了
 
                 }
 
-                if (data.field.password2 != data.field.upassword){
+                if (data.field.password2 != data.field.upassword) {
                     layer.msg("密码不同");
                     return false;// 结束了，不要往后走了
                 }
-
                 // 如果能够走到这异步，那么就发送ajax请求去登录
                 let formData = new FormData(data.form);
-                // 添加一个文件呢？
+                // console.log(data.field)
+                console.log(data.field)
+
+                // $.post('/user/add',{},function (res) {
+                //     console.log(res)
+                // })
+
+
 
                 $.ajax({
-
-                    url: "/user/add",// 请求数据服务器地址，只能是当前项目，JSONP才能访问外网（需要服务器配合才能用）
+                    // async: true,
+                    type: "post",
+                    url: "/add",// 请求数据服务器地址，只能是当前项目，JSONP才能访问外网（需要服务器配合才能用）
                     contentType: false,// 默认就是表单数据(不写)，如果此时要传递的是json字符串，
                     // 那么此时就用application/json,如果此时要传递图片"multipart/form-data，还有数组，集合，还有对象，那么contentType必须指定为false
                     data: formData,// 要上传的参数
                     dataType: 'json',// 服务器响应数据：json,text,html,xml
-
                     processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
+
                     success: function (res) {// 请求成功，回调函数,data，指的就是服务器返回的数据
-                        if (res.res) {
-                            layer.msg(res.msg);
+                        layer.msg(res.msg);
+
+                        if (res.status == 200) {
                             window.location.href = "/home/loginPage";
                         }
                     },
-                    type: 'post',// ajax请求的方式，post或get
+
                 });
-
-
-
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
 
             $("#sendCode").click(function () {
-                $.post('/sendLoginCode', {phone: $("#phone").val()}, function (res) {
+                $.post('/sendRegistCode', {phone: $("#phone").val()}, function (res) {
                     layer.msg(res.msg);
                     if (res.res) {
                         let x = 60;

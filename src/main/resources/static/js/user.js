@@ -389,23 +389,55 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
     //提交表单内容
     form.on("submit(sub)",function (data) {
         console.log(data)
-
         $.ajax({
             type: 'post',
             url: '/user/adduser',
             dataType: 'json',
             data: data.field,
-            // succeess:function(res){
-            //
-            //
-            //     parent.layer.alert(res.message,{
-            //         icon:
-            //     },function(){
-            //                         //重新刷新我们的table表格数据
-            //         window.parent.location.reload()
-            //     })
-            //
-            // },
+
+            success: function (res) {
+                //在前端的控制台进行输出
+                layer.alert(res.message, {
+                    icon: 2
+                }, function () {
+                    //重新刷新我们的table表格数据
+                    window.parent.location.reload()
+                })
+            }
+
+        })
+    })
+
+    //提交表单内容
+    form.on("submit(subedit)",function (data) {
+        console.log(data)
+        $.ajax({
+            type: 'post',
+            url: '/user/edit',
+            dataType: 'json',
+            data: data.field,
+
+            success: function (res) {
+                //在前端的控制台进行输出
+                layer.alert(res.message, {
+                    icon: 2
+                }, function () {
+                    //重新刷新我们的table表格数据
+                    window.parent.location.reload()
+                })
+            }
+
+        })
+    })
+
+    //提交表单内容
+    form.on("submit(subedit)",function (data) {
+        console.log(data)
+        $.ajax({
+            type: 'post',
+            url: '/user/adduser',
+            dataType: 'json',
+            data: data.field,
 
             success: function (res) {
                 //在前端的控制台进行输出
@@ -421,37 +453,8 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
     })
 
 
-    // $("#submit").on("click", function () {
-    //
-    //     $.ajax({
-    //         type: 'post',
-    //         url: '/user/adduser',
-    //         dataType: 'json',
-    //         data: $("#form").serialize(),
-    //         // succeess:function(res){
-    //         //
-    //         //
-    //         //     parent.layer.alert(res.message,{
-    //         //         icon:
-    //         //     },function(){
-    //         //                         //重新刷新我们的table表格数据
-    //         //         window.parent.location.reload()
-    //         //     })
-    //         //
-    //         // },
-    //
-    //         success: function (res) {
-    //             //在前端的控制台进行输出
-    //             layer.alert(res.message, {
-    //                 icon: 2
-    //             }, function () {
-    //                 //重新刷新我们的table表格数据
-    //                 window.parent.location.reload()
-    //             })
-    //         }
-    //
-    //     })
-    // })
+
+
 
 
 
@@ -483,26 +486,8 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
         // }
     });
     //提交编译以后的表单
-    $("#subedit").on("click", function () {
 
-        $.ajax({
-            type: 'post',
-            url: 'http://localhost:8080/user/toedituser',
-            dataType: 'json',
-            data: $("#form").serialize(),
 
-            success: function (res) {
-                //在前端的控制台进行输出
-                layer.alert(res.message, {
-                    icon: 1
-                }, function () {
-                    //重新刷新我们的table表格数据
-                    window.parent.location.reload()
-                })
-            }
-
-        })
-    })
 
 
 })
