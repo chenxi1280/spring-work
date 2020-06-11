@@ -1,13 +1,14 @@
 server:
-  port: 8080
+  port: 80
 #  servlet:
 #    context-path: /work
 spring:
   datasource:
     username: root
     password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/work
+#    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.112.217.144/work?serverTimezone=Asia/Shanghai
     type: com.alibaba.druid.pool.DruidDataSource
   servlet:
     multipart:
