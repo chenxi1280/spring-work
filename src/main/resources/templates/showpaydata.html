@@ -11,12 +11,35 @@
 <body>
 <div id="main" style="width: 600px;height:400px;"></div>
 
+<div id="main2" style="width: 600px;height:400px;"></div>
 
 <script type="text/javascript">
     // <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
+    var myChart2 = echarts.init(document.getElementById('main2'));
+
+
+    // myChart2.setOption({
+    //     title: {
+    //         text: '异步数据加载示例'
+    //     },
+    //     tooltip: {},
+    //     legend: {
+    //         data:['销量']
+    //     },
+    //     xAxis: {
+    //         data: []
+    //     },
+    //     yAxis: {},
+    //     series: [{
+    //         name: '销量',
+    //         type: 'bar',
+    //         data: []
+    //     }]
+    // });
+
 
     $.get('/payuser/datebing', function (res) {
 
@@ -25,13 +48,46 @@
 
             series : [
                 {
-                    name: '访问来源',
+                    // roseType: 'angle',
+                    name: '缴费分布图',
                     type: 'pie',    // 设置图表类型为饼图
                     radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
                     data:   res.data
                 }
             ]
         })
+        var a = []
+        var b = []
+        res.data.forEach(v => {
+            a.push(v.name)
+            b.push(v.value)
+        })
+
+
+
+        myChart2.setOption({
+            title: {
+                text: '缴费图'
+            },
+            tooltip: {},
+            legend: {
+                data:['金额']
+            },
+            xAxis: {
+                data: a
+            },
+            yAxis: {},
+            series: [{
+                name: '金额',
+                type: 'bar',
+                data: b
+            }]
+        });
+
+        console.log(a,b)
+
+
+
     }, 'json')
 
 
