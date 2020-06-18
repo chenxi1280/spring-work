@@ -118,7 +118,7 @@ public class GuaranteeServiceImpl implements GuaranteeService {
             Guarantee guarantee = new Guarantee();
             guarantee.setMaintenanceuserid(i);
             guarantee.setRid(rid);
-            guarantee.setRaccpetdate(new Date());
+            guarantee.setRpublicdate(new Date());
 
             int me = guaranteeDao.updateByPrimaryKeySelective(guarantee);
             int sta = guaranteeDao.updataState(rid);
@@ -146,7 +146,7 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         try {
 
             GuaranteeAllVo guaranteeAllVo = guaranteeDao.selectByid(rid);
-            guaranteeAllVo.setRcompletiondate(new Date());
+            guaranteeAllVo.setRpublicdate(new Date());
             guaranteeAllVo.setRstate(3);
             int sta = guaranteeDao.updateByPrimaryKeySelective(guaranteeAllVo);
 
@@ -172,7 +172,7 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         result.setStatus(500);
         result.setMessage("操作失败");
         try {
-            guarantee.setRcompletiondate(new Date());
+            guarantee.setRpublicdate(new Date());
             int sta = guaranteeDao.updateByPrimaryKeySelective(guarantee);
 
             if (sta == 1) {

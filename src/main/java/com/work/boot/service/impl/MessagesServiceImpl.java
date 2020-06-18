@@ -3,7 +3,7 @@ package com.work.boot.service.impl;
 
 import com.work.boot.dao.AdminDao;
 import com.work.boot.dao.MessageDao;
-import com.work.boot.pojo.dto.RData;
+import com.work.boot.dao.UserDao;
 import com.work.boot.pojo.dto.RMessage;
 import com.work.boot.pojo.dto.Result;
 import com.work.boot.pojo.entity.Message;
@@ -11,14 +11,13 @@ import com.work.boot.pojo.entity.User;
 import com.work.boot.service.MessagesService;
 import com.work.boot.util.GetLimit;
 import com.work.boot.util.GetUUID32;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +30,9 @@ public class MessagesServiceImpl implements MessagesService {
 
     @Resource
     private AdminDao adminDao;
+
+    @Resource
+    private UserDao userDao;
 
     @Override
     @Transactional
@@ -179,25 +181,39 @@ public class MessagesServiceImpl implements MessagesService {
     }
 
     @Override
-    public Result getmessagesimg() {
+    public Result getmessagesimg(String userId) {
 
-        List<Message> list = messageDao.getmessagesimg();
+
+        User user = userDao.selectByPrimaryKey(userId);
+
 
         List<RMessage> rDataList = new ArrayList<>();
+        List<Message> list = null;
+        if (user.getTypeid() == 0) {
 
-        list.forEach( v ->{
-            RMessage rData = new RMessage();
 
-            rData.setValue(v.getIcontent());
-
-            rData.setName(v.getIname());
-
-            rDataList.add(rData);
-
-        });
+            list = messageDao.getmessagesimg();
 
 
 
+
+
+        }else if(user.getTypeid() == 1){
+
+            list = messageDao.getmessagesAd();
+        }
+        if (!CollectionUtils.isEmpty(list)) {
+            list.forEach(v -> {
+                RMessage rData = new RMessage();
+
+                rData.setValue(v.getIcontent());
+
+                rData.setName(v.getIname());
+
+                rDataList.add(rData);
+
+            });
+        }
         Result result = new Result();
 
         result.setStatus(0);

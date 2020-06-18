@@ -17,7 +17,7 @@
 
         <div style="display: flex;align-items: center;margin-left: 20px">
             <label style="width:  fit-content">姓名:</label>
-            <input class="layui-input" name="maintenanceusername" id="realName"
+            <input class="layui-input" name="name" id="realName"
                    style="width: 120px"/>
         </div>
         <div style="display: flex;align-items: center;margin-left: 20px">
@@ -51,7 +51,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">电话号码</label>
             <div class="layui-input-block">
-                <input type="text" name="maintenanceuserphone" id="maintenanceuserphone" placeholder="请输入" lay-verify="required|phone"
+                <input type="text" name="phone" id="maintenanceuserphone" placeholder="请输入" lay-verify="required|phone"
                        style="width: 200px" class="layui-input">
             </div>
         </div>
@@ -133,6 +133,7 @@
                 }
             });
             form.on('submit(queryForm)', function (data) {
+                console.log(data)
                 userTable.reload({
                     where: data.field,
                     page: {curr: 1}

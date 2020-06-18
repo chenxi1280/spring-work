@@ -433,6 +433,7 @@ public class UserServiceImpl implements UserService, BaseService {
         user.setUcreatedate(new Date());
         user.setUupdatedate(new Date());
         user.setUid(GetUUID32.getuuid32());
+        user.setCarnumber(0);
         user.setUpassword(PasswordUtil.encodePassword(user.getUpassword()));
         user.setRole("7");
         user.setCstate(0);
@@ -450,6 +451,7 @@ public class UserServiceImpl implements UserService, BaseService {
             user.setXid("1");
             user.setUupdatedate(new Date());
             user.setCstate(1);
+            user.setRole("7,8,9");
             StringBuffer pay = new StringBuffer();
             if (user.getRoomarea() != 0) {
                 pay.append("1,");
@@ -457,7 +459,7 @@ public class UserServiceImpl implements UserService, BaseService {
             if (user.getCarnumber() != 0) {
                 pay.append("2,");
             }
-            user.setPaymentid(pay.toString().substring(0, pay.toString().length() - 1));
+            user.setPaymentid("1");
         }
 
         return ResponseDTO.get(userDao.updateByPrimaryKeySelective(user) == 1 );

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/date.js"></script>
+<style>
+    /*修改layui表格的高度*/
+    .layui-table-cell {
+        height: auto;
+    }
+</style>
+<body>
+
+<form class="layui-form" style="padding:5px 0;display: flex;align-items: center;" id="queryForm" >
+
+
+    <div class="layui-form-item" style="width: 200px;margin: 0">
+        <label class="layui-form-label">收费类型</label>
+        <div class="layui-input-block">
+            <select name="paymentid" id="paymentname" lay-filter="paymentname" >
+                <option value="">请选择</option>
+
+            </select>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item" style="margin: 0">
+        <button class="layui-btn" style="margin-left: 10px" id="queryBtn" lay-submit lay-filter="queryForm">查询</button>
+    </div>
+</form>
+
+
+<table id="payTable" lay-filter="payTable"></table>
+
+<script type="text/html" id="editForm">
+    <form class="layui-form" style="padding: 20px" id="payForm" th:action="@{/payuser/paymoney}" method="post" action="/payuser/paymoney">
+        <input type="text" name="userpayid" id="userpayid"
+               style="display: none" >
+
+        <div>
+            <div style="display: flex;justify-content: space-between;padding: 10px;align-items: center">
+                <div>
+                    <img th:src="@{/images/pay/wxpay.png}" style="height: 2rem"/>
+                </div>
+                <div>
+                    <input style="width: 25px;height: 25px" type="radio" name="payType" value="微信" id="wxPay"/>
+                </div>
+            </div>
+            <div style="display: flex;justify-content: space-between;padding: 10px;align-items: center">
+                <div>
+                    <img th:src="@{/images/pay/alipay.jpg}" style="height: 2rem"/>
+                </div>
+                <div>
+                    <input style="width: 25px;height: 25px" type="radio" name="payType" checked value="支付宝"
+                           id="aliPay"/>
+                </div>
+            </div>
+
+        <div class="layui-form-item">
+            <div style="padding: 10px">
+                <button  class="layui-btn" lay-submit lay-filter="commit"  id="commit">立即支付</button>
+            </div>
+
+        </div>
+        </div>
+    </form>
+</script>
+
+
+<script th:inline="javascript" type="text/javascript">
+    layui.use(['layer', 'table', 'form'], function () {
+
+        // 我再js代码里边如何获取控制器传递过来的参数呢？
+        let layer = layui.layer;// 弹出层
+        let table = layui.table;// 分页组件
+        let form = layui.form;// 分页组件
+        let $ = layui.$;// 使用jquery
+
+        $.ajax({
+            // async: true,                    //默认为true，默认为异步请求
+            type: "POST",                   //类型post
+            url: "/payment/ajaxpaymentpro",                 //url
+            // contentType: "application/json",//请求内容编码类型
+            // data: "name=John&age=18",       //发送到服务器的数据
+            dataType: "json",               //返回数据格式
+            success: function(re){         //成功的方法
+
+                data = re.data
+
+                data.forEach( pay => {
+                    let ht = $("<option value="+pay.paymentid+" >"+pay.paymentname+"</option>")
+                    $("#paymentname").append(ht)
+                    $("#paymentname").attr("money",pay.paymentmoney)
+                    form.render()
+                })
+
+
+            }
+        });
+
+        //第一个实例
+        let tb = table.render({// 渲染表格
+            elem: '#payTable'
+            , url: '/payuser/ajaxlistpro' //服务后台的数据接口
+            , page: true //开启分页
+            , cols: [[ //表头，这里是两个[[开头，两个]]结尾
+                {field: '', type: 'checkbox', title: '多选'}
+                , {field: 'phone', title: '电话号码', width: 160 }
+                , {field: 'uusername', title: '用户名', width: 160 }
+                , {field: 'paymentname', title: '缴费名', width: 80}
+                , {field: 'paymoney', title: '缴费金额', width: 80}
+
+                , {field: 'patstate', title: '缴费情况', width: 160,templet: function (d) {
+                        switch (d.patstate) {
+                            case 1 :
+                                return "已缴费";
+                            case 0 :
+                                return "未交费";
+                        }
+                    }}
+                , {field: 'payuserdate', title: '时间', width: 250 ,templet: function (d) {
+
+                        return showTime(d.payuserdate);
+                    }},
+                {
+                    width: 165,
+                    align: 'center',
+                    templet: function (d) {
+
+
+
+                        if (d.patstate == 1 ){
+
+                            return '<div>' +
+                                '            <button lay-event="paymoney" class="layui-btn layui-btn-disabled" >缴费</button>\n' +
+                                ' </div>'
+
+                        }
+
+                        return '<div>' +
+                            '            <button class="layui-btn layui-btn-xs " lay-event="paymoney" >缴费</button>\n' +
+                            ' </div>'
+
+                    }
+
+                }
+
+            ]]
+            , toolbar: 'default'
+        });
+
+
+
+        table.on('tool(payTable)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            //查看
+            if (layEvent === 'paymoney') {
+
+                layer.open({
+                    type: 2,
+                    title: '充值',
+                    area: ['50%', '80%'],
+                    content: '/payuser/payali?userpayid='+data.userpayid,
+                })
+
+
+                form.render();
+            }
+
+        })
+
+        $("#nowPay").one('click', function () {
+            let payType = '';
+            $("[name=payType]").each(function () {
+                if (this.checked) {
+                    payType = this.value;
+                }
+            });
+            $("#payForm").submit();// 手工提交表单
+        });
+    });
+
+</script>
+</body>
+</html>

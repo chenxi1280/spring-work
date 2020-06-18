@@ -31,7 +31,7 @@
 <table class="layui-hide" id="userdemo" lay-filter="usertest"></table>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="addsf">收費</a>
 </script>
 
 <script type="text/html" id="editForm">
@@ -55,6 +55,38 @@
     </form>
 </script>
 
+<script type="text/html" id="addfy">
+    <form class="layui-form" style="padding: 20px">
+        <input type="text" name="uid" id="uuid"
+               style="display: none" >
+
+        <div class="layui-form-item" style="width: 200px">
+            <label class="layui-form-label">收费选择</label>
+            <div class="layui-input-block">
+                <select name="paymentid" id="paymentname" lay-filter="paymentname" >
+                    <option>请选择</option>
+
+
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">缴费金额</label>
+            <div class="layui-input-block">
+                <input type="text" id="paymentmoney"  lay-verify="required|number" name="paymoney"
+                       placeholder="金额为一次性收费"
+                       style="width: 200px" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="sureaddfy" lay-submit lay-filter="sureaddfy">确定充值</button>
+            </div>
+        </div>
+    </form>
+</script>
+
 
 <script th:inline="javascript" type="text/javascript">
     layui.use(['layer', 'table', 'form'], function () {
@@ -65,6 +97,9 @@
         let form = layui.form;// 分页组件
         let $ = layui.$;// 使用jquery
         let data;
+
+
+
 
 
         //执行一个 table 实例
@@ -200,9 +235,68 @@
 
                 })
                 $("#uid").val(data.uid);
-                console.log(data.uid)
+
+                form.render();
+            }else if (layEvent === 'addsf') {
+                layer.open({
+                    type: 1,
+                    title: '收费',
+                    area: ['50%', '80%'],
+                    content: $("#addfy").html(),
+
+
+                })
+
+                $.ajax({
+                    // async: true,                    //默认为true，默认为异步请求
+                    type: "POST",                   //类型post
+                    url: "/payment/ajaxpaymentone",                 //url
+                    // contentType: "application/json",//请求内容编码类型
+                    // data: "name=John&age=18",       //发送到服务器的数据
+                    dataType: "json",               //返回数据格式
+                    success: function(re){         //成功的方法
+
+                        data = re.data
+
+                        console.log(data)
+
+                        data.forEach( pay => {
+                            let ht = $("<option value="+pay.paymentid+" >"+pay.paymentname+"</option>")
+                            $("#paymentname").append(ht)
+                            $("#paymentname").attr("money",pay.paymentmoney)
+                            form.render()
+                        })
+
+                        form.render()
+                    }
+                });
+
+                form.on('select(paymentname)', function(data) {
+                    let v = $("#paymentname").val()
+                    $.ajax({
+                        // async: true,                    //默认为true，默认为异步请求
+                        type: "POST",                   //类型post
+                        url: "/payment/ajaxgetmoney",                 //url
+                        // contentType: "application/json",//请求内容编码类型
+                        data: {
+                            "id": v,
+                        },       //发送到服务器的数据
+                        dataType: "json",               //返回数据格式
+                        success: function (re) {         //成功的方法
+                            let va = re.data
+                            console.log(re)
+                            $("#paymentmoney").val(va.paymentmoney)
+                            $("#pid").val(va.paymentid)
+                            form.render()
+                        }
+                    })
+                })
+
+                $("#uuid").val(data.uid);
+
                 form.render();
             }
+
 
         })
 
@@ -235,6 +329,34 @@
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
+
+        form.on('submit(sureaddfy)', function (data) {
+
+            console.log(data.field)
+
+            // formData.append("uid", $("#sureEdit")[0].uid);
+            // 添加一个文件呢？
+            // 添加文件的步骤：首先，第一步：获取file的jsDom对象
+            $.ajax({
+                url: "/payuser/add",// 请求数据服务器地址，只能是当前项目，JSONP才能访问外网（需要服务器配合才能用）
+                // contentType: false,// 默认就是表单数据(不写)，如果此时要传递的是json字符串，
+                // 那么此时就用application/json,如果此时要传递图片"multipart/form-data，还有数组，集合，还有对象，那么contentType必须指定为false
+                data: data.field,// 要上传的参数
+                dataType: 'json',// 服务器响应数据：json,text,html,xml
+                error: function () {//请求错误的时候，会触发此函数
+
+                },
+                // processData: false,//布尔值,一般都不用设置，规定通过请求发送的数据是否转换为查询字符串。默认是 true。如果此时上传的时候，有图片，这里必须设置false,
+                success: function (res) {// 请求成功，回调函数,data，指的就是服务器返回的数据
+                    if (res.res) {
+                        layer.msg(res.msg);
+                        // tb.reload();// 添加成功数据之后要重载表格
+                    }
+                },
+                type: 'post',// ajax请求的方式，post或get
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
 
 
     });

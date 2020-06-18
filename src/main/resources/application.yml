@@ -1,8 +1,11 @@
 server:
-  port: 80
+  port: 808
+
 #  servlet:
 #    context-path: /work
 spring:
+  profiles:
+    active: dev
   datasource:
     username: root
     password: 123456
@@ -10,6 +13,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.112.217.144/work?serverTimezone=Asia/Shanghai
     type: com.alibaba.druid.pool.DruidDataSource
+
   servlet:
     multipart:
       max-file-size: 10MB
@@ -24,3 +28,22 @@ mybatis:
 logging:
   level:
     com.work.boot.dao: debug
+
+
+---
+logging:
+  level:
+    com.work.boot.dao: info  #  线上环境是info
+server:
+  port: 8081 #
+spring:
+  profiles: pro1
+
+---
+logging:
+  level:
+    com.lh.shangou.dao: info  #  线上环境是info
+server:
+  port: 8082 #
+spring:
+  profiles: pro2

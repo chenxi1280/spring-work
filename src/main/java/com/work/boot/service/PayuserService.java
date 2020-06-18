@@ -2,6 +2,7 @@ package com.work.boot.service;
 
 import com.work.boot.pojo.dto.PageDTO;
 import com.work.boot.pojo.dto.ResponseDTO;
+import com.work.boot.pojo.entity.Payuser;
 import com.work.boot.pojo.query.PaymentQuery;
 import com.work.boot.pojo.query.PayuserQuery;
 import com.work.boot.pojo.query.UserQuery;
@@ -29,4 +30,17 @@ public interface PayuserService {
 
     ResponseDTO datebing();
 
+    ResponseDTO ajaxaddpayment(PaymentQuery paymentQuery);
+
+    ResponseDTO ajaxpaymentone();
+
+    ResponseDTO ajaxpaymentpro();
+
+    PageDTO ajaxlistpro(PayuserQuery payuserQuery);
+
+    Payuser getpayUser(Integer userpayid);
+
+    void paySuccess(Payuser payuser);
+
+    ResponseDTO add(Payuser payuser);
 }

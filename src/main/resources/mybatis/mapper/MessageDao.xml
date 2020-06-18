@@ -169,6 +169,7 @@
   <select id="selectAlllimet" resultType="com.work.boot.pojo.entity.Message">
         select <include refid="Base_Column_List" />
         from message
+        order by icreatedate   desc
         limit #{start},#{limit}
     </select>
   <select id="getCount" resultType="java.lang.Integer">
@@ -183,9 +184,17 @@
   <select id="getmessagesimg" resultType="com.work.boot.pojo.entity.Message">
     select  <include refid="Base_Column_List" />
     from   message
+    where itype &lt;= 1
     order by icreatedate   desc
     limit 0,5 ;
 
+
+  </select>
+  <select id="getmessagesAd" resultType="com.work.boot.pojo.entity.Message">
+    select  <include refid="Base_Column_List" />
+    from   message
+    order by icreatedate   desc
+    limit 0,5 ;
 
   </select>
 

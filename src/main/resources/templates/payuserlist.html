@@ -32,7 +32,7 @@
         <label class="layui-form-label">收费设置</label>
         <div class="layui-input-block">
             <select name="paymentid" id="paymentname" lay-filter="paymentname" >
-                <option>请选择</option>
+                <option value="">请选择</option>
 
             </select>
         </div>
@@ -60,7 +60,7 @@
         $.ajax({
             // async: true,                    //默认为true，默认为异步请求
             type: "POST",                   //类型post
-            url: "/payment/ajaxpayment",                 //url
+            url: "/payment/ajaxpaymentpro",                 //url
             // contentType: "application/json",//请求内容编码类型
             // data: "name=John&age=18",       //发送到服务器的数据
             dataType: "json",               //返回数据格式

@@ -31,12 +31,28 @@ public class PaymentController {
         return "setpay";
     }
 
+
+    @RequestMapping("/addpayment")
+    public String addpayment(){
+        return "addpayment";
+    }
+
+
     @RequestMapping("ajaxlist")
     @ResponseBody
     public PageDTO paylist(PayuserQuery payuserQuery){
 
         return payuserService.paylist(payuserQuery);
     }
+
+
+    @RequestMapping("ajaxpaymentpro")
+    @ResponseBody
+    public ResponseDTO ajaxpaymentpro(){
+
+        return payuserService.ajaxpaymentpro();
+    }
+
 
     @RequestMapping("ajaxpayment")
     @ResponseBody
@@ -45,6 +61,14 @@ public class PaymentController {
         return payuserService.ajaxpayment();
     }
 
+
+
+    @RequestMapping("ajaxpaymentone")
+    @ResponseBody
+    public ResponseDTO ajaxpaymentone(){
+
+        return payuserService.ajaxpaymentone();
+    }
     @RequestMapping("ajaxgetmoney")
     @ResponseBody
     public ResponseDTO ajaxgetmoney(Integer id){
@@ -58,6 +82,18 @@ public class PaymentController {
 
         return payuserService.ajaxeditpayment(paymentQuery);
     }
+
+
+    @RequestMapping("ajaxaddpayment")
+    @ResponseBody
+    public ResponseDTO ajaxaddpayment(PaymentQuery paymentQuery){
+
+        return payuserService.ajaxaddpayment(paymentQuery);
+    }
+
+
+
+
     @RequestMapping("/addpayuser")
     public String addpayuser(){
         return "addrecharge";

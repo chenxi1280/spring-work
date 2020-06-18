@@ -34,8 +34,6 @@ public class HomeController {
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request) {
-
-
         Cookie[] cookies = request.getCookies();
         HttpSession session = request.getSession();
 
@@ -89,6 +87,8 @@ public class HomeController {
         return "login";
 
     }
+
+
 
     @RequestMapping("/loginh")
     public String loginh() {

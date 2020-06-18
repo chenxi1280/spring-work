@@ -1,7 +1,7 @@
 package com.work.boot.util.password;
 
 /**
- * creator：杜夫人
+ * creator：cxd
  * date: 2020/5/28
  */
 public class PasswordUtil {

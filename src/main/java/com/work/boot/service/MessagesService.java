@@ -19,5 +19,5 @@ public interface MessagesService {
 
     Result updateMessage(Message nMessage);
 
-    Result getmessagesimg();
+    Result getmessagesimg(String userId);
 }

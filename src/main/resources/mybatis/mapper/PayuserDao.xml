@@ -151,7 +151,6 @@
       `uid` in <foreach collection="users" separator="," open="(" close=")" item="u">#{u.uid} </foreach>
       <if test="paymentid != null and paymentid !=''">
         and paymentid = #{paymentid}
-
       </if>
 
     </where>
@@ -169,6 +168,38 @@
       </if>
 
     </where>
+
+  </select>
+
+  <select id="selectByUserId" resultType="com.work.boot.pojo.vo.PayuserVo">
+    select <include refid="Base_Column_List" />
+    from payuser
+    <where>
+      `uid` = #{uid}
+      <if test="paymentid != null and paymentid !=''">
+        and paymentid = #{paymentid}
+      </if>
+    </where>
+    order by payuserdate DESC
+    limit #{start},#{limit}
+  </select>
+  <select id="selectByUserIdCount" resultType="java.lang.Integer">
+
+    select count(*)
+    from payuser
+    <where>
+      `uid` = #{uid}
+      <if test="paymentid != null and paymentid !=''">
+        and paymentid = #{paymentid}
+      </if>
+    </where>
+
+
+  </select>
+  <select id="selectById" resultType="com.work.boot.pojo.entity.Payuser">
+    select <include refid="Base_Column_List" />
+    from payuser
+    where paymentid = #{paymentid}
 
   </select>
 

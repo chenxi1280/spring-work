@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>闪购管理后台</title>
+    <title>DD物业</title>
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -18,7 +18,6 @@
 <div th:replace="fragment/js::js"></div>
 <link rel="stylesheet" th:href="@{/layui/css/home.css}" media="all">
 
-<script type="text/javascript" th:src="@{/lh/upload/upload.js}"></script>
 <script type="text/html" id="editUserFormDiv">
     <div style="padding: 20px">
         <form class="layui-form" id="userEditForm" lay-filter="userEditForm">
@@ -62,11 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-input-block">
-                        <div >
-                            <img th:src="${session.uimg}" style="width: 100px;height: 100px;"/>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label"></label>

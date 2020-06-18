@@ -195,6 +195,7 @@
   <select id="selectAlllimet" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">
     select <include refid="Base_Column_List" />
     from guarantee
+    order by rpublicdate   desc
     limit #{start},#{limit}
   </select>
   <select id="getCount" resultType="java.lang.Integer">
@@ -216,6 +217,7 @@
         and uid = #{uid}
       </if>
     </where>
+    order by rpublicdate   desc
     limit #{start},#{limit}
   </select>
   <select id="selectByUid" resultType="com.work.boot.pojo.vo.GuaranteeAllVo">

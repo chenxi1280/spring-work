@@ -89,12 +89,6 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                 align: 'center',
                 // edit: 'text',
             }, {
-                field: 'revaluation',
-                title: '维修费用',
-                width: 150,
-                align: 'center',
-
-            }, {
                 field: 'rpublicdate',
                 title: '创建时间',
                 sort: true,
@@ -175,7 +169,7 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                     title: '图片',
                     templet: function (d) {
                         // 这个d指的是本行的数据 js对象
-                        return '<div><img style="width: 100px;height: 100px" src=' + d.rimg + '/></div>'
+                        return '<img showBig style="width: 100px;height: 100px" src=' + d.rimg + '/>'
                     }
                 },
                 {
@@ -186,6 +180,9 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                 }
             ]
         ]
+        , done() {// 表格渲染完成之后，也就是图片都被渲染好了
+            showBigImg();// 渲染大图查看，给这些图片绑定点击事件
+        }
     });
 
     // // //监听行工具事件

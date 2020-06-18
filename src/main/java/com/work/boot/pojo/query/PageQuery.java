@@ -3,7 +3,7 @@ package com.work.boot.pojo.query;
 import lombok.Data;
 
 /**
- * creator：杜夫人
+ * creator：cxd
  * date: 2020/5/25
  */
 @Data

@@ -21,7 +21,10 @@ public class MessagesController extends BaseController{
     @ResponseBody
     public Result getmessagesimg() {
 
-        Result result = messagesService.getmessagesimg();
+        String userId = getUserId();
+
+
+        Result result = messagesService.getmessagesimg(userId);
 
         return result;
     }
@@ -81,7 +84,7 @@ public class MessagesController extends BaseController{
     @ResponseBody
     public Result addmessages(Message nMessage, HttpServletRequest request) {
 
-
+        nMessage.setAcid(getUserId());
         nMessage.setAuid(getUserId());
 
         Result result = messagesService.addMessages(nMessage, request);
@@ -103,7 +106,9 @@ public class MessagesController extends BaseController{
 
     @RequestMapping("/toeditmessages")
     @ResponseBody
-    public Result toeditmessages(Message nMessage, HttpServletRequest request) {
+    public Result toeditmessages(Message nMessage) {
+
+        nMessage.setAuid(getUserId());
 
         Result result = messagesService.updateMessage(nMessage);
 

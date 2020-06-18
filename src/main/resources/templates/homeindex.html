@@ -53,12 +53,6 @@
                     <span>5月30日 00:00</span>
 <!--                    <a href="javascript:;" layadmin-event="replyNote" data-id="7" class="layui-btn layui-btn-xs layuiadmin-reply">回复</a>-->
                 </li>
-                <li>
-                    <h3>诸葛亮</h3>
-                    <p>皓首匹夫！苍髯老贼！你枉活九十有六，一生未立寸功，只会摇唇鼓舌！助曹为虐！一条断脊之犬，还敢在我军阵前狺狺狂吠，我从未见过有如此厚颜无耻之人！</p>
-                    <span>5月02日 00:00</span>
-<!--                    <a href="javascript:;" layadmin-event="replyNote" data-id="5" class="layui-btn layui-btn-xs layuiadmin-reply">回复</a>-->
-                </li>
 
             </ul>
         </div>
@@ -72,7 +66,7 @@
         layui.use(['carousel', 'form'], function(){
             var carousel = layui.carousel;
             $.ajax({
-                url: 'http://localhost:8080/messages/getmessagesimg',
+                url: '/messages/getmessagesimg',
                 type:'post',
                 data:{
                     isDisplay:1

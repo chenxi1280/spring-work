@@ -32,4 +32,10 @@ public interface PayuserDao {
 
     Integer selectByUserCount(PayuserQuery payuserQuery);
 
+    List<PayuserVo> selectByUserId(PayuserQuery payuserQuery);
+
+    Integer selectByUserIdCount(PayuserQuery payuserQuery);
+
+    Payuser selectById(Integer userpayid);
+
 }

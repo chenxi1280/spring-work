@@ -17,6 +17,7 @@ import com.work.boot.service.PayuserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -48,6 +49,9 @@ public class PayuserServiceImpl implements PayuserService {
         payuserQuery.setUsers(userList);
         List<PayuserVo> list = payuserDao.selectByUserList(payuserQuery);
         Integer count = payuserDao.selectByUserCount(payuserQuery);
+        if (CollectionUtils.isEmpty(list)){
+            return PageDTO.setPageData(0, list);
+        }
         List<Payment> listPay = paymentDao.selectByListPay(list);
 
         list.forEach(p -> {
@@ -61,7 +65,7 @@ public class PayuserServiceImpl implements PayuserService {
             });
 
             listPay.forEach(payment -> {
-                if (payment.getPaymentid() == p.getPaymentid()) {
+                if (payment.getPaymentid().equals(p.getPaymentid())) {
 
                     p.setPaymentname(payment.getPaymentname());
                 }
@@ -78,8 +82,13 @@ public class PayuserServiceImpl implements PayuserService {
     public ResponseDTO ajaxpayment() {
 
         List<Payment> list = paymentDao.selectAll();
+        List<Payment> lists = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
 
-        return ResponseDTO.ok("ok", list);
+            lists.add(list.get(i));
+        }
+
+        return ResponseDTO.ok("ok", lists);
     }
 
     @Override
@@ -218,5 +227,96 @@ public class PayuserServiceImpl implements PayuserService {
 
 
         return   ResponseDTO.ok("成功", list);
+    }
+
+    @Override
+    public ResponseDTO ajaxaddpayment(PaymentQuery paymentQuery) {
+        return ResponseDTO.get( paymentDao.insert(paymentQuery) ==1 );
+    }
+
+    @Override
+    public ResponseDTO ajaxpaymentone() {
+        List<Payment> list = paymentDao.selectAll();
+        List<Payment> lists = new ArrayList<>();
+        for (int i = 2; i < list.size(); i++) {
+
+            lists.add(list.get(i));
+        }
+
+        return ResponseDTO.ok("ok", lists);
+    }
+
+    @Override
+    public ResponseDTO ajaxpaymentpro() {
+
+        return ResponseDTO.ok("ok",  paymentDao.selectAll());
+    }
+
+    @Override
+    public PageDTO ajaxlistpro(PayuserQuery payuserQuery) {
+
+
+//        List<PayuserVo> list = payuserDao.selectByUserId(payuserQuery);
+//        Integer count = payuserDao.selectByUserIdCount(payuserQuery);
+//        if (CollectionUtils.isEmpty(list)){
+//            return PageDTO.setPageData(0, list);
+//        }
+//        List<Payment> listPay = paymentDao.selectByListPay(list);
+
+
+        User user1 = userDao.selectByPrimaryKey(payuserQuery.getUid());
+
+        List<PayuserVo> list = payuserDao.selectByUserId(payuserQuery);
+        Integer count = payuserDao.selectByUserIdCount(payuserQuery);
+        if (CollectionUtils.isEmpty(list)){
+            return PageDTO.setPageData(0, list);
+        }
+        List<Payment> listPay = paymentDao.selectByListPay(list);
+
+        list.forEach(p -> {
+
+
+            p.setUusername(user1.getUusername());
+            p.setPhone(user1.getUphoneid());
+
+
+
+            listPay.forEach(payment -> {
+                if (payment.getPaymentid().equals(p.getPaymentid())) {
+
+                    p.setPaymentname(payment.getPaymentname());
+                }
+
+            });
+
+        });
+
+
+
+        return PageDTO.setPageData(count, list);
+    }
+
+    @Override
+    public Payuser getpayUser(Integer userpayid) {
+
+
+        return payuserDao.selectByPrimaryKey(userpayid);
+    }
+
+    @Override
+    public void paySuccess(Payuser payuser) {
+
+        payuserDao.updateByPrimaryKeySelective(payuser);
+
+    }
+
+    @Override
+    public ResponseDTO add(Payuser payuser) {
+
+
+        payuser.setPayuserdate(new Date());
+        payuser.setPatstate(0);
+
+        return ResponseDTO.get(payuserDao.insert(payuser) == 1);
     }
 }

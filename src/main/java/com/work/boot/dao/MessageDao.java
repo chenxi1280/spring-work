@@ -32,4 +32,6 @@ public interface MessageDao {
 
     List<Message> getmessagesimg();
 
+    List<Message> getmessagesAd();
+
 }

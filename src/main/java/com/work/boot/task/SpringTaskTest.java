@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 
 /**
- * creator：杜夫人
+ * creator：cxd
  * date: 2020/5/26
  */
 @Component
@@ -30,6 +30,7 @@ public class SpringTaskTest {
         try {
 //            System.err.println("定时扣钱了哦" + System.currentTimeMillis() / 1000);
 //            payuserService.deductions();
+
 
 
 

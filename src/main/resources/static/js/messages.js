@@ -69,13 +69,8 @@ layui.use(['table', 'upload', 'layer', 'laydate'], function () {
                     title: '消息内容',
                     align: 'center',
                     // edit: 'text',
-                }, {
-                field: 'xid',
-                title: '小区id',
-                align: 'center',
-                edit: 'text',
-
-            }, {
+                }
+            , {
                 field: 'acid',
                 title: '创建管理员id',
 

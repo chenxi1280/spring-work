@@ -17,7 +17,7 @@ public class PayuserQuery extends PageQuery{
     private String phone ;
     private String paymentid;
     private String uname;
-
+    private String uid;
     private Long min;
     private Long max;
     private List<User> users;
