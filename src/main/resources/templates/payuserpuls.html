@@ -184,6 +184,17 @@
             });
             $("#payForm").submit();// 手工提交表单
         });
+
+
+
+        form.on('submit(queryForm)', function (data) {
+            console.log(data)
+            tb.reload({
+                where: data.field
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
     });
 
 </script>
