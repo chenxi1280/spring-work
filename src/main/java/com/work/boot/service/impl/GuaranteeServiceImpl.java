@@ -105,18 +105,8 @@ public class GuaranteeServiceImpl implements GuaranteeService {
         result.setMessage("操作失败");
         try {
             List<Maintenanceuser> list = maintenanceuserDao.selectOnin();
-            ArrayList arrayList = new ArrayList();
-
-            list.forEach(v -> {
-                Integer maintenanceuseridstate = v.getMaintenanceuseridstate();
-                if (maintenanceuseridstate > 1) {
-                    arrayList.add(maintenanceuseridstate);
-                }
-            });
-            int i = new Random().nextInt(list.size()) + 1;
-
             Guarantee guarantee = new Guarantee();
-            guarantee.setMaintenanceuserid(i);
+            guarantee.setMaintenanceuserid(list.get(new Random().nextInt(list.size())).getMaintenanceuserid());
             guarantee.setRid(rid);
             guarantee.setRpublicdate(new Date());
 
